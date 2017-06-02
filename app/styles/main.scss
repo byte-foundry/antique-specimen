@@ -247,13 +247,43 @@ body {
   font-family: Helvetica, sans-serif;
   font-weight: 700;
   text-align: center;
+  padding: 3rem;
+  span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50%, -50%);
+  }
 }
 
 #sharing {
-  .sharing {
-    img {
-      width: 1.5vw;
-      height: auto;
+  ul {
+    list-style-type: none;
+    margin: 0;
+    li {
+      img {
+        width: 1.5vw;
+        height: auto;
+      }
+      span {
+        margin-left: 10px;
+        font-size: 1.5vw;
+        line-height: 1.5vw;
+      }
+    }
+  }
+  @media screen and (max-width: 64em) {
+    ul {
+      width: 100%;
+      li {
+        position: relative;
+        width: 20%;
+        margin-left: 2.5%;
+        margin-right: 2.5%;
+        display: inline;
+        float: left;
+      }
     }
   }
 }
@@ -271,7 +301,9 @@ body {
   font-family: 'gnft-thickness', 'gnft';
 }
 
-#technology {}
+#technology {
+  font-size: 1rem;
+}
 
 #alts {
   font-size: 15vw;
