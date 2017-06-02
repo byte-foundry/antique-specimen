@@ -1,0 +1,12 @@
+$blue: #518FF4;
+$light-blue: #619CF2;
+$white: #FFFFFF;
+
+$font-path: "../../fonts";
+
+@font-face {
+  font-family: gfnt;
+  src: url('#{$font-path}/gfnt-regular.otf');
+  font-weight: normal;
+  font-style: normal;
+}
