@@ -66,6 +66,72 @@ body {
   margin: 1vw;
   font-family: Helvetica, sans-serif;
 
+  .arrow-left {
+    position: relative;
+    display: inline-block;
+    width: 75px;
+    height: 2px;
+    border: none;
+    border-radius: 1rem;
+    background-color: #FFF;
+    transform-origin: right center;
+    transition: all 0.2s;
+
+    &::after,
+    &::before {
+      content: "";
+      display: block;
+      position: absolute;
+      left: 0;
+      width: 10px;
+      height: 2px;
+      background-color: inherit;
+      transform-origin: left center;
+      transition: all 0.5s;
+    }
+
+    &::before {
+      transform: rotate(-49deg);
+    }
+
+    &::after {
+      transform: rotate(49deg);
+    }
+  }
+
+  .arrow-left {
+    position: relative;
+    display: inline-block;
+    width: 75px;
+    height: 2px;
+    border: none;
+    border-radius: 1rem;
+    background-color: #FFF;
+    transform-origin: right center;
+    transition: all 0.2s;
+
+    &::after,
+    &::before {
+      content: "";
+      display: block;
+      position: absolute;
+      right: 0;
+      width: 10px;
+      height: 2px;
+      background-color: inherit;
+      transform-origin: left center;
+      transition: all 0.5s;
+    }
+
+    &::before {
+      transform: rotate(-49deg);
+    }
+
+    &::after {
+      transform: rotate(49deg);
+    }
+  }
+
   &.bottom {
     bottom: 0;
     left: 50%;
@@ -108,17 +174,19 @@ body {
   line-height: 20vw;
   min-height: 20vw;
 }
+
 .container-fluid {
   padding-left: 0;
   padding-right: 0;
 }
+
 [class*='col-'],
 [class^='col-'] {
-   padding-left: 0;
-   padding-right: 0;
-   margin-left: 0;
-   margin-right: 0;
-   position: relative;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
+  position: relative;
 }
 
 .box {
@@ -146,8 +214,8 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     margin: 0;
-    width:600px;
-    height:36px;
+    width: 600px;
+    height: 36px;
     user-select: none;
     cursor: default;
 
@@ -159,6 +227,7 @@ body {
       animation: move 2s linear infinite;
       transform: rotate(180deg);
       font-size: 30px;
+
       &:nth-child(2) {
         animation-delay: 0.2s;
       }
@@ -183,7 +252,6 @@ body {
         animation-delay: 1.2s;
       }
     }
-
     @keyframes move {
       0% {
         left: 0;
@@ -248,6 +316,7 @@ body {
   font-weight: 700;
   text-align: center;
   padding: 3rem;
+
   span {
     position: absolute;
     top: 50%;
@@ -261,11 +330,13 @@ body {
   ul {
     list-style-type: none;
     margin: 0;
+
     li {
       img {
         width: 1.5vw;
         height: auto;
       }
+
       span {
         margin-left: 10px;
         font-size: 1.5vw;
@@ -276,6 +347,7 @@ body {
   @media screen and (max-width: 64em) {
     ul {
       width: 100%;
+
       li {
         position: relative;
         width: 20%;
@@ -286,6 +358,12 @@ body {
       }
     }
   }
+}
+
+#aperture {
+  font-size: 15vw;
+  min-height: 20vw;
+  font-family: 'gnft-aperture', 'gnft';
 }
 
 #serifs {
