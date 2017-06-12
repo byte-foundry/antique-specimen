@@ -65,28 +65,47 @@ body {
   position: absolute;
   margin: 1vw;
   font-family: Helvetica, sans-serif;
+  text-align: center;
 
-  .arrow-left {
+  .arrow {
     position: relative;
     display: inline-block;
-    width: 75px;
+    width: 100px;
     height: 2px;
     border: none;
     border-radius: 1rem;
     background-color: #FFF;
     transform-origin: right center;
     transition: all 0.2s;
+    margin-top: 8px;
+
+    &.arrow-left {
+      float: left;
+      margin-left: auto;
+      &::after,
+      &::before {
+        left: 0;
+        transform-origin: left center;
+      }
+    }
+    &.arrow-right {
+      float: left;
+      margin-right: auto;
+      &::after,
+      &::before {
+        right: 0;
+        transform-origin: right center;
+      }
+    }
 
     &::after,
     &::before {
       content: "";
       display: block;
       position: absolute;
-      left: 0;
       width: 10px;
       height: 2px;
       background-color: inherit;
-      transform-origin: left center;
       transition: all 0.5s;
     }
 
@@ -99,38 +118,13 @@ body {
     }
   }
 
-  .arrow-left {
-    position: relative;
+  .legend {
     display: inline-block;
-    width: 75px;
-    height: 2px;
-    border: none;
-    border-radius: 1rem;
-    background-color: #FFF;
-    transform-origin: right center;
-    transition: all 0.2s;
-
-    &::after,
-    &::before {
-      content: "";
-      display: block;
-      position: absolute;
-      right: 0;
-      width: 10px;
-      height: 2px;
-      background-color: inherit;
-      transform-origin: left center;
-      transition: all 0.5s;
-    }
-
-    &::before {
-      transform: rotate(-49deg);
-    }
-
-    &::after {
-      transform: rotate(49deg);
-    }
+    float: left;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
   }
+
 
   &.bottom {
     bottom: 0;
