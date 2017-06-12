@@ -19,10 +19,21 @@ body {
   margin: 0;
   border: 1px solid $white;
   border-bottom: none;
+  text-rendering: optimizeLegibility;
+  text-rendering: geometricPrecision;
+  font-smooth: always;
+  font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased;
+  -webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: grayscale;
 
   &.loading {
     overflow: hidden;
     border: none;
+    .page {
+      overflow: hidden !important;
+    }
   }
 }
 
@@ -31,6 +42,14 @@ html {
   @media screen and (max-width: 64em) {
     font-size: 8px;
   }
+  text-rendering: optimizeLegibility;
+  text-rendering: geometricPrecision;
+  font-smooth: always;
+  font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased;
+  -webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .clearfix:after {
@@ -223,67 +242,13 @@ html {
     left: 50%;
     transform: translate(-50%, -50%);
     margin: 0;
-    width: 600px;
-    height: 36px;
+    font-size: 3rem;
+    text-align: center;
     user-select: none;
     cursor: default;
-
-    div {
-      position: absolute;
-      width: 20px;
-      height: 36px;
-      opacity: 0;
-      animation: move 2s linear infinite;
-      transform: rotate(180deg);
-      font-size: 30px;
-
-      &:nth-child(2) {
-        animation-delay: 0.2s;
-      }
-
-      &:nth-child(3) {
-        animation-delay: 0.4s;
-      }
-
-      &:nth-child(4) {
-        animation-delay: 0.6s;
-      }
-
-      &:nth-child(5) {
-        animation-delay: 0.8s;
-      }
-
-      &:nth-child(6) {
-        animation-delay: 1s;
-      }
-
-      &:nth-child(7) {
-        animation-delay: 1.2s;
-      }
-    }
-    @keyframes move {
-      0% {
-        left: 0;
-        opacity: 0;
-      }
-
-      35% {
-        left: 41%;
-        transform: rotate(0deg);
-        opacity: 1;
-      }
-
-      65% {
-        left: 59%;
-        transform: rotate(0deg);
-        opacity: 1;
-      }
-
-      100% {
-        left: 100%;
-        transform: rotate(-180deg);
-        opacity: 0;
-      }
+    img{
+      width: 6rem;
+      height: auto;
     }
   }
 }
@@ -343,17 +308,25 @@ html {
   ul {
     list-style-type: none;
     margin: 0;
+    padding: 0;
 
     li {
-      img {
-        width: 2rem;
-        height: auto;
-      }
+      margin-top: 1rem;
+      margin-bottom: 1rem;
 
-      span {
-        margin-left: 10px;
-        font-size: 2rem;
-        line-height: 2rem;
+      a {
+        color: inherit;
+        text-decoration: none;
+        img {
+          width: 2rem;
+          height: auto;
+        }
+
+        span {
+          margin-left: 10px;
+          font-size: 2rem;
+          line-height: 2rem;
+        }
       }
     }
   }
