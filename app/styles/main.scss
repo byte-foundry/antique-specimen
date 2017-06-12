@@ -26,6 +26,13 @@ body {
   }
 }
 
+html {
+  font-size: 16px;
+  @media screen and (max-width: 64em) {
+    font-size: 8px;
+  }
+}
+
 .clearfix:after {
   content: " ";
   display: block;
@@ -52,7 +59,9 @@ body {
     padding: 1vw;
   }
 
-  &.hastooltip {}
+  &.hastooltip {
+    padding-bottom: 3.5rem;
+  }
 }
 
 .bold {
@@ -60,37 +69,41 @@ body {
 }
 
 .slider-tooltip {
-  font-size: 1vw;
+  display: block;
+  font-size: 1.2rem;
   text-transform: uppercase;
   position: absolute;
-  margin: 1vw;
+  padding: 1rem;
   font-family: Helvetica, sans-serif;
   text-align: center;
+  white-space: nowrap;
 
   .arrow {
     position: relative;
     display: inline-block;
-    width: 100px;
+    width: 15rem;
     height: 2px;
     border: none;
     border-radius: 1rem;
     background-color: #FFF;
     transform-origin: right center;
     transition: all 0.2s;
-    margin-top: 8px;
+    margin-top: 0;
+    margin-bottom: 0.3rem;
+    @media screen and (max-width: 64em) {
+      height: 1px;
+      width: 50px;
+    }
 
     &.arrow-left {
-      float: left;
-      margin-left: auto;
       &::after,
       &::before {
         left: 0;
         transform-origin: left center;
       }
     }
+
     &.arrow-right {
-      float: left;
-      margin-right: auto;
       &::after,
       &::before {
         right: 0;
@@ -107,6 +120,10 @@ body {
       height: 2px;
       background-color: inherit;
       transition: all 0.5s;
+      @media screen and (max-width: 64em) {
+        height: 1px;
+        width: 5px;
+      }
     }
 
     &::before {
@@ -120,11 +137,9 @@ body {
 
   .legend {
     display: inline-block;
-    float: left;
     margin-left: 1.5rem;
     margin-right: 1.5rem;
   }
-
 
   &.bottom {
     bottom: 0;
@@ -133,10 +148,10 @@ body {
   }
 
   &.vertical {
-    transform: rotate(-90deg) translateY(-50%);
-    bottom: 50%;
-    left: -2vw;
-    transform-origin: center;
+    bottom: 3rem;
+    left: 2rem;
+    transform-origin: left;
+    transform: rotate(-90deg);
   }
 
   &.top {
@@ -148,10 +163,10 @@ body {
 
 .cta {
   display: inline-block;
-  font-size: 1.5vw;
+  font-size: 1.8rem;
   background-color: $white;
-  padding: 0.5vw 1vw;
-  margin-top: 1em;
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
   border-radius: 5px;
   color: $blue;
   outline: none;
@@ -274,20 +289,24 @@ body {
 }
 
 #description {
-  font-size: 2vw;
+  font-size: 2.4rem;
   flex: 4;
 }
 
 #prototypoavailable {
-  font-size: 2vw;
+  font-size: 2.2rem;
   font-family: 'gnft-thickness2', 'gnft';
+
+  .arrow {
+    width: 11rem;
+  }
 }
 
 #url {
   font-family: Helvetica, sans-serif;
   font-weight: 400;
-  font-size: 1.8vw;
-  line-height: 1.8vw;
+  font-size: 1.8rem;
+  line-height: 1.8rem;
 
   .logo {
     img {
@@ -305,7 +324,7 @@ body {
 }
 
 #productiontype {
-  font-size: 1.8vw;
+  font-size: 1.8rem;
   font-family: Helvetica, sans-serif;
   font-weight: 700;
   text-align: center;
@@ -327,14 +346,14 @@ body {
 
     li {
       img {
-        width: 1.5vw;
+        width: 2rem;
         height: auto;
       }
 
       span {
         margin-left: 10px;
-        font-size: 1.5vw;
-        line-height: 1.5vw;
+        font-size: 2rem;
+        line-height: 2rem;
       }
     }
   }
@@ -355,31 +374,61 @@ body {
 }
 
 #aperture {
-  font-size: 15vw;
-  min-height: 20vw;
+  font-size: 18rem;
+  min-height: 24rem;
   font-family: 'gnft-aperture', 'gnft';
+  @media screen and (max-width: 64em) {
+    font-size: 12rem;
+    min-height: 15rem;
+  }
+
+  .arrow {
+    width: 49.5rem;
+  }
 }
 
 #serifs {
-  font-size: 30vw;
-  min-height: 30vw;
+  font-size: 35rem;
+  min-height: 35rem;
   background-image: linear-gradient( to bottom, $light-blue 0%, $light-blue 50%, $blue 50%, $blue 100% );
   font-family: 'gnft-serifs', 'gnft';
+  @media screen and (max-width: 64em) {
+    font-size: 21rem;
+    min-height: 21rem;
+
+    .vertical {
+      display: none;
+    }
+  }
+
+  .vertical {
+    .arrow {
+      width: 21rem;
+    }
+  }
 }
 
 #thickness {
-  font-size: 23vw;
-  min-height: 23vw;
+  font-size: 26rem;
+  min-height: 26rem;
   font-family: 'gnft-thickness', 'gnft';
+  @media screen and (max-width: 64em) {
+    font-size: 21rem;
+    min-height: 21rem;
+  }
+
+  .arrow {
+    width: 12rem;
+  }
 }
 
 #technology {
-  font-size: 1rem;
+  font-size: 1.3rem;
 }
 
 #alts {
-  font-size: 15vw;
-  min-height: 15vw;
+  font-size: 19rem;
+  min-height: 19rem;
   text-align: center;
   font-family: 'gnft-alts', 'gnft';
   background-image: linear-gradient( to right, $blue 0%, $blue 50%, $light-blue 50%, $light-blue 100% );
@@ -389,7 +438,7 @@ body {
     position: absolute;
     font-family: Helvetica, sans-serif;
     top: 50%;
-    font-size: 1vw;
+    font-size: 1.2rem;
 
     &.left {
       left: 20%;
@@ -404,12 +453,12 @@ body {
 }
 
 #width {
-  font-size: 15vw;
-  min-height: 15vw;
+  font-size: 19rem;
+  min-height: 19rem;
   overflow: hidden;
   font-family: 'gnft-width', 'gnft';
 
-  span {
+  .glyphs {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -418,16 +467,16 @@ body {
 }
 
 #commercial {
-  font-size: 1vw;
+  font-size: 1.3rem;
   text-align: center;
 }
 
 #footer {
-  font-size: 1.5vw;
+  font-size: 1.8rem;
   text-align: center;
 
   .social {
-    font-size: 1vw;
+    font-size: 1.3rem;
   }
 
   a {
