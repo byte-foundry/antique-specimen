@@ -69,7 +69,7 @@ $(document).ready(function() {
           //var y = e.pageY - $(this).offset().top;
           var percentX = (x / elemWidth) * 100;
           //var percentY = (y / elemHeight) * 100;
-          Ptypo.changeParam(getValue(20, 160, percentX), 'thickness', 'gnft-thickness');
+          Ptypo.changeParam(getValue(40, 130, percentX), 'thickness', 'gnft-thickness');
         }
         var hammertime = new Hammer($('#thickness').get(0));
         hammertime.on('pan', function(e) {
@@ -123,7 +123,7 @@ $(document).ready(function() {
           var elemWidth = $('#prototypoavailable').outerWidth();
           var x = (e.pageX || e.center.x) - $('#prototypoavailable').offset().left;
           var percentX = (x / elemWidth) * 100;
-          Ptypo.changeParam(getValue(20, 160, percentX), 'thickness', 'gnft-thickness2');
+          Ptypo.changeParam(getValue(40, 130, percentX), 'thickness', 'gnft-thickness2');
         }
         var hammertime = new Hammer($('#prototypoavailable').get(0));
         hammertime.on('pan', function(e) {
@@ -150,7 +150,7 @@ $(document).ready(function() {
           var elemWidth = $('#aperture').outerWidth();
           var x = (e.pageX || e.center.x) - $('#aperture').offset().left;
           var percentX = (x / elemWidth) * 100;
-          Ptypo.changeParam(getValue(0.2, 2, percentX), 'aperture', 'gnft-aperture');
+          Ptypo.changeParam(getValue(0.4, 1.6, percentX), 'aperture', 'gnft-aperture');
         }
         var hammertime = new Hammer($('#aperture').get(0));
         hammertime.on('pan', function(e) {
