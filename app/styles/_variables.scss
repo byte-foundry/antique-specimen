@@ -4,6 +4,33 @@ $white: #FFFFFF;
 
 $font-path: "../../fonts";
 
+
+@font-face {
+	font-family: 'gr';
+	src: url('./fonts/gmb.woff') format('woff');
+	font-weight: bold;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'gr';
+	src: url('./fonts/gmbi.woff') format('woff');
+	font-weight: bold;
+	font-style: italic;
+}
+@font-face {
+	font-family: 'gr';
+	src: url('./fonts/gr.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'gr';
+	src: url('./fonts/gi.woff') format('woff');
+	font-weight: normal;
+	font-style: italic;
+}
+
+
 @font-face {
   font-family: gfnt;
   src: url('#{$font-path}/gfnt-regular.otf');
