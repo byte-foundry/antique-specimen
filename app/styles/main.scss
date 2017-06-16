@@ -93,7 +93,7 @@ html {
   text-transform: uppercase;
   position: absolute;
   padding: 1rem;
-  font-family: 'Fira Sans', sans-serif;
+  font-family: 'gr', sans-serif;
   text-align: center;
   white-space: nowrap;
 
@@ -190,7 +190,7 @@ html {
   color: $blue;
   outline: none;
   text-decoration: none;
-  font-family: 'Fira Sans', sans-serif;
+  font-family: 'gr', sans-serif;
   text-transform: uppercase;
 }
 
@@ -268,7 +268,7 @@ html {
 }
 
 #url {
-  font-family: 'Fira Sans', sans-serif;
+  font-family: 'gr', sans-serif;
   font-weight: 400;
   font-size: 1.8rem;
   line-height: 1.8rem;
@@ -290,7 +290,7 @@ html {
 
 #productiontype {
   font-size: 1.8rem;
-  font-family: 'Fira Sans', sans-serif;
+  font-family: 'gr', sans-serif;
   font-weight: 700;
   text-align: center;
   padding: 3rem;
@@ -402,6 +402,31 @@ html {
 
 #technology {
   font-size: 1.3rem;
+  line-height: 1.3rem;
+  .gfnt-70 {
+    font-family: 'gfnt-70';
+  }
+  .gfnt-75 {
+    font-family: 'gfnt-75';
+  }
+  .gfnt-80 {
+    font-family: 'gfnt-80';
+  }
+  .gfnt-85 {
+    font-family: 'gfnt-85';
+  }
+  .gfnt-90 {
+    font-family: 'gfnt-90';
+  }
+  .gfnt-95 {
+    font-family: 'gfnt-95';
+  }
+  .gfnt-100 {
+    font-family: 'gfnt-100';
+  }
+  .gfnt-105 {
+    font-family: 'gfnt-105';
+  }
 }
 
 #alts {
@@ -414,7 +439,7 @@ html {
   .alt-tooltip {
     text-transform: uppercase;
     position: absolute;
-    font-family: 'Fira Sans', sans-serif;
+    font-family: 'gr', sans-serif;
     top: 50%;
     font-size: 1.2rem;
 

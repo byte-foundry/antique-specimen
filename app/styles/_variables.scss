@@ -7,25 +7,25 @@ $font-path: "../../fonts";
 
 @font-face {
 	font-family: 'gr';
-	src: url('./fonts/gmb.woff') format('woff');
+	src: url('#{$font-path}/gmb.woff') format('woff');
 	font-weight: bold;
 	font-style: normal;
 }
 @font-face {
 	font-family: 'gr';
-	src: url('./fonts/gmbi.woff') format('woff');
+	src: url('#{$font-path}/gmbi.woff') format('woff');
 	font-weight: bold;
 	font-style: italic;
 }
 @font-face {
 	font-family: 'gr';
-	src: url('./fonts/gr.woff') format('woff');
+	src: url('#{$font-path}/gr.woff') format('woff');
 	font-weight: normal;
 	font-style: normal;
 }
 @font-face {
 	font-family: 'gr';
-	src: url('./fonts/gi.woff') format('woff');
+	src: url('#{$font-path}/gi.woff') format('woff');
 	font-weight: normal;
 	font-style: italic;
 }
@@ -36,4 +36,67 @@ $font-path: "../../fonts";
   src: url('#{$font-path}/gfnt-regular.otf');
   font-weight: normal;
   font-style: normal;
+}
+
+@font-face {
+	font-family: 'gfnt-70';
+	src: url('#{$font-path}/Prototypo gfnt-70.otf');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'gfnt-75';
+	src: url('#{$font-path}/Prototypo gfnt-75.otf');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'gfnt-80';
+	src: url('#{$font-path}/Prototypo gfnt-80.otf');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'gfnt-85';
+	src: url('#{$font-path}/Prototypo gfnt-85.otf');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'gfnt-90';
+	src: url('#{$font-path}/Prototypo gfnt-90.otf');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'gfnt-95';
+	src: url('#{$font-path}/Prototypo gfnt-95.otf');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'gfnt-100';
+	src: url('#{$font-path}/Prototypo gfnt-100.otf');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'gfnt-105';
+	src: url('#{$font-path}/Prototypo gfnt-105.otf');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'gfnt-110';
+	src: url('#{$font-path}/Prototypo gfnt-110.otf');
+	font-weight: normal;
+	font-style: normal;
 }

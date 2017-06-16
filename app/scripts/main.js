@@ -220,6 +220,34 @@ $(document).ready(function() {
       });
     }));
 
+    var techThickness = ['70', '75', '80', '85', '90', '95', '100', '105', '110'];
+    var index = 0;
+    function getNextIndex() {
+      var length = techThickness.length;
+      if (index === length - 1) {
+        index = 0;
+        return techThickness[length - 1];
+      }
+      else {
+        index++;
+        return techThickness[index-1];
+      }
+    };
+    setInterval(function () {
+      $('#technology .paragraph-1').attr('class', 'paragraph-1');
+      $('#technology .paragraph-1').addClass('gfnt-' + getNextIndex());
+      $('#technology .paragraph-2').attr('class', 'paragraph-2');
+      $('#technology .paragraph-2').addClass('gfnt-' + getNextIndex());
+      $('#technology .paragraph-3').attr('class', 'paragraph-3');
+      $('#technology .paragraph-3').addClass('gfnt-' + getNextIndex());
+      $('#technology .paragraph-4').attr('class', 'paragraph-4');
+      $('#technology .paragraph-4').addClass('gfnt-' + getNextIndex());
+      $('#technology .paragraph-5').attr('class', 'paragraph-5');
+      $('#technology .paragraph-5').addClass('gfnt-' + getNextIndex());
+      $('#technology .paragraph-6').attr('class', 'paragraph-6');
+      $('#technology .paragraph-6').addClass('gfnt-' + getNextIndex());
+    }, 400);
+
 
     var altSet = false;
     fontPromises.push(new Promise(function(resolve, reject) {
