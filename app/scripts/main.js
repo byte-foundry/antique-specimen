@@ -3,8 +3,8 @@ jQuery(document).ready(function($) {
   function getFBShares(page) {
     var shares;
     $.getJSON('http://graph.facebook.com/?ids=' + page, function(data) {
-      if (data[page].shares > 1) {
-        shares = data[page].shares;
+      if (data[page].share) {
+        shares = data[page].share.share_count;
         $('#sharing #facebook .count').html(shares);
       }
     });
@@ -13,9 +13,9 @@ jQuery(document).ready(function($) {
   function getTweets(page) {
     var tweets;
     $.getJSON('http://public.newsharecounts.com/count.json?url=' + page + '&callback=?', function(data) {
-      if (data.count > 1) {
+      if (data) {
         tweets = data.count;
-        $('#sharing #twitter .count').html(tweets);
+        $('#sharing #twitter .count').html(tweets || '0');
       }
     });
   }
@@ -23,7 +23,7 @@ jQuery(document).ready(function($) {
   function getLinkedIn(page) {
     var linkedinCount;
     $.getJSON('http://www.linkedin.com/countserv/count/share?url=' + page + '&callback=?', function(data) {
-      if (data.count > 1) {
+      if (data.count) {
         linkedinCount = data.count;
         $('#sharing #linkedin .count').html(linkedinCount);
       }
@@ -32,15 +32,14 @@ jQuery(document).ready(function($) {
 
   var Url = 'https://prototypo.io';
   var UrlEncoded = encodeURIComponent(Url);
-  //var title = encodeURIComponent(document.getElementById('title').innerText);
+  var title = encodeURIComponent('Spectral specimen');
   getFBShares(Url);
   getTweets(Url);
   getLinkedIn(Url);
-  // document.getElementById('fb-share').href='http://www.facebook.com/share.php?u=' + UrlEncoded;
-  // document.getElementById('tweet').href='http://twitter.com/home?status=' + title + ' ' + UrlEncoded;
-  // document.getElementById('linkedin').href='http://www.linkedin.com/shareArticle?mini=true&url=' + UrlEncoded + '&title=' + title;
-  // document.getElementById('gplus-share').href='https://plus.google.com/share?url=' + UrlEncoded;
-  // document.getElementById('email-share').href='mailto:?body=Take a look at this page I found: ' + title + '. You can read it here: ' + Url;
+  $('#facebook a').attr('href', 'http://www.facebook.com/share.php?u=' + UrlEncoded);
+  $('#twitter a').attr('href', 'http://twitter.com/home?status=' + title + ' ' + UrlEncoded);
+  $('#googleplus a').attr('href', 'https://plus.google.com/share?url=' + UrlEncoded);
+  $('#linkedin a').attr('href', 'http://www.linkedin.com/shareArticle?mini=true&url=' + UrlEncoded + '&title=' + title);
 });
 
 
@@ -70,7 +69,7 @@ $(document).ready(function() {
           //var y = e.pageY - $(this).offset().top;
           var percentX = (x / elemWidth) * 100;
           //var percentY = (y / elemHeight) * 100;
-          Ptypo.changeParam(getValue(20, 160, percentX), 'thickness', 'gnft-thickness');
+          Ptypo.changeParam(getValue(40, 130, percentX), 'thickness', 'gnft-thickness');
         }
         var hammertime = new Hammer($('#thickness').get(0));
         hammertime.on('pan', function(e) {
@@ -124,7 +123,7 @@ $(document).ready(function() {
           var elemWidth = $('#prototypoavailable').outerWidth();
           var x = (e.pageX || e.center.x) - $('#prototypoavailable').offset().left;
           var percentX = (x / elemWidth) * 100;
-          Ptypo.changeParam(getValue(20, 160, percentX), 'thickness', 'gnft-thickness2');
+          Ptypo.changeParam(getValue(40, 130, percentX), 'thickness', 'gnft-thickness2');
         }
         var hammertime = new Hammer($('#prototypoavailable').get(0));
         hammertime.on('pan', function(e) {
@@ -151,7 +150,7 @@ $(document).ready(function() {
           var elemWidth = $('#aperture').outerWidth();
           var x = (e.pageX || e.center.x) - $('#aperture').offset().left;
           var percentX = (x / elemWidth) * 100;
-          Ptypo.changeParam(getValue(0.2, 2, percentX), 'aperture', 'gnft-aperture');
+          Ptypo.changeParam(getValue(0.4, 1.6, percentX), 'aperture', 'gnft-aperture');
         }
         var hammertime = new Hammer($('#aperture').get(0));
         hammertime.on('pan', function(e) {

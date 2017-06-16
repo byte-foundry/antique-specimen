@@ -77,9 +77,24 @@ gulp.task('images', () => {
 });
 
 gulp.task('fonts', () => {
-  return gulp.src(require('main-bower-files')('**/*.{eot,svg,ttf,woff,woff2}', function (err) {})
+  return gulp.src(require('main-bower-files')('**/*.{eot,svg,ttf,woff,woff2,otf}', function (err) {})
     .concat('app/fonts/**/*'))
     .pipe($.if(dev, gulp.dest('.tmp/fonts'), gulp.dest('dist/fonts')));
+});
+
+gulp.task('copy:fonts', () => {
+  return gulp.src('app/fonts/*')
+    .pipe(gulp.dest('dist/fonts'));
+});
+
+gulp.task('copy:ptypo', () => {
+  return gulp.src('app/scripts/ptypo/*')
+    .pipe(gulp.dest('dist/scripts/ptypo'));
+});
+
+gulp.task('copy:ptypolib', () => {
+  return gulp.src('app/scripts/lib.js')
+    .pipe(gulp.dest('dist/scripts'));
 });
 
 gulp.task('extras', () => {
@@ -164,7 +179,7 @@ gulp.task('wiredep', () => {
     .pipe(gulp.dest('app'));
 });
 
-gulp.task('build', ['lint', 'html', 'images', 'fonts', 'extras'], () => {
+gulp.task('build', ['lint', 'html', 'images', 'fonts', 'copy:fonts', 'copy:ptypo', 'copy:ptypolib', 'extras'], () => {
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 

@@ -26,6 +26,8 @@
   <script src="scripts/ptypo/prototypo.js"></script>
   <script src="scripts/ptypo/prototypo-canvas.js"></script>
   <script src="scripts/lib.js"></script>
+
+  <link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet">
 </head>
 
 <body>
@@ -37,27 +39,8 @@
     <canvas id="canvas" style="display:none;"></canvas>
     <div id="loading">
       <div class="content">
-        <div>
-          G
-        </div>
-        <div>
-          N
-        </div>
-        <div>
-          I
-        </div>
-        <div>
-          D
-        </div>
-        <div>
-          A
-        </div>
-        <div>
-          O
-        </div>
-        <div>
-          L
-        </div>
+        <img src="images/prototypo-loading.svg" alt="prototypo logo" />
+        <p>Creating your experience</p>
       </div>
     </div>
 
@@ -116,16 +99,16 @@
                 <div class="block box smallpadding" id="sharing">
                   <ul>
                     <li id="facebook">
-                      <img src="images/facebook-logo.svg" alt=""> <span class="count"></span>
+                      <a href="#" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;" target="_blank"><img src="images/facebook-logo.svg" alt=""> <span class="count"></span></a>
                     </li>
                     <li id="twitter">
-                      <img src="images/twitter-logo.svg" alt=""> <span class="count"></span>
+                      <a href="#" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;" target="_blank"><img src="images/twitter-logo.svg" alt=""> <span class="count"></span></a>
                     </li>
                     <li id="googleplus">
-                      <img src="images/google-plus.svg" alt=""> <span class="count"></span>
+                      <a href="#" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;" target="_blank"><img src="images/google-plus.svg" alt=""> <span class="count"></span></a>
                     </li>
                     <li id="linkedin">
-                      <img src="images/linkedin-logo.svg" alt=""> <span class="count"></span>
+                      <a href="#" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;" target="_blank"><img src="images/linkedin-logo.svg" alt=""> <span class="count"></span></a>
                     </li>
                   </ul>
                 </div>
@@ -203,7 +186,7 @@
               </div>
               <div class="col-lg-7 col-sm-7 col-xs-6">
                 <div class="block box hastooltip" id="width">
-                  <span>nnnnnn</span>
+                  <span class="glyphs">nnnnnn</span>
                   <div class="slider-tooltip clearfix horizontal bottom">
                     <span class="arrow arrow-left"></span>
                     <span class="legend">Width</span>
