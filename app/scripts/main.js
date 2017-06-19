@@ -389,7 +389,7 @@ $(document).ready(function() {
     });
   } else {
     $('#loading img').hide();
-    $('#loading.small').text('Unfortunately, we are not supporting yout browser at this time. We are aware of the issue and we are working to fix this. Meanwhile, please visit this site using Google Chrome, Opera or Firefox to get the full interactive experience');
+    $('#loading.small').html('Unfortunately, we are not supporting yout browser at this time. We are aware of the issue and we are working to fix this. Meanwhile, please visit this site using Google Chrome, Opera or Firefox to get the full interactive experience');
   }
 
 
