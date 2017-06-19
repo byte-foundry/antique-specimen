@@ -181,7 +181,7 @@ $(document).ready(function() {
         Ptypo.createFont('gnft-serifs', 'font', data).then(function() {
           Ptypo['gnft-serifs'].subset = 'S';
 
-          var onMouseMove = function(e, isTouch = false) {
+          var onMouseMove = function(e, isTouch) {
             var elemWidth = $('#serifs').outerWidth();
             var elemHeight = $('#serifs').outerHeight();
             var x = (e.pageX || e.center.x) - $('#serifs').offset().left;
@@ -262,7 +262,7 @@ $(document).ready(function() {
       fontPromises.push(new Promise(function(resolve, reject) {
         Ptypo.createFont('gnft-bracketcurve', 'font', data).then(function() {
           Ptypo['gnft-bracketcurve'].subset = 'xyz';
-          var onMouseMove = function(e, isTouch = false) {
+          var onMouseMove = function(e, isTouch) {
             var elemWidth = $('#bracketcurve').outerWidth();
             var elemHeight = $('#bracketcurve').outerHeight();
             var x = (e.pageX || e.center.x) - $('#bracketcurve').offset().left;
@@ -389,7 +389,7 @@ $(document).ready(function() {
     });
   } else {
     $('#loading img').hide();
-    $('#loading.small').html('Unfortunately, we are not supporting yout browser at this time. We are aware of the issue and we are working to fix this. Meanwhile, please visit this site using Google Chrome, Opera or Firefox to get the full interactive experience');
+    $('#loading.small').html('Unfortunately, we are not supporting your browser at this time. We are aware of the issue and we are working to fix this. Meanwhile, please visit this site using Google Chrome, Opera or Firefox to get the full interactive experience');
   }
 
 
