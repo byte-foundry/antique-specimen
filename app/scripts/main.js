@@ -269,7 +269,6 @@ $(document).ready(function() {
             var y = (e.pageY || e.center.y) - $('#bracketcurve').offset().top;
             var percentX = (x / elemWidth) * 100;
             var percentY = (y / elemHeight) * 100;
-            console.log((e.pageY || e.center.y));
             Ptypo.changeParam(getValue(5, 100, percentX), 'serifCurve', 'gnft-bracketcurve');
             if (!isTouch) {
               Ptypo.changeParam(getValue(0, 100, percentY), 'serifHeight', 'gnft-bracketcurve');
@@ -350,7 +349,7 @@ $(document).ready(function() {
         if (index > techThickness.length - 1) {
           index = 0;
         }
-      }, 1000);
+      }, 1500);
 
 
       var altSet = false;
