@@ -262,8 +262,9 @@ a {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) perspective(1px);
-  line-height: 20vw;
-  min-height: 20vw;
+  line-height: 15rem;
+  min-height: 15rem;
+  user-select: text;
 }
 
 .container-fluid {
@@ -311,7 +312,7 @@ a {
     cursor: default;
 
     img {
-      width: 6rem;
+      width: 4rem;
       height: auto;
     }
 
@@ -324,12 +325,24 @@ a {
 #description {
   font-size: 2.45rem;
   padding: 4rem 6rem 3rem 5rem;
+  @media screen and (min-width: 1600px) {
+    font-size: 2.15vw;
+  }
 }
 
 #prototypoavailable {
   font-size: 2.1rem;
   padding: 3rem 0 4rem 4rem ;
+  min-height: 13rem;
   font-family: 'gnft-thickness2', 'gnft';
+  position: relative;
+  .content {
+    position: absolute;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+  }
 }
 
 #url {
@@ -451,6 +464,8 @@ a {
   font-size: 18rem;
   min-height: 24rem;
   font-family: 'gnft-aperture', 'gnft';
+  padding-top: 15rem;
+  padding-bottom: 15rem;
   @media screen and (max-width: 64em) {
     font-size: 12rem;
     min-height: 15rem;
@@ -465,7 +480,7 @@ a {
     font-family: 'gr', sans-serif;
     font-weight: normal;
     width: 6rem;
-    padding: 2.5rem 1rem;
+    padding: 2.6rem 1rem;
     transition: all .2s ease;
     transform: perspective(1px) rotate(30deg);
     &:hover {
@@ -611,11 +626,10 @@ a {
   overflow: hidden;
   font-family: 'gnft-width', 'gnft';
 
-  .glyphs {
-    position: absolute;
-    top: 50%;
+  .glyph {
+    left: 40px;
     transform: translateY(-50%);
-    line-height: 15vw;
+    line-height: 15rem;
   }
 }
 
@@ -700,17 +714,14 @@ a {
   overflow: hidden;
   font-family: 'gnft-curviness', 'gnft';
 
-  .glyphs {
+  .glyph {
     font-size: 19rem;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
   }
 }
 
 #commercial {
-  padding-top: 40px;
+  padding-top: 6rem;
+  padding-bottom: 6rem;
   font-size: 1.3rem;
   text-align: center;
 
@@ -724,7 +735,7 @@ a {
     margin-bottom: 0;
   }
   .cta {
-    margin-top: 2rem;
+    margin-top: 5rem;
   }
 }
 
@@ -745,9 +756,12 @@ a {
 
   p {
     margin: 30px;
+    a {
+      text-decoration: none;
+    }
   }
 
-  a {
+  .social a {
     color: $white;
     text-decoration: underline;
     &:visited {
