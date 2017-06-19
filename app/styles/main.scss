@@ -472,6 +472,9 @@ a {
     font-size: 12rem;
     min-height: 15rem;
   }
+  .glyph {
+    line-height: 0.7;
+  }
   .trynow {
     position: absolute;
     top: 2rem;
@@ -496,6 +499,11 @@ a {
   min-height: 35rem;
   background-image: linear-gradient( to bottom, $light-blue 0%, $light-blue 50%, $blue 50%, $blue 100% );
   font-family: 'gnft-serifs', 'gnft';
+
+  .glyph {
+    line-height: 0.8;
+  }
+
   @media screen and (max-width: 64em) {
     font-size: 21rem;
     min-height: 21rem;
@@ -526,6 +534,9 @@ a {
   font-size: 36rem;
   min-height: 26rem;
   font-family: 'gnft-thickness', 'gnft';
+  .glyph {
+    line-height: 0.3;
+  }
   @media screen and (max-width: 64em) {
     font-size: 21rem;
     min-height: 21rem;
@@ -601,7 +612,9 @@ a {
   text-align: center;
   font-family: 'gnft-alts', 'gnft';
   background-image: linear-gradient( to right, $blue 0%, $blue 50%, $light-blue 50%, $light-blue 100% );
-
+  .glyph {
+    line-height: 0.8;
+  }
   .alt-tooltip {
     text-transform: uppercase;
     position: absolute;
@@ -631,7 +644,7 @@ a {
   .glyph {
     left: 40px;
     transform: translateY(-50%);
-    line-height: 0.8;
+    line-height: 0.5;
   }
 }
 
@@ -649,6 +662,7 @@ a {
     top: 50%;
     left: 65%;
     transform: translate(-65%, -50%);
+    line-height: 0.7;
   }
 
   .legend {
@@ -706,6 +720,7 @@ a {
   .glyph {
     position: absolute;
     top: 50%;
+    line-height: 0.2;
     left: 50%;
     transform: translate(-50%, -50%);
   }
@@ -718,6 +733,7 @@ a {
 
   .glyph {
     font-size: 19rem;
+    line-height: 0.7;
   }
 }
 

@@ -21,12 +21,12 @@ jQuery(document).ready(function($) {
   }
 
   function getLinkedIn(page) {
-    var linkedinCount;
+    var linkedinCount = 0;
     $.getJSON('http://www.linkedin.com/countserv/count/share?url=' + page + '&callback=?', function(data) {
       if (data.count) {
-        linkedinCount = data.count;
-        $('#sharing #linkedin .count').html(linkedinCount || '0');
+        linkedinCount += data.count;
       }
+      $('#sharing #linkedin .count').html(linkedinCount);
     });
   }
 
