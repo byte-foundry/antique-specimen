@@ -181,7 +181,7 @@ $(document).ready(function() {
         Ptypo.createFont('gnft-serifs', 'font', data).then(function() {
           Ptypo['gnft-serifs'].subset = 'S';
 
-          var onMouseMove = function(e) {
+          var onMouseMove = function(e, isTouch = false) {
             var elemWidth = $('#serifs').outerWidth();
             var elemHeight = $('#serifs').outerHeight();
             var x = (e.pageX || e.center.x) - $('#serifs').offset().left;
@@ -200,12 +200,14 @@ $(document).ready(function() {
                 Ptypo.tween(0, 'serifRotate', 'gnft-serifs', 60, 0);
               }
             }
-            Ptypo.changeParam(getValue(10, 100, percentY), 'serifHeight', 'gnft-serifs');
+            if (!isTouch) {
+              Ptypo.changeParam(getValue(10, 100, percentY), 'serifHeight', 'gnft-serifs');
+            }
           }
 
           var hammertime = new Hammer($('#serifs').get(0));
           hammertime.on('pan', function(e) {
-            onMouseMove(e);
+            onMouseMove(e, true);
           });
 
 
@@ -260,20 +262,23 @@ $(document).ready(function() {
       fontPromises.push(new Promise(function(resolve, reject) {
         Ptypo.createFont('gnft-bracketcurve', 'font', data).then(function() {
           Ptypo['gnft-bracketcurve'].subset = 'xyz';
-          var onMouseMove = function(e) {
+          var onMouseMove = function(e, isTouch = false) {
             var elemWidth = $('#bracketcurve').outerWidth();
             var elemHeight = $('#bracketcurve').outerHeight();
             var x = (e.pageX || e.center.x) - $('#bracketcurve').offset().left;
             var y = (e.pageY || e.center.y) - $('#bracketcurve').offset().top;
             var percentX = (x / elemWidth) * 100;
             var percentY = (y / elemHeight) * 100;
+            console.log((e.pageY || e.center.y));
             Ptypo.changeParam(getValue(5, 100, percentX), 'serifHeight', 'gnft-bracketcurve');
-            Ptypo.changeParam(getValue(0, 100, percentY), 'serifCurve', 'gnft-bracketcurve');
+            if (!isTouch) {
+              Ptypo.changeParam(getValue(0, 100, percentY), 'serifCurve', 'gnft-bracketcurve');
+            }
           }
 
           var hammertime = new Hammer($('#bracketcurve').get(0));
           hammertime.on('pan', function(e) {
-            onMouseMove(e);
+            onMouseMove(e, true);
           });
 
 
