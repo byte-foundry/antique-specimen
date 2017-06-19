@@ -100,6 +100,10 @@ a {
   margin-top: 0;
   margin-bottom: 0.5rem;
 
+  @media screen and (max-width: 64em) {
+    bottom: 18px;
+  }
+
   &.arrow-left {
     left: 60px;
 
@@ -122,6 +126,9 @@ a {
 
   &.arrow-top {
     top: 33px;
+    @media screen and (max-width: 64em) {
+      top: 21px;
+    }
   }
 
   &::after,
@@ -316,23 +323,13 @@ a {
 
 #description {
   font-size: 2.45rem;
-  padding: 60px 90px 20px 80px;
+  padding: 4rem 6rem 3rem 5rem;
 }
 
 #prototypoavailable {
   font-size: 2.1rem;
-  padding: 60px 0 60px 60px;
-  width: 110%;
+  padding: 3rem 0 4rem 4rem ;
   font-family: 'gnft-thickness2', 'gnft';
-
-  .slider-tooltip {
-    left: 40%;
-    transform: translateX(-40%);
-  }
-
-  .arrow-right {
-    right: calc(60px + 10%);
-  }
 }
 
 #url {
@@ -371,7 +368,7 @@ a {
   font-family: 'gr', sans-serif;
   font-weight: bold;
   text-align: center;
-  padding: 35px;
+  padding: 3rem;
 
   span {
     position: absolute;
@@ -425,14 +422,26 @@ a {
   @media screen and (max-width: 64em) {
     ul {
       width: 100%;
+      display: block;
 
       li {
         position: relative;
         width: 20%;
         margin-left: 2.5%;
         margin-right: 2.5%;
+        margin-top: 0;
+        margin-bottom: 0;
+        padding: 0;
         display: inline;
         float: left;
+
+        &#linkedin {
+          margin-bottom: 0;
+        }
+
+        &#linkedin img {
+          margin-bottom: 0;
+        }
       }
     }
   }
@@ -448,15 +457,15 @@ a {
   }
   .trynow {
     position: absolute;
-    top: 40px;
-    right: 40px;
+    top: 2rem;
+    right: 2rem;
     border-radius: 50%;
     border: 2px solid $white;
-    font-size: 16px;
+    font-size: 1rem;
     font-family: 'gr', sans-serif;
     font-weight: normal;
-    width: 95px;
-    padding: 40px 15px;
+    width: 6rem;
+    padding: 2.5rem 1rem;
     transition: all .2s ease;
     transform: perspective(1px) rotate(30deg);
     &:hover {
@@ -474,7 +483,15 @@ a {
     font-size: 21rem;
     min-height: 21rem;
 
-    .vertical {
+    .arrow-left-vertical {
+      display: none;
+    }
+
+    .arrow-right-vertical {
+      display: none;
+    }
+
+    .slider-tooltip.vertical {
       display: none;
     }
   }
@@ -503,7 +520,6 @@ a {
   line-height: 1.6rem;
   height: 38rem;
   position: relative;
-  width: 105%;
 
   .content {
     position: absolute;
@@ -609,6 +625,8 @@ a {
   overflow: hidden;
   font-family: 'gnft-bracketcurve', 'gnft';
 
+
+
   .glyph {
     letter-spacing: 25px;
     position: absolute;
@@ -633,6 +651,29 @@ a {
     bottom: 40%;
     transform: rotate(-90deg) translateX(-40%);
   }
+
+  @media screen and (max-width: 64em) {
+    font-size: 16rem;
+    min-height: 21rem;
+    .arrow-left-vertical {
+      display: none;
+    }
+
+    .arrow-right-vertical {
+      display: none;
+    }
+
+    .slider-tooltip.vertical {
+      display: none;
+    }
+    .glyph {
+      letter-spacing: 25px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
 }
 
 #contrast {
@@ -640,6 +681,11 @@ a {
   min-height: 22rem;
   overflow: hidden;
   font-family: 'gnft-contrast', 'gnft';
+
+  @media screen and (max-width: 64em) {
+    font-size: 25rem;
+    min-height: 21rem;
+  }
 
   .glyph {
     position: absolute;
