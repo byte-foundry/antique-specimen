@@ -25,14 +25,14 @@ jQuery(document).ready(function($) {
     $.getJSON('http://www.linkedin.com/countserv/count/share?url=' + page + '&callback=?', function(data) {
       if (data.count) {
         linkedinCount = data.count;
-        $('#sharing #linkedin .count').html(linkedinCount);
+        $('#sharing #linkedin .count').html(linkedinCount || '0');
       }
     });
   }
 
-  var Url = 'https://prototypo.io';
+  var Url = 'https://spectral.prototypo.io';
   var UrlEncoded = encodeURIComponent(Url);
-  var title = encodeURIComponent('Spectral specimen');
+  var title = encodeURIComponent('Discover Spectral, the first parametric Google font by Prototypo!');
   getFBShares(Url);
   getTweets(Url);
   getLinkedIn(Url);
@@ -131,7 +131,7 @@ $(document).ready(function() {
             var elemWidth = $('#prototypoavailable').outerWidth();
             var x = (e.pageX || e.center.x) - $('#prototypoavailable').offset().left;
             var percentX = (x / elemWidth) * 100;
-            Ptypo.changeParam(getValue(10, 50, percentX), 'thickness', 'gnft-thickness2');
+            Ptypo.changeParam(getValue(20, 50, percentX), 'thickness', 'gnft-thickness2');
           }
           var hammertime = new Hammer($('#prototypoavailable').get(0));
           hammertime.on('pan', function(e) {
@@ -190,18 +190,18 @@ $(document).ready(function() {
             var percentY = (y / elemHeight) * 100;
 
             if (percentY > 50) {
-              Ptypo.changeParam(getValue(0, 1.8, percentX), 'serifRotate', 'gnft-serifs');
+              Ptypo.changeParam(getValue(-2, 0.8, percentX), 'serifRotate', 'gnft-serifs');
               if (Ptypo.getParam('serifWidth', 'gnft-serifs') !== 65) {
                 Ptypo.tween(65, 'serifWidth', 'gnft-serifs', 60, 0);
               }
             } else {
-              Ptypo.changeParam(getValue(1, 150, percentX), 'serifWidth', 'gnft-serifs');
+              Ptypo.changeParam(getValue(1, 50, percentX), 'serifWidth', 'gnft-serifs');
               if (Ptypo.getParam('serifRotate', 'gnft-serifs') !== 0) {
                 Ptypo.tween(0, 'serifRotate', 'gnft-serifs', 60, 0);
               }
             }
             if (!isTouch) {
-              Ptypo.changeParam(getValue(10, 100, percentY), 'serifHeight', 'gnft-serifs');
+              Ptypo.changeParam(getValue(40, 100, percentY), 'serifHeight', 'gnft-serifs');
             }
           }
 
@@ -270,9 +270,9 @@ $(document).ready(function() {
             var percentX = (x / elemWidth) * 100;
             var percentY = (y / elemHeight) * 100;
             console.log((e.pageY || e.center.y));
-            Ptypo.changeParam(getValue(5, 100, percentX), 'serifHeight', 'gnft-bracketcurve');
+            Ptypo.changeParam(getValue(5, 100, percentX), 'serifCurve', 'gnft-bracketcurve');
             if (!isTouch) {
-              Ptypo.changeParam(getValue(0, 100, percentY), 'serifCurve', 'gnft-bracketcurve');
+              Ptypo.changeParam(getValue(0, 100, percentY), 'serifHeight', 'gnft-bracketcurve');
             }
           }
 
@@ -388,8 +388,7 @@ $(document).ready(function() {
       });
     });
   } else {
-    $('#loading img').hide();
-    $('#loading.small').html('Unfortunately, we are not supporting your browser at this time. We are aware of the issue and we are working to fix this. Meanwhile, please visit this site using Google Chrome, Opera or Firefox to get the full interactive experience');
+    $('#loading .small').html('Unfortunately, we are not supporting your browser at this time. We are aware of the issue and we are working to fix this. Meanwhile, please visit this site using Google Chrome, Opera or Firefox to get the full interactive experience');
   }
 
 

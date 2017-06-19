@@ -262,7 +262,8 @@ a {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) perspective(1px);
-  line-height: 15rem;
+  line-height: 0.8;
+  display: inline-table;
   min-height: 15rem;
   user-select: text;
 }
@@ -340,6 +341,7 @@ a {
     position: absolute;
     top:50%;
     left: 50%;
+    padding-left: 50px;
     transform: translate(-50%, -50%);
     width: 90%;
   }
@@ -629,7 +631,7 @@ a {
   .glyph {
     left: 40px;
     transform: translateY(-50%);
-    line-height: 15rem;
+    line-height: 0.8;
   }
 }
 
