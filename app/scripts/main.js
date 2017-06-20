@@ -58,8 +58,6 @@ if (browserName === 'Trident' || browserName === 'IE') {
   $('#loading .small').html('Unfortunately, we are not supporting your browser at this time. We are aware of the issue and we are working to fix this. Meanwhile, please visit this site using Google Chrome, Opera or Firefox to get the full interactive experience');
 }
 $(document).ready(function() {
-
-
   if (browserName !== 'Trident' || browserName !== 'IE') {
     var fontPromises = [];
 
