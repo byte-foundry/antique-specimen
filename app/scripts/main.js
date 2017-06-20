@@ -48,11 +48,14 @@ function getValue(min, max, percent) {
 }
 
 var parser = new UAParser();
-
 // by default it takes ua string from current browser's window.navigator.userAgent
 
 
 $(document).ready(function() {
+
+  if (parser.getDevice().type) {
+    $('#mobileHelper').show();
+  }
 
   var browserName = parser.getBrowser().name;
   if (browserName !== 'Trident') {

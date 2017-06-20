@@ -321,6 +321,16 @@ a {
       font-size: 1.6rem;
     }
   }
+
+  #mobileHelper {
+    display: none;
+    margin-top: 5rem;
+    img {
+      width:15rem;
+      height: auto;
+    }
+    font-size: 1.6rem;
+  }
 }
 
 #description {
