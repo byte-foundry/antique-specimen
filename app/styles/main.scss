@@ -324,6 +324,7 @@ a {
 }
 
 #description {
+  position: absolute;
   font-size: 2.45rem;
   padding: 4rem 6rem 3rem 5rem;
   @media screen and (min-width: 1600px) {
@@ -395,6 +396,8 @@ a {
 }
 
 #sharing {
+  position: absolute;
+  width: 100%;
   ul {
     list-style-type: none;
     margin: 0;
@@ -495,6 +498,9 @@ a {
 }
 
 #serifs {
+  position: absolute;
+  width: 100%;
+  height: 100%;
   font-size: 35rem;
   min-height: 35rem;
   background-image: linear-gradient( to bottom, $light-blue 0%, $light-blue 50%, $blue 50%, $blue 100% );
@@ -531,6 +537,9 @@ a {
 }
 
 #thickness {
+  position: absolute;
+  width: 100%;
+  height: 100%;
   font-size: 36rem;
   min-height: 26rem;
   font-family: 'gnft-thickness', 'gnft';
@@ -707,6 +716,9 @@ a {
 }
 
 #contrast {
+  position: absolute;
+  width: 100%;
+  height: 100%;
   font-size: 70rem;
   min-height: 22rem;
   overflow: hidden;

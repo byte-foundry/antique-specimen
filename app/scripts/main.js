@@ -55,7 +55,7 @@ var parser = new UAParser();
 $(document).ready(function() {
 
   var browserName = parser.getBrowser().name;
-  if (browserName !== 'Trident' && browserName !== 'Edge') {
+  if (browserName !== 'Trident') {
     var fontPromises = [];
 
     var myHeaders = new Headers();
