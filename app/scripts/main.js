@@ -49,16 +49,18 @@ function getValue(min, max, percent) {
 
 var parser = new UAParser();
 // by default it takes ua string from current browser's window.navigator.userAgent
+if (parser.getDevice().type) {
+  $('#mobileHelper').show();
+}
 
-
+var browserName = parser.getBrowser().name;
+if (browserName === 'Trident' || browserName === 'IE') {
+  $('#loading .small').html('Unfortunately, we are not supporting your browser at this time. We are aware of the issue and we are working to fix this. Meanwhile, please visit this site using Google Chrome, Opera or Firefox to get the full interactive experience');
+}
 $(document).ready(function() {
 
-  if (parser.getDevice().type) {
-    $('#mobileHelper').show();
-  }
 
-  var browserName = parser.getBrowser().name;
-  if (browserName !== 'Trident') {
+  if (browserName !== 'Trident' || browserName !== 'IE') {
     var fontPromises = [];
 
     var myHeaders = new Headers();
