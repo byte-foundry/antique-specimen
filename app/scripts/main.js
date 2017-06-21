@@ -32,14 +32,15 @@ jQuery(document).ready(function($) {
 
   var Url = 'https://spectral.prototypo.io';
   var UrlEncoded = encodeURIComponent(Url);
-  var title = encodeURIComponent('Discover Spectral, the first parametric Google font by Prototypo!');
+  var titleTwitter = encodeURIComponent('Discover Spectral, the first parametric Google font by @prototypoApp!');
+  var titleLinkedin = encodeURIComponent('Discover Spectral, the first parametric Google font by @Prototypo!');
   getFBShares(Url);
   getTweets(Url);
   getLinkedIn(Url);
   $('#facebook a').attr('href', 'http://www.facebook.com/share.php?u=' + UrlEncoded);
-  $('#twitter a').attr('href', 'http://twitter.com/home?status=' + title + ' ' + UrlEncoded);
+  $('#twitter a').attr('href', 'http://twitter.com/home?status=' + titleTwitter + ' ' + UrlEncoded);
   $('#googleplus a').attr('href', 'https://plus.google.com/share?url=' + UrlEncoded);
-  $('#linkedin a').attr('href', 'http://www.linkedin.com/shareArticle?mini=true&url=' + UrlEncoded + '&title=' + title);
+  $('#linkedin a').attr('href', 'http://www.linkedin.com/shareArticle?mini=true&url=' + UrlEncoded + '&title=' + titleLinkedin);
 });
 
 
