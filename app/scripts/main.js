@@ -335,24 +335,40 @@ $(document).ready(function() {
       function getNextIndex(index) {
         return techThickness[index % 9];
       };
-      setInterval(function() {
-        $('#technology .paragraph-1').attr('class', 'paragraph-1');
-        $('#technology .paragraph-1').addClass('gfnt-' + getNextIndex(index));
-        $('#technology .paragraph-2').attr('class', 'paragraph-2');
-        $('#technology .paragraph-2').addClass('gfnt-' + getNextIndex(index + 1));
-        $('#technology .paragraph-3').attr('class', 'paragraph-3');
-        $('#technology .paragraph-3').addClass('gfnt-' + getNextIndex(index + 2));
-        $('#technology .paragraph-4').attr('class', 'paragraph-4');
-        $('#technology .paragraph-4').addClass('gfnt-' + getNextIndex(index + 3));
-        $('#technology .paragraph-5').attr('class', 'paragraph-5');
-        $('#technology .paragraph-5').addClass('gfnt-' + getNextIndex(index + 4));
-        $('#technology .paragraph-6').attr('class', 'paragraph-6');
-        $('#technology .paragraph-6').addClass('gfnt-' + getNextIndex(index + 5));
-        index++;
-        if (index > techThickness.length - 1) {
-          index = 0;
-        }
-      }, 1500);
+
+
+      function createTechInterval(duration){
+        return setInterval(function() {
+          $('#technology .paragraph-1').attr('class', 'paragraph-1');
+          $('#technology .paragraph-1').addClass('gfnt-' + getNextIndex(index));
+          $('#technology .paragraph-2').attr('class', 'paragraph-2');
+          $('#technology .paragraph-2').addClass('gfnt-' + getNextIndex(index + 1));
+          $('#technology .paragraph-3').attr('class', 'paragraph-3');
+          $('#technology .paragraph-3').addClass('gfnt-' + getNextIndex(index + 2));
+          $('#technology .paragraph-4').attr('class', 'paragraph-4');
+          $('#technology .paragraph-4').addClass('gfnt-' + getNextIndex(index + 3));
+          $('#technology .paragraph-5').attr('class', 'paragraph-5');
+          $('#technology .paragraph-5').addClass('gfnt-' + getNextIndex(index + 4));
+          $('#technology .paragraph-6').attr('class', 'paragraph-6');
+          $('#technology .paragraph-6').addClass('gfnt-' + getNextIndex(index + 5));
+          index++;
+          if (index > techThickness.length - 1) {
+            index = 0;
+          }
+        }, duration);
+      }
+
+      var techInterval = createTechInterval(3000);
+
+      $('#technology').mouseleave(function(e) {
+        clearInterval(techInterval);
+        techInterval = createTechInterval(3000);
+      });
+      $('#technology').mouseenter(function(e) {
+        clearInterval(techInterval);
+        techInterval = createTechInterval(100);
+      });
+
 
 
       var altSet = false;
