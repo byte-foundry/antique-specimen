@@ -2,7 +2,7 @@
 jQuery(document).ready(function($) {
   function getFBShares(page) {
     var shares;
-    $.getJSON('http://graph.facebook.com/?ids=' + page, function(data) {
+    $.getJSON('https://graph.facebook.com/?ids=' + page, function(data) {
       if (data[page].share) {
         shares = data[page].share.share_count;
         $('#sharing #facebook .count').html(shares);
@@ -12,7 +12,7 @@ jQuery(document).ready(function($) {
 
   function getTweets(page) {
     var tweets;
-    $.getJSON('http://public.newsharecounts.com/count.json?url=' + page + '&callback=?', function(data) {
+    $.getJSON('https://public.newsharecounts.com/count.json?url=' + page + '&callback=?', function(data) {
       if (data) {
         tweets = data.count;
         $('#sharing #twitter .count').html(tweets || '0');
@@ -22,7 +22,7 @@ jQuery(document).ready(function($) {
 
   function getLinkedIn(page) {
     var linkedinCount = 0;
-    $.getJSON('http://www.linkedin.com/countserv/count/share?url=' + page + '&callback=?', function(data) {
+    $.getJSON('https://www.linkedin.com/countserv/count/share?url=' + page + '&callback=?', function(data) {
       if (data.count) {
         linkedinCount += data.count;
       }
