@@ -398,10 +398,10 @@ $(document).ready(function() {
       Promise.all(fontPromises).then(function() {
         setTimeout(function () {
           $('#loading').addClass('fade');
+            $('body').removeClass('loading');
           setTimeout(function () {
             $('#loading').hide();
-            $('body').removeClass('loading');
-          }, 450);
+          }, 800);
         }, 100);
       });
     });
