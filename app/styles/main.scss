@@ -89,14 +89,14 @@ a {
     background: $blue;
 
     &:hover {
-      background: mix(black, $blue , 5%);
+      background: mix(black, $blue , 4%);
 
       .legend {
-        background: mix(black, $blue , 5%);
+        background: mix(black, $blue , 4%);
       }
 
       .vertical .legend {
-        background-image: linear-gradient( to left, mix(black, $light-blue , 5%) 0%, mix(black, $light-blue , 5%) 65.5%, mix(black, $blue , 5%) 50%, mix(black, $blue , 5%) 100% );
+        background-image: linear-gradient( to left, mix(black, $light-blue , 4%) 0%, mix(black, $light-blue , 4%) 65.5%, mix(black, $blue , 4%) 50%, mix(black, $blue , 4%) 100% );
       }
     }
   }
@@ -563,7 +563,7 @@ a {
   transition: background-color 0.25s ease;
 
   &:hover {
-    background-image: linear-gradient( to bottom, mix(black, $light-blue , 5%) 0%, mix(black, $light-blue , 5%) 50%, mix(black, $blue , 5%) 50%, mix(black, $blue , 5%) 100% );
+    background-image: linear-gradient( to bottom, mix(black, $light-blue , 4%) 0%, mix(black, $light-blue , 4%) 50%, mix(black, $blue , 4%) 50%, mix(black, $blue , 4%) 100% );
   }
 
   .glyph {
@@ -684,7 +684,7 @@ a {
   background-image: linear-gradient( to right, $blue 0%, $blue 50%, $light-blue 50%, $light-blue 100% );
 
   &:hover {
-    background-image: linear-gradient( to right, mix(black, $blue, 5%) 0%, mix(black, $blue, 5%) 50%, mix(black, $light-blue, 5%) 50%, mix(black, $light-blue, 5%) 100% );
+    background-image: linear-gradient( to right, mix(black, $blue, 4%) 0%, mix(black, $blue, 4%) 50%, mix(black, $light-blue, 4%) 50%, mix(black, $light-blue, 4%) 100% );
   }
 
   .glyph {
@@ -765,7 +765,7 @@ a {
   &:hover {
     .slider-tooltip {
       .legend {
-        background: mix(black, $blue, 5%);
+        background: mix(black, $blue, 4%);
       }
     }
   }
