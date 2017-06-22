@@ -23,7 +23,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 
   &.loading {
-    overflow: hidden;
+    overflow: hidden!important;
     border: none;
 
     .page {
@@ -319,6 +319,12 @@ a {
   left: 0;
   background-color: $blue;
   z-index: 2;
+  opacity: 1;
+  transition: opacity .5s ease;
+
+  &.fade {
+    opacity: 0;
+  }
 
   .content {
     position: absolute;

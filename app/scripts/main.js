@@ -396,8 +396,13 @@ $(document).ready(function() {
       }));
 
       Promise.all(fontPromises).then(function() {
-        $('#loading').hide();
-        $('body').removeClass('loading');
+        setTimeout(function () {
+          $('#loading').addClass('fade');
+          setTimeout(function () {
+            $('#loading').hide();
+            $('body').removeClass('loading');
+          }, 450);
+        }, 100);
       });
     });
   } else {
