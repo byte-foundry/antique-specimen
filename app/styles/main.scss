@@ -57,8 +57,9 @@ a {
   color: inherit;
   text-decoration: none;
   transition: opacity 0.1s ease;
+
   &:hover {
-    opacity: .8;
+    opacity: 0.8;
   }
 }
 
@@ -84,13 +85,18 @@ a {
 
   &.hastooltip {
     padding-bottom: 3.5rem;
-    transition: background-color .3s ease;
+    transition: background-color 0.3s ease;
     background: $blue;
 
     &:hover {
       background: mix(black, $blue , 5%);
+
       .legend {
         background: mix(black, $blue , 5%);
+      }
+
+      .vertical .legend {
+        background-image: linear-gradient( to left, mix(black, $light-blue , 5%) 0%, mix(black, $light-blue , 5%) 65.5%, mix(black, $blue , 5%) 50%, mix(black, $blue , 5%) 100% );
       }
     }
   }
@@ -112,7 +118,6 @@ a {
   transition: all 0.2s;
   margin-top: 0;
   margin-bottom: 0.5rem;
-
   @media screen and (max-width: 64em) {
     bottom: 18px;
   }
@@ -225,7 +230,7 @@ a {
     letter-spacing: 0.05em;
     background: $blue;
     font-family: 'gr', sans-serif;
-    transition: background-color .3s ease;
+    transition: background-color 0.3s ease;
   }
 
   &.bottom {
@@ -339,8 +344,9 @@ a {
   #mobileHelper {
     display: none;
     margin-top: 5rem;
+
     img {
-      width:15rem;
+      width: 15rem;
       height: auto;
     }
     font-size: 1.6rem;
@@ -361,13 +367,14 @@ a {
 
 #prototypoavailable {
   font-size: 2.1rem;
-  padding: 3rem 0 4rem 4rem ;
+  padding: 3rem 0 4rem 4rem;
   min-height: 13rem;
   font-family: 'gnft-thickness2', 'gnft';
   position: relative;
+
   .content {
     position: absolute;
-    top:50%;
+    top: 50%;
     left: 50%;
     padding-left: 50px;
     transform: translate(-50%, -50%);
@@ -425,6 +432,7 @@ a {
 #sharing {
   position: absolute;
   width: 100%;
+
   ul {
     list-style-type: none;
     margin: 0;
@@ -465,7 +473,6 @@ a {
     }
   }
   @media screen and (max-width: 64em) {
-
     position: relative;
     padding-top: 15px;
     padding-bottom: 2px;
@@ -477,16 +484,13 @@ a {
       li {
         position: relative;
         width: 20%;
-        margin-left: 2.5%;
-        margin-right: 2.5%;
-        margin-top: 0;
-        margin-bottom: 0;
+        margin: 0 2.5%;
         padding: 0;
         display: inline;
         float: left;
 
         a img {
-          margin-bottom:-5px;
+          margin-bottom: -5px;
         }
 
         #linkedin {
@@ -511,14 +515,17 @@ a {
     font-size: 12rem;
     min-height: 12rem;
     padding-top: 18rem;
-    padding-bottom: 0rem;
+    padding-bottom: 0;
+
     .glyph {
       min-height: 10rem;
     }
   }
+
   .glyph {
     line-height: 0.7;
   }
+
   .trynow {
     position: absolute;
     top: 2rem;
@@ -530,8 +537,9 @@ a {
     font-weight: normal;
     width: 6rem;
     padding: 2.6rem 1rem;
-    transition: all .2s ease;
+    transition: all 0.2s ease;
     transform: perspective(1px) rotate(30deg);
+
     &:hover {
       transform: perspective(1px) scale3d(1.1, 1.1, 1.1) rotate(30deg);
     }
@@ -546,7 +554,8 @@ a {
   min-height: 35rem;
   background-image: linear-gradient( to bottom, $light-blue 0%, $light-blue 50%, $blue 50%, $blue 100% );
   font-family: 'gnft-serifs', 'gnft';
-  transition: background-color .25s ease;
+  transition: background-color 0.25s ease;
+
   &:hover {
     background-image: linear-gradient( to bottom, mix(black, $light-blue , 5%) 0%, mix(black, $light-blue , 5%) 50%, mix(black, $blue , 5%) 50%, mix(black, $blue , 5%) 100% );
   }
@@ -554,7 +563,6 @@ a {
   .glyph {
     line-height: 0.8;
   }
-
   @media screen and (max-width: 64em) {
     font-size: 21rem;
     min-height: 21rem;
@@ -589,6 +597,7 @@ a {
   font-size: 36rem;
   min-height: 26rem;
   font-family: 'gnft-thickness', 'gnft';
+
   .glyph {
     line-height: 0.3;
   }
@@ -611,7 +620,6 @@ a {
     left: 0;
     width: 80%;
     padding: 30px 40px;
-    padding-right: 40px;
     word-break: keep-all;
   }
 
@@ -668,9 +676,15 @@ a {
   text-align: center;
   font-family: 'gnft-alts', 'gnft';
   background-image: linear-gradient( to right, $blue 0%, $blue 50%, $light-blue 50%, $light-blue 100% );
+
+  &:hover {
+    background-image: linear-gradient( to right, mix(black, $blue, 5%) 0%, mix(black, $blue, 5%) 50%, mix(black, $light-blue, 5%) 50%, mix(black, $light-blue, 5%) 100% );
+  }
+
   .glyph {
     line-height: 0.8;
   }
+
   .alt-tooltip {
     text-transform: uppercase;
     position: absolute;
@@ -702,17 +716,19 @@ a {
     transform: translateY(-50%);
     line-height: 0.5;
   }
-
   @media screen and (max-width: 64em) {
     .glyph {
       left: 0;
     }
+
     .arrow {
       width: 40%;
     }
+
     .arrow-right {
       right: 30px;
     }
+
     .arrow-left {
       left: 30px;
     }
@@ -725,8 +741,6 @@ a {
   overflow: hidden;
   font-family: 'gnft-bracketcurve', 'gnft';
 
-
-
   .glyph {
     letter-spacing: 25px;
     position: absolute;
@@ -736,8 +750,18 @@ a {
     line-height: 0.7;
   }
 
-  .legend {
-    background: $blue;
+  .slider-tooltip {
+    .legend {
+      background: $blue;
+    }
+  }
+
+  &:hover {
+    .slider-tooltip {
+      .legend {
+        background: mix(black, $blue, 5%);
+      }
+    }
   }
 
   .arrow-left-vertical {
@@ -748,14 +772,14 @@ a {
     bottom: 70px;
   }
 
-  .slider-tooltip.vertical{
+  .slider-tooltip.vertical {
     bottom: 40%;
     transform: rotate(-90deg) translateX(-40%);
   }
-
   @media screen and (max-width: 64em) {
     font-size: 16rem;
     min-height: 21rem;
+
     .arrow-left-vertical {
       display: none;
     }
@@ -767,6 +791,7 @@ a {
     .slider-tooltip.vertical {
       display: none;
     }
+
     .glyph {
       letter-spacing: 25px;
       position: absolute;
@@ -794,11 +819,11 @@ a {
     left: 50%;
     transform: translate(-50%, -50%);
   }
-
   @media screen and (max-width: 64em) {
     position: relative;
     font-size: 25rem;
     min-height: 21rem;
+
     .glyph {
       line-height: 0.5;
     }
@@ -828,9 +853,9 @@ a {
 
   p {
     max-width: 800px;
-    margin: 10px auto;
-    margin-bottom: 0;
+    margin: 10px auto 0;
   }
+
   .cta {
     margin-top: 5rem;
   }
@@ -853,6 +878,7 @@ a {
 
   p {
     margin: 30px;
+
     a {
       text-decoration: none;
     }
@@ -861,6 +887,7 @@ a {
   .social a {
     color: $white;
     text-decoration: underline;
+
     &:visited {
       color: $white;
     }
