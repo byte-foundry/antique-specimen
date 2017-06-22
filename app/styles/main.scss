@@ -77,11 +77,6 @@ a {
   box-sizing: border-box;
   overflow: hidden;
   padding: 2rem;
-  transition: background-color .1s ease;
-
-  &:hover {
-    background-color: mix($blue, $black, 25%);
-  }
 
   &.smallpadding {
     padding: 1vw;
@@ -89,6 +84,15 @@ a {
 
   &.hastooltip {
     padding-bottom: 3.5rem;
+    transition: background-color .3s ease;
+    background: $blue;
+
+    &:hover {
+      background: mix(black, $blue , 5%);
+      .legend {
+        background: mix(black, $blue , 5%);
+      }
+    }
   }
 }
 
@@ -221,6 +225,7 @@ a {
     letter-spacing: 0.05em;
     background: $blue;
     font-family: 'gr', sans-serif;
+    transition: background-color .3s ease;
   }
 
   &.bottom {
@@ -541,6 +546,10 @@ a {
   min-height: 35rem;
   background-image: linear-gradient( to bottom, $light-blue 0%, $light-blue 50%, $blue 50%, $blue 100% );
   font-family: 'gnft-serifs', 'gnft';
+  transition: background-color .25s ease;
+  &:hover {
+    background-image: linear-gradient( to bottom, mix(black, $light-blue , 5%) 0%, mix(black, $light-blue , 5%) 50%, mix(black, $blue , 5%) 50%, mix(black, $blue , 5%) 100% );
+  }
 
   .glyph {
     line-height: 0.8;
