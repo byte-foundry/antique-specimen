@@ -184,6 +184,7 @@ $(document).ready(function() {
       fontPromises.push(new Promise(function(resolve, reject) {
         Ptypo.createFont('gnft-serifs', 'font', data).then(function() {
           Ptypo['gnft-serifs'].subset = 'S';
+          Ptypo.changeParam(5, 'serifCurve', 'gnft-serifs');
 
           var onMouseMove = function(e, isTouch) {
             var elemWidth = $('#serifs').outerWidth();
@@ -192,20 +193,13 @@ $(document).ready(function() {
             var y = (e.pageY || e.center.y) - $('#serifs').offset().top;
             var percentX = (x / elemWidth) * 100;
             var percentY = (y / elemHeight) * 100;
-
             if (percentY > 50) {
               Ptypo.changeParam(getValue(-2, 0.8, percentX), 'serifRotate', 'gnft-serifs');
-              if (Ptypo.getParam('serifWidth', 'gnft-serifs') !== 65) {
-                Ptypo.tween(65, 'serifWidth', 'gnft-serifs', 60, 0);
-              }
             } else {
-              Ptypo.changeParam(getValue(1, 50, percentX), 'serifWidth', 'gnft-serifs');
-              if (Ptypo.getParam('serifRotate', 'gnft-serifs') !== 0) {
-                Ptypo.tween(0, 'serifRotate', 'gnft-serifs', 60, 0);
-              }
+              Ptypo.changeParam(getValue(45, 110, percentX), 'serifHeight', 'gnft-serifs');
             }
             if (!isTouch) {
-              Ptypo.changeParam(getValue(40, 100, percentY), 'serifHeight', 'gnft-serifs');
+              Ptypo.changeParam(getValue(10, 50, percentY), 'serifWidth', 'gnft-serifs');
             }
           }
 

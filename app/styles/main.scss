@@ -77,6 +77,11 @@ a {
   box-sizing: border-box;
   overflow: hidden;
   padding: 2rem;
+  transition: background-color .1s ease;
+
+  &:hover {
+    background-color: mix($blue, $black, 25%);
+  }
 
   &.smallpadding {
     padding: 1vw;
