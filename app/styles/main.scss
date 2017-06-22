@@ -78,6 +78,7 @@ a {
   box-sizing: border-box;
   overflow: hidden;
   padding: 2rem;
+  cursor: move;
 
   &.smallpadding {
     padding: 1vw;
@@ -87,6 +88,7 @@ a {
     padding-bottom: 3.5rem;
     transition: background-color 0.3s ease;
     background: $blue;
+    user-select: none;
 
     &:hover {
       background: mix(black, $blue , 4%);
@@ -97,6 +99,10 @@ a {
 
       .vertical .legend {
         background-image: linear-gradient( to left, mix(black, $light-blue , 4%) 0%, mix(black, $light-blue , 4%) 65.5%, mix(black, $blue , 4%) 50%, mix(black, $blue , 4%) 100% );
+      }
+
+      .top .legend {
+        background: mix(black, $light-blue , 4%);
       }
     }
   }
@@ -284,7 +290,7 @@ a {
   line-height: 0.8;
   display: inline-table;
   min-height: 15rem;
-  user-select: text;
+  user-select: none;
 }
 
 .container-fluid {
@@ -363,27 +369,29 @@ a {
   position: absolute;
   font-size: 2.45rem;
   padding: 2rem 3rem 3rem 3rem;
-  @media screen and (min-width: 1600px) {
-    font-size: 2.15vw;
-  }
-  @media screen and (max-width: 64em) {
+  @media screen and (max-width: 100em) {
     position: relative;
+    font-size: 2.2rem;
+  }
+  @media screen and (max-width: 75em) {
+    position: relative;
+    font-size: 1.5rem;
   }
 }
 
 #prototypoavailable {
   font-size: 2.1rem;
-  padding: 3rem 0 4rem 4rem;
-  min-height: 13rem;
+  padding: 2rem 0 5rem 4rem;
+  min-height: 11rem;
   font-family: 'gnft-thickness2', 'gnft';
   position: relative;
 
   .content {
     position: absolute;
-    top: 50%;
+    top: 40%;
     left: 50%;
     padding-left: 50px;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -40%);
     width: 90%;
   }
 }
@@ -569,7 +577,7 @@ a {
   .glyph {
     line-height: 0.8;
   }
-  @media screen and (max-width: 64em) {
+  @media screen and (max-width: 1200px) {
     font-size: 21rem;
     min-height: 21rem;
     position: relative;
@@ -619,6 +627,16 @@ a {
   line-height: 1.2;
   height: 38rem;
   position: relative;
+
+  @media screen and (max-width: 1600px) {
+    font-size: 1.5rem;
+  }
+  @media screen and (max-width: 1450px) {
+    font-size: 1.4em;
+  }
+  @media screen and (max-width: 1250px) {
+    font-size: 1.3em;
+  }
 
   .content {
     position: absolute;
@@ -782,7 +800,7 @@ a {
     bottom: 40%;
     transform: rotate(-90deg) translateX(-40%);
   }
-  @media screen and (max-width: 64em) {
+  @media screen and (max-width: 1200px) {
     font-size: 16rem;
     min-height: 21rem;
 
@@ -803,8 +821,8 @@ a {
       position: absolute;
       top: 50%;
       line-height: 0.9;
-      left: 56%;
-      transform: translate(-55%, -50%);
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
   }
 }
@@ -825,7 +843,7 @@ a {
     left: 50%;
     transform: translate(-50%, -50%);
   }
-  @media screen and (max-width: 64em) {
+  @media screen and (max-width: 1200px) {
     position: relative;
     font-size: 25rem;
     min-height: 21rem;
@@ -844,6 +862,13 @@ a {
   .glyph {
     font-size: 19rem;
     line-height: 0.7;
+  }
+
+  @media screen and (max-width: 1200px) {
+
+    .glyph {
+      line-height: 1.2;
+    }
   }
 }
 
