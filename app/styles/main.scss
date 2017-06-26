@@ -78,8 +78,6 @@ a {
   box-sizing: border-box;
   overflow: hidden;
   padding: 2rem;
-  cursor: move;
-
   &.smallpadding {
     padding: 1vw;
   }
@@ -89,6 +87,7 @@ a {
     transition: background-color 0.3s ease;
     background: $blue;
     user-select: none;
+    cursor: move;
 
     &:hover {
       background: mix(black, $blue , 4%);
@@ -700,6 +699,7 @@ a {
   text-align: center;
   font-family: 'gnft-alts', 'gnft';
   background-image: linear-gradient( to right, $blue 0%, $blue 50%, $light-blue 50%, $light-blue 100% );
+  cursor: move;
 
   &:hover {
     background-image: linear-gradient( to right, mix(black, $blue, 4%) 0%, mix(black, $blue, 4%) 50%, mix(black, $light-blue, 4%) 50%, mix(black, $light-blue, 4%) 100% );
@@ -877,6 +877,7 @@ a {
   padding-bottom: 6rem;
   font-size: 1.3rem;
   text-align: center;
+  border-bottom: 0;
 
   h1 {
     margin-bottom: 40px;
@@ -887,19 +888,41 @@ a {
     margin: 10px auto 0;
   }
 
+  img {
+    display: block;
+    max-width: 800px;
+    height: auto;
+    margin: 5rem auto;
+    box-shadow: 15px 15px 30px 10px rgba(0, 0, 0, 0.15);
+    transition: all .2s ease;
+    @media screen and (max-width: 850px) {
+      width: 90%;
+    }
+    &:hover {
+      box-shadow: 15px 15px 30px 10px rgba(0, 0, 0, 0.15);
+      transform: perspective(1px) scale(1.005);
+      cursor: pointer;
+    }
+
+  }
+
   .cta {
     margin-top: 5rem;
+    &.tryapp {
+      margin-top:  2rem;
+    }
   }
 }
 
 #footer {
-  font-size: 3.5rem;
+  font-size: 2.5rem;
   text-align: center;
   padding-top: 70px;
+  padding-bottom: 140px;
 
   img {
     padding: 10px;
-    height: 80px;
+    height: 40px;
     width: auto;
   }
 
