@@ -1,4 +1,4 @@
-/****** Social Sharing **/
+/** Social Sharing **/
 jQuery(document).ready(function($) {
   function getFBShares(page) {
     var shares;
@@ -43,11 +43,12 @@ jQuery(document).ready(function($) {
   $('#linkedin a').attr('href', 'http://www.linkedin.com/shareArticle?mini=true&url=' + UrlEncoded + '&title=' + titleLinkedin);
 });
 
-
+/** Utilities **/
 function getValue(min, max, percent) {
   return ((percent / 100) * (max - min)) + min;
 }
 
+/** Browser checking **/
 var parser = new UAParser();
 // by default it takes ua string from current browser's window.navigator.userAgent
 if (parser.getDevice().type) {
@@ -58,341 +59,206 @@ var browserName = parser.getBrowser().name;
 if (browserName === 'Trident' || browserName === 'IE') {
   $('#loading .small').html('Unfortunately, we are not supporting your browser at this time. We are aware of the issue and we are working to fix this. Meanwhile, please visit this site using Google Chrome, Opera or Firefox to get the full interactive experience');
 }
+
+/** Modal management **/
+var Modal = (function() {
+
+    var trigger = $qsa('.modal__trigger'); // what you click to activate the modal
+    var modals = $qsa('.modal'); // the entire modal (takes up entire window)
+    var modalsbg = $qsa('.modal__bg'); // the entire modal (takes up entire window)
+    var content = $qsa('.modal__content'); // the inner content of the modal
+    var closers = $qsa('.modal__close'); // an element used to close the modal
+    var w = window;
+    var isOpen = false;
+    var contentDelay = 0; // duration after you click the button and wait for the content to show
+    var len = trigger.length;
+
+    // make it easier for yourself by not having to type as much to select an element
+    function $qsa(el) {
+      return document.querySelectorAll(el);
+    }
+
+    var getId = function(event) {
+
+      event.preventDefault();
+      var self = this;
+      // get the value of the data-modal attribute from the button
+      var modalId = self.dataset.modal;
+      var len = modalId.length;
+      // remove the '#' from the string
+      var modalIdTrimmed = modalId.substring(1, len);
+      // select the modal we want to activate
+      var modal = document.getElementById(modalIdTrimmed);
+      // execute function that creates the temporary expanding div
+      makeDiv(self, modal);
+    };
+
+    var makeDiv = function(self, modal) {
+
+      var fakediv = document.getElementById('modal__temp');
+
+      /**
+       * if there isn't a 'fakediv', create one and append it to the button that was
+       * clicked. after that execute the function 'moveTrig' which handles the animations.
+       */
+
+      if (fakediv === null) {
+        var div = document.createElement('div');
+        div.id = 'modal__temp';
+        self.appendChild(div);
+        moveTrig(self, modal, div);
+      }
+    };
+
+    var moveTrig = function(trig, modal, div) {
+      var trigProps = trig.getBoundingClientRect();
+      var m = modal;
+      var mProps = m.querySelector('.modal__content').getBoundingClientRect();
+      var transX, transY, scaleX, scaleY;
+      var xc = w.innerWidth / 2;
+      var yc = w.innerHeight / 2;
+
+      // this class increases z-index value so the button goes overtop the other buttons
+      trig.classList.add('modal__trigger--active');
+
+      // these values are used for scale the temporary div to the same size as the modal
+      scaleX = mProps.width / trigProps.width;
+      scaleY = mProps.height / trigProps.height;
+
+      scaleX = scaleX.toFixed(3); // round to 3 decimal places
+      scaleY = scaleY.toFixed(3);
+
+
+      // these values are used to move the button to the center of the window
+      transX = Math.round(xc - trigProps.left - trigProps.width / 2);
+      transY = Math.round(yc - trigProps.top - trigProps.height / 2);
+
+      // if the modal is aligned to the top then move the button to the center-y of the modal instead of the window
+      if (m.classList.contains('modal--align-top')) {
+        transY = Math.round(mProps.height / 2 + mProps.top - trigProps.top - trigProps.height / 2);
+      }
+
+      window.requestAnimationFrame(function() {
+        open(m, div);
+      });
+
+    };
+
+    var open = function(m, div) {
+
+      if (!isOpen) {
+        // select the content inside the modal
+        var content = m.querySelector('.modal__content');
+        // reveal the modal
+        m.classList.add('modal--active');
+        // reveal the modal content
+        content.classList.add('modal__content--active');
+
+        /**
+         * when the modal content is finished transitioning, fadeout the temporary
+         * expanding div so when the window resizes it isn't visible ( it doesn't
+         * move with the window).
+         */
+
+        content.addEventListener('transitionend', hideDiv, false);
+
+        isOpen = true;
+      }
+
+      function hideDiv() {
+        // fadeout div so that it can't be seen when the window is resized
+        div.style.opacity = '0';
+        content.removeEventListener('transitionend', hideDiv, false);
+      }
+    };
+
+    var close = function(event) {
+
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      var target = event.target;
+      var div = document.getElementById('modal__temp');
+
+      /**
+       * make sure the modal__bg or modal__close was clicked, we don't want to be able to click
+       * inside the modal and have it close.
+       */
+
+      if (isOpen && target.classList.contains('modal__bg') || target.classList.contains('modal__close')) {
+
+        // make the hidden div visible again and remove the transforms so it scales back to its original size
+        div.style.opacity = '1';
+        div.removeAttribute('style');
+
+        /**
+        * iterate through the modals and modal contents and triggers to remove their active classes.
+        * remove the inline css from the trigger to move it back into its original position.
+        */
+
+        for (var i = 0; i < len; i++) {
+          modals[i].classList.remove('modal--active');
+          content[i].classList.remove('modal__content--active');
+          trigger[i].style.transform = 'none';
+          trigger[i].style.webkitTransform = 'none';
+          trigger[i].classList.remove('modal__trigger--active');
+        }
+
+        // when the temporary div is opacity:1 again, we want to remove it from the dom
+        div.addEventListener('transitionend', removeDiv, false);
+
+        isOpen = false;
+
+      }
+
+      function removeDiv() {
+        window.requestAnimationFrame(function() {
+          // remove the temp div from the dom with a slight delay so the animation looks good
+          div.remove();
+        });
+      }
+
+    };
+
+    var bindActions = function() {
+      for (var i = 0; i < len; i++) {
+        trigger[i].addEventListener('click', getId, false);
+        closers[i].addEventListener('click', close, false);
+        modalsbg[i].addEventListener('click', close, false);
+      }
+    };
+
+    var init = function() {
+      bindActions();
+    };
+
+    return {
+      init: init
+    };
+
+  }());
+
+  Modal.init();
+
+/** Font management **/
 $(document).ready(function() {
   if (browserName !== 'Trident' || browserName !== 'IE') {
     var fontPromises = [];
 
     var myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
-    fetch('/fonts/font.json', {
+    fetch('/fonts/antique.json', {
       headers: myHeaders,
       cache: 'force-cache',
     }).then(function(data) {
       return data.json();
     }).then(function(data) {
       fontPromises.push(new Promise(function(resolve, reject) {
-        Ptypo.createFont('gnft-thickness', 'font', data).then(function() {
-          Ptypo['gnft-thickness'].subset = 'a';
-          var onMouseMove = function(e) {
-            var elemWidth = $('#thickness').outerWidth();
-            //var elemHeight = $('#thickness').outerHeight();
-            var x = (e.pageX || e.center.x) - $('#thickness').offset().left;
-            //var y = e.pageY - $(this).offset().top;
-            var percentX = (x / elemWidth) * 100;
-            //var percentY = (y / elemHeight) * 100;
-            Ptypo.changeParam(getValue(40, 130, percentX), 'thickness', 'gnft-thickness');
-          }
-          var hammertime = new Hammer($('#thickness').get(0));
-          hammertime.on('pan', function(e) {
-            onMouseMove(e);
-          });
-          $('#thickness').mousemove(function(e) {
-            onMouseMove(e);
-          });
-          $('#thickness').mouseleave(function(e) {
-            Ptypo.tween(80, 'thickness', 'gnft-thickness', 60, 0.3);
-          });
-          $('#thickness').mouseenter(function(e) {
-            onMouseMove(e);
-          });
-          resolve(true);
-        });
-      }));
-
-
-      fontPromises.push(new Promise(function(resolve, reject) {
-        Ptypo.createFont('gnft-width', 'font', data).then(function() {
-          Ptypo['gnft-width'].subset = 'n';
-          var onMouseMove = function(e) {
-            var elemWidth = $('#width').outerWidth();
-            var x = (e.pageX || e.center.x) - $('#width').offset().left;
-            var percentX = (x / elemWidth) * 100;
-            Ptypo.changeParam(getValue(0.4, 5, percentX), 'width', 'gnft-width');
-          }
-          var hammertime = new Hammer($('#width').get(0));
-          hammertime.on('pan', function(e) {
-            onMouseMove(e);
-          });
-          $('#width').mousemove(function(e) {
-            onMouseMove(e);
-          });
-          $('#width').mouseleave(function(e) {
-            Ptypo.tween(1, 'width', 'gnft-width', 60, 0.3);
-          });
-          $('#width').mouseenter(function(e) {
-            onMouseMove(e);
-          });
-          resolve(true);
-        });
-      }));
-
-
-      fontPromises.push(new Promise(function(resolve, reject) {
-        Ptypo.createFont('gnft-thickness2', 'font', data).then(function() {
-          Ptypo.changeParam(30, 'thickness', 'gnft-thickness2');
-          Ptypo['gnft-thickness2'].subset = 'Discover Spectral, the first parametric Google font by Prototypo!';
-          var onMouseMove = function(e) {
-            var elemWidth = $('#prototypoavailable').outerWidth();
-            var x = (e.pageX || e.center.x) - $('#prototypoavailable').offset().left;
-            var percentX = (x / elemWidth) * 100;
-            Ptypo.changeParam(getValue(20, 50, percentX), 'thickness', 'gnft-thickness2');
-          }
-          var hammertime = new Hammer($('#prototypoavailable').get(0));
-          hammertime.on('pan', function(e) {
-            onMouseMove(e);
-          });
-          $('#prototypoavailable').mousemove(function(e) {
-            onMouseMove(e);
-          });
-          $('#prototypoavailable').mouseleave(function(e) {
-            Ptypo.tween(30, 'thickness', 'gnft-thickness2', 60, 0.3);
-          });
-          $('#prototypoavailable').mouseenter(function(e) {
-            onMouseMove(e);
-          });
-          resolve(true);
-        });
-      }));
-
-
-      fontPromises.push(new Promise(function(resolve, reject) {
-        Ptypo.createFont('gnft-aperture', 'font', data).then(function() {
-          Ptypo['gnft-aperture'].subset = 'Spectrals';
-          var onMouseMove = function(e) {
-            var elemWidth = $('#aperture').outerWidth();
-            var x = (e.pageX || e.center.x) - $('#aperture').offset().left;
-            var percentX = (x / elemWidth) * 100;
-            Ptypo.changeParam(getValue(0.4, 1.6, percentX), 'aperture', 'gnft-aperture');
-          }
-          var hammertime = new Hammer($('#aperture').get(0));
-          hammertime.on('pan', function(e) {
-            onMouseMove(e);
-          });
-          $('#aperture').mousemove(function(e) {
-            onMouseMove(e);
-          });
-          $('#aperture').mouseleave(function(e) {
-            Ptypo.tween(1, 'aperture', 'gnft-aperture', 60, 0.3);
-          });
-          $('#aperture').mouseenter(function(e) {
-            onMouseMove(e);
-          });
-          resolve(true);
-        });
-      }));
-
-      fontPromises.push(new Promise(function(resolve, reject) {
-        Ptypo.createFont('gnft-serifs', 'font', data).then(function() {
-          Ptypo['gnft-serifs'].subset = 'S';
-          Ptypo.changeParam(5, 'serifCurve', 'gnft-serifs');
-
-          var onMouseMove = function(e, isTouch) {
-            var elemWidth = $('#serifs').outerWidth();
-            var elemHeight = $('#serifs').outerHeight();
-            var x = (e.pageX || e.center.x) - $('#serifs').offset().left;
-            var y = (e.pageY || e.center.y) - $('#serifs').offset().top;
-            var percentX = (x / elemWidth) * 100;
-            var percentY = (y / elemHeight) * 100;
-            if (percentY > 50) {
-              Ptypo.changeParam(getValue(-2, 0.8, percentX), 'serifRotate', 'gnft-serifs');
-            } else {
-              Ptypo.changeParam(getValue(45, 110, percentX), 'serifHeight', 'gnft-serifs');
-            }
-            if (!isTouch) {
-              Ptypo.changeParam(getValue(10, 50, percentY), 'serifWidth', 'gnft-serifs');
-            }
-          }
-
-          var hammertime = new Hammer($('#serifs').get(0));
-          hammertime.on('pan', function(e) {
-            onMouseMove(e, true);
-          });
-
-
-          $('#serifs').mousemove(function(e) {
-            onMouseMove(e);
-          });
-
-
-          $('#serifs').mouseleave(function(e) {
-            Ptypo.tween(50, 'serifHeight', 'gnft-serifs', 60, 0.3);
-            Ptypo.tween(65, 'serifWidth', 'gnft-serifs', 60, 0.3);
-
-            Ptypo.tween(0, 'serifRotate', 'gnft-serifs', 60, 0.3);
-          });
-
-          $('#serifs').mouseenter(function(e) {
-            onMouseMove(e);
-          });
-          resolve(true);
-        });
-      }));
-
-
-      fontPromises.push(new Promise(function(resolve, reject) {
-        Ptypo.createFont('gnft-contrast', 'font', data).then(function() {
-          Ptypo.changeParam(100, 'thickness', 'gnft-contrast');
-          Ptypo.changeParam(-1, '_contrast', 'gnft-contrast');
-          Ptypo['gnft-contrast'].subset = 'ec';
-          var onMouseMove = function(e) {
-            var elemWidth = $('#contrast').outerWidth();
-            var x = (e.pageX || e.center.x) - $('#contrast').offset().left;
-            var percentX = (x / elemWidth) * 100;
-            Ptypo.changeParam(getValue(-1.5, -0.15, percentX), '_contrast', 'gnft-contrast');
-          }
-          var hammertime = new Hammer($('#contrast').get(0));
-          hammertime.on('pan', function(e) {
-            onMouseMove(e);
-          });
-          $('#contrast').mousemove(function(e) {
-            onMouseMove(e);
-          });
-          $('#contrast').mouseleave(function(e) {
-            Ptypo.tween(-1, '_contrast', 'gnft-contrast', 60, 0.3);
-          });
-          $('#contrast').mouseenter(function(e) {
-            onMouseMove(e);
-          });
-          resolve(true);
-        });
-      }));
-
-      fontPromises.push(new Promise(function(resolve, reject) {
-        Ptypo.createFont('gnft-bracketcurve', 'font', data).then(function() {
-          Ptypo['gnft-bracketcurve'].subset = 'xyz';
-          var onMouseMove = function(e, isTouch) {
-            var elemWidth = $('#bracketcurve').outerWidth();
-            var elemHeight = $('#bracketcurve').outerHeight();
-            var x = (e.pageX || e.center.x) - $('#bracketcurve').offset().left;
-            var y = (e.pageY || e.center.y) - $('#bracketcurve').offset().top;
-            var percentX = (x / elemWidth) * 100;
-            var percentY = (y / elemHeight) * 100;
-            Ptypo.changeParam(getValue(5, 100, percentX), 'serifCurve', 'gnft-bracketcurve');
-            if (!isTouch) {
-              Ptypo.changeParam(getValue(0, 100, percentY), 'serifHeight', 'gnft-bracketcurve');
-            }
-          }
-
-          var hammertime = new Hammer($('#bracketcurve').get(0));
-          hammertime.on('pan', function(e) {
-            onMouseMove(e, true);
-          });
-
-
-          $('#bracketcurve').mousemove(function(e) {
-            onMouseMove(e);
-          });
-
-
-          $('#bracketcurve').mouseleave(function(e) {
-            Ptypo.tween(50, 'serifHeight', 'gnft-bracketcurve', 60, 0.3);
-            Ptypo.tween(50, 'serifCurve', 'gnft-bracketcurve', 60, 0.3);
-          });
-
-          $('#bracketcurve').mouseenter(function(e) {
-            onMouseMove(e);
-          });
-          resolve(true);
-        });
-      }));
-
-
-      fontPromises.push(new Promise(function(resolve, reject) {
-        Ptypo.createFont('gnft-curviness', 'font', data).then(function() {
-          Ptypo['gnft-curviness'].subset = 'Oo';
-          var onMouseMove = function(e) {
-            var elemWidth = $('#curviness').outerWidth();
-            var x = (e.pageX || e.center.x) - $('#curviness').offset().left;
-            var percentX = (x / elemWidth) * 100;
-            Ptypo.changeParam(getValue(0.45, 0.8, percentX), 'curviness', 'gnft-curviness');
-          }
-          var hammertime = new Hammer($('#curviness').get(0));
-          hammertime.on('pan', function(e) {
-            onMouseMove(e);
-          });
-          $('#curviness').mousemove(function(e) {
-            onMouseMove(e);
-          });
-          $('#curviness').mouseleave(function(e) {
-            Ptypo.tween(0.60, 'curviness', 'gnft-curviness', 60, 0.3);
-          });
-          $('#curviness').mouseenter(function(e) {
-            onMouseMove(e);
-          });
-          resolve(true);
-        });
-      }));
-
-
-      var techThickness = ['70', '75', '80', '85', '90', '95', '100', '105', '110'];
-      var index = 0;
-
-      function getNextIndex(index) {
-        return techThickness[index % 9];
-      };
-
-
-      function createTechInterval(duration){
-        return setInterval(function() {
-          $('#technology .paragraph-1').attr('class', 'paragraph-1');
-          $('#technology .paragraph-1').addClass('gfnt-' + getNextIndex(index));
-          $('#technology .paragraph-2').attr('class', 'paragraph-2');
-          $('#technology .paragraph-2').addClass('gfnt-' + getNextIndex(index + 1));
-          $('#technology .paragraph-3').attr('class', 'paragraph-3');
-          $('#technology .paragraph-3').addClass('gfnt-' + getNextIndex(index + 2));
-          $('#technology .paragraph-4').attr('class', 'paragraph-4');
-          $('#technology .paragraph-4').addClass('gfnt-' + getNextIndex(index + 3));
-          $('#technology .paragraph-5').attr('class', 'paragraph-5');
-          $('#technology .paragraph-5').addClass('gfnt-' + getNextIndex(index + 4));
-          $('#technology .paragraph-6').attr('class', 'paragraph-6');
-          $('#technology .paragraph-6').addClass('gfnt-' + getNextIndex(index + 5));
-          index++;
-          if (index > techThickness.length - 1) {
-            index = 0;
-          }
-        }, duration);
-      }
-
-      var techInterval = createTechInterval(3000);
-
-      $('#technology').mouseleave(function(e) {
-        clearInterval(techInterval);
-        techInterval = createTechInterval(3000);
-      });
-      $('#technology').mouseenter(function(e) {
-        clearInterval(techInterval);
-        techInterval = createTechInterval(100);
-      });
-
-
-
-      var altSet = false;
-      fontPromises.push(new Promise(function(resolve, reject) {
-        Ptypo.createFont('gnft-alts', 'font', data).then(function() {
-          var onMouseMove = function(e) {
-            var elemWidth = $('#alts').outerWidth();
-            var x = e.pageX - $('#alts').offset().left;
-            var percentX = (x / elemWidth) * 100;
-
-            if (percentX > 50 && !altSet) {
-              Ptypo.changeParam({
-                '49': 'one_alt'
-              }, 'altList', 'gnft-alts');
-              altSet = true;
-            }
-            if (percentX <= 50 && altSet) {
-              Ptypo.changeParam({
-                '49': 'one'
-              }, 'altList', 'gnft-alts');
-              altSet = false;
-            }
-          }
-          $('#alts').mousemove(function(e) {
-            onMouseMove(e);
-          });
-          Ptypo['gnft-alts'].subset = '1';
-          resolve(true);
-        });
+        // Ptypo.createFont('gnft-thickness', 'antique', data).then(function() {
+        //   Ptypo['gnft-thickness'].subset = 'a';
+        //   resolve(true);
+        // });
+        resolve(true);
       }));
 
       Promise.all(fontPromises).then(function() {
@@ -408,6 +274,5 @@ $(document).ready(function() {
   } else {
     $('#loading .small').html('Unfortunately, we are not supporting your browser at this time. We are aware of the issue and we are working to fix this. Meanwhile, please visit this site using Google Chrome, Opera or Firefox to get the full interactive experience');
   }
-
 
 });

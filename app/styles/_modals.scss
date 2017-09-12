@@ -1,0 +1,113 @@
+$modal-z: 1000;
+$modal-bg: $white;
+$modal-width: 600px;
+$modal-delay: 0s;
+
+$space: 20px;
+
+$t: .5s;
+
+@mixin ease($s: $t) {
+  transition: all $s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+
+/**
+ * Material Modal CSS
+ */
+
+.modal {
+	will-change: visibility, opacity;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	overflow-y: auto;
+	overflow-x: hidden;
+	z-index: $modal-z;
+	// hide modal
+	visibility: hidden;
+	opacity: 0;
+	@include ease();
+  transition-delay: $modal-delay;
+  color: $black;
+  font-size: 30px;
+
+  .title {
+    text-decoration: underline;
+  }
+
+	&--active {
+		// reveal modal
+		visibility: visible;
+		opacity: 1;
+  }
+	&--align-top {
+		// align to top of window, useful if modal has a lot of content
+		align-items: flex-start;
+  }
+	&__bg {
+		// background color can be added as a backdrop for the modal
+    background: transparent;
+  }
+
+	&__dialog {
+		// controls the width and padding of modal
+		max-width: $modal-width;
+    padding: ($space / 2);
+  }
+
+	&__content {
+		will-change: transform, opacity;
+		position: relative;
+		padding: $space;
+		background: $modal-bg;
+		background-clip: padding-box;
+		box-shadow: 0 12px 15px 0 rgba(black, 0.25);
+		opacity: 0;
+		@include ease(.25s);
+
+		&--active {
+      opacity: 1;
+    }
+  }
+
+	&__close {
+		z-index: $modal-z+100;
+    cursor: pointer;
+    display: block;
+    position: relative
+    float: right;
+  }
+
+  .cta {
+    color: $red;
+    cursor: pointer;
+    &:hover {
+      color: mix(black, $red, 20%);
+    }
+  }
+
+		&--active {
+        z-index: 10;
+    }
+}
+
+#modal__temp {
+	// this is the div that expands when the button is clicked
+	will-change: transform, opacity;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: transparent;
+	transform: none;
+	opacity: 1;
+  transition: opacity 0.1s ease-out, transform $t cubic-bezier(0.23, 1, 0.32, 1);
+}
+

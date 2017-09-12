@@ -1,102 +1,15 @@
-$blue: #518FF4;
-$light-blue: #619CF2;
-$white: #FFFFFF;
+$white: #F2F2F2;
+$black: #1A1A1A;
+$green: #6CEAB4;
+$red: #ED4837;
+
 
 $font-path: "../../fonts";
 
 
 @font-face {
-	font-family: 'gr';
-	src: url('#{$font-path}/gmb.woff') format('woff');
-	font-weight: bold;
-	font-style: normal;
-}
-@font-face {
-	font-family: 'gr';
-	src: url('#{$font-path}/gmbi.woff') format('woff');
-	font-weight: bold;
-	font-style: italic;
-}
-@font-face {
-	font-family: 'gr';
-	src: url('#{$font-path}/gr.woff') format('woff');
-	font-weight: normal;
-	font-style: normal;
-}
-@font-face {
-	font-family: 'gr';
-	src: url('#{$font-path}/gi.woff') format('woff');
-	font-weight: normal;
-	font-style: italic;
-}
-
-
-@font-face {
-  font-family: gfnt;
-  src: url('#{$font-path}/gfnt-regular.otf');
+  font-family: antiquegothic;
+  src: url('#{$font-path}/antiquegothic.otf');
   font-weight: normal;
   font-style: normal;
-}
-
-@font-face {
-	font-family: 'gfnt-70';
-	src: url('#{$font-path}/Prototypo gfnt-70.otf');
-	font-weight: normal;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: 'gfnt-75';
-	src: url('#{$font-path}/Prototypo gfnt-75.otf');
-	font-weight: normal;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: 'gfnt-80';
-	src: url('#{$font-path}/Prototypo gfnt-80.otf');
-	font-weight: normal;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: 'gfnt-85';
-	src: url('#{$font-path}/Prototypo gfnt-85.otf');
-	font-weight: normal;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: 'gfnt-90';
-	src: url('#{$font-path}/Prototypo gfnt-90.otf');
-	font-weight: normal;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: 'gfnt-95';
-	src: url('#{$font-path}/Prototypo gfnt-95.otf');
-	font-weight: normal;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: 'gfnt-100';
-	src: url('#{$font-path}/Prototypo gfnt-100.otf');
-	font-weight: normal;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: 'gfnt-105';
-	src: url('#{$font-path}/Prototypo gfnt-105.otf');
-	font-weight: normal;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: 'gfnt-110';
-	src: url('#{$font-path}/Prototypo gfnt-110.otf');
-	font-weight: normal;
-	font-style: normal;
 }
