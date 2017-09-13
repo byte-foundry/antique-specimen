@@ -1,6 +1,6 @@
 $modal-z: 1000;
 $modal-bg: $white;
-$modal-width: 600px;
+$modal-width: 350px;
 $modal-delay: 0s;
 
 $space: 20px;
@@ -52,7 +52,7 @@ $t: .5s;
   }
 	&__bg {
 		// background color can be added as a backdrop for the modal
-    background: transparent;
+    background: transparentize($black, .2);
   }
 
 	&__dialog {
@@ -80,7 +80,7 @@ $t: .5s;
 		z-index: $modal-z+100;
     cursor: pointer;
     display: block;
-    position: relative
+    position: relative;
     float: right;
   }
 

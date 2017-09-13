@@ -1,42 +1,42 @@
 /** Social Sharing **/
 jQuery(document).ready(function($) {
-  function getFBShares(page) {
-    var shares;
-    $.getJSON('https://graph.facebook.com/?ids=' + page, function(data) {
-      if (data[page].share) {
-        shares = data[page].share.share_count;
-        $('#sharing #facebook .count').html(shares);
-      }
-    });
-  }
+  // function getFBShares(page) {
+  //   var shares;
+  //   $.getJSON('https://graph.facebook.com/?ids=' + page, function(data) {
+  //     if (data[page].share) {
+  //       shares = data[page].share.share_count;
+  //       $('#sharing #facebook .count').html(shares);
+  //     }
+  //   });
+  // }
 
-  function getTweets(page) {
-    var tweets;
-    $.getJSON('https://public.newsharecounts.com/count.json?url=' + page + '&callback=?', function(data) {
-      if (data) {
-        tweets = data.count;
-        $('#sharing #twitter .count').html(tweets || '0');
-      }
-    });
-  }
+  // function getTweets(page) {
+  //   var tweets;
+  //   $.getJSON('https://public.newsharecounts.com/count.json?url=' + page + '&callback=?', function(data) {
+  //     if (data) {
+  //       tweets = data.count;
+  //       $('#sharing #twitter .count').html(tweets || '0');
+  //     }
+  //   });
+  // }
 
-  function getLinkedIn(page) {
-    var linkedinCount = 0;
-    $.getJSON('https://www.linkedin.com/countserv/count/share?url=' + page + '&callback=?', function(data) {
-      if (data.count) {
-        linkedinCount += data.count;
-      }
-      $('#sharing #linkedin .count').html(linkedinCount);
-    });
-  }
+  // function getLinkedIn(page) {
+  //   var linkedinCount = 0;
+  //   $.getJSON('https://www.linkedin.com/countserv/count/share?url=' + page + '&callback=?', function(data) {
+  //     if (data.count) {
+  //       linkedinCount += data.count;
+  //     }
+  //     $('#sharing #linkedin .count').html(linkedinCount);
+  //   });
+  // }
 
   var Url = 'https://spectral.prototypo.io';
   var UrlEncoded = encodeURIComponent(Url);
   var titleTwitter = encodeURIComponent('Discover Spectral, the first parametric Google font by @prototypoApp!');
   var titleLinkedin = encodeURIComponent('Discover Spectral, the first parametric Google font by @Prototypo!');
-  getFBShares(Url);
-  getTweets(Url);
-  getLinkedIn(Url);
+  //getFBShares(Url);
+  //getTweets(Url);
+  //getLinkedIn(Url);
   $('#facebook a').attr('href', 'http://www.facebook.com/share.php?u=' + UrlEncoded);
   $('#twitter a').attr('href', 'http://twitter.com/home?status=' + titleTwitter + ' ' + UrlEncoded);
   $('#googleplus a').attr('href', 'https://plus.google.com/share?url=' + UrlEncoded);

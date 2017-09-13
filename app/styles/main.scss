@@ -126,10 +126,25 @@ a {
   }
 }
 
+[class*='col-'],
+[class^='col-'] {
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
+  position: relative;
+}
 
 .container-fluid {
+  padding: 0;
   .row {
+    margin: 0;
     .box {
+      .interactive {
+        &:hover {
+          background-color: mix($white,black, 20%);
+        }
+      }
       .title {
         text-decoration: underline;
         font-size: .75rem;
@@ -143,6 +158,8 @@ a {
         font-size: 4rem;
         margin-top: 0;
         margin-bottom: 1rem;
+        padding-left: 2rem;
+        padding-right: 2rem;
         .cta {
           width: 200px;
           margin-top: -110px;
@@ -161,6 +178,12 @@ a {
         }
       }
       p {
+        padding-left: 2rem;
+        padding-right: 2rem;
+        padding-top: .5rem;
+        padding-bottom: .5rem;
+        margin-top: .5rem;
+        margin-bottom: .5rem;
         .cta {
           margin-top: -10px;
           display: inline-block;
@@ -193,6 +216,8 @@ a {
 nav {
   position: fixed;
   width: 100%;
+  background-color: white;
+  z-index: 10;
   ul {
     padding-left: 110px;
     line-height: 38px;
@@ -246,6 +271,8 @@ nav {
 
 footer {
   margin-bottom: 1rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
 }
 
 
