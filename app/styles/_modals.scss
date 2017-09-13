@@ -39,6 +39,7 @@ $t: .5s;
 
   .title {
     text-decoration: underline;
+    margin-top: 0;
   }
 
 	&--active {
@@ -69,7 +70,21 @@ $t: .5s;
 		background-clip: padding-box;
 		box-shadow: 0 12px 15px 0 rgba(black, 0.25);
 		opacity: 0;
-		@include ease(.25s);
+    @include ease(.25s);
+
+    svg{
+      display: block;
+      width: 100%;
+      height: 100px;
+      padding: 0;
+      margin: 0;
+
+      }
+      path{
+        stroke-linecap: square;
+        stroke: white;
+        stroke-width: 0.5px;
+      }
 
 		&--active {
       opacity: 1;
