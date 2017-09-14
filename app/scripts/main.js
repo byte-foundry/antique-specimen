@@ -269,7 +269,7 @@ var calculateValue = function(param, freqValue) {
       return freqValue / 3 + 60 ;
       break;
     case 'width':
-      return (freqValue / 80) + 1;
+      return (freqValue / 140) + 1;
       break;
     case 'xHeight':
       return (freqValue * 1.5) + 400;
