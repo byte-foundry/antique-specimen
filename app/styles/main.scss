@@ -14,7 +14,7 @@ body {
   display: block;
   position: relative;
   background: $black;
-  font-family: 'antiquegothic', Arial;
+  font-family: 'antiquegothic', sans-serif;
   color: $white;
   margin: 0;
   -webkit-font-smoothing: antialiased;
@@ -141,9 +141,22 @@ a {
     margin: 0;
     .box {
       .interactive {
+        &#header {
+          font-family: 'antique-header','antiquegothic', sans-serif;
+        }
+        &#presentation {
+          font-family: 'antique-presentation','antiquegothic', sans-serif;
+        }
+        &#prototypo {
+          font-family: 'antique-prototypo','antiquegothic', sans-serif;
+        }
+        &#contact {
+          font-family: 'antique-contact','antiquegothic', sans-serif;
+        }
         &:hover {
           background-color: mix($white,black, 20%);
           .parameters {
+            font-family: 'antiquegothic', sans-serif;
             opacity: 1;
           }
         }
@@ -181,6 +194,7 @@ a {
             cursor: pointer;
             padding: 8px;
             border-radius: 5px;
+            font-family: 'antiquegothic', sans-serif;
             &:hover {
               background: mix($white, black , 25%);
             }
@@ -203,6 +217,7 @@ a {
             font-size: 0.4rem;
             padding: 0px 4px 4px 4px;
             border-radius: 5px;
+            font-family: 'antiquegothic', sans-serif;
             &:hover {
               background: mix($white, black , 25%);
             }

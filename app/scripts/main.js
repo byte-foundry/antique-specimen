@@ -1,34 +1,5 @@
 /** Social Sharing **/
 jQuery(document).ready(function($) {
-  // function getFBShares(page) {
-  //   var shares;
-  //   $.getJSON('https://graph.facebook.com/?ids=' + page, function(data) {
-  //     if (data[page].share) {
-  //       shares = data[page].share.share_count;
-  //       $('#sharing #facebook .count').html(shares);
-  //     }
-  //   });
-  // }
-
-  // function getTweets(page) {
-  //   var tweets;
-  //   $.getJSON('https://public.newsharecounts.com/count.json?url=' + page + '&callback=?', function(data) {
-  //     if (data) {
-  //       tweets = data.count;
-  //       $('#sharing #twitter .count').html(tweets || '0');
-  //     }
-  //   });
-  // }
-
-  // function getLinkedIn(page) {
-  //   var linkedinCount = 0;
-  //   $.getJSON('https://www.linkedin.com/countserv/count/share?url=' + page + '&callback=?', function(data) {
-  //     if (data.count) {
-  //       linkedinCount += data.count;
-  //     }
-  //     $('#sharing #linkedin .count').html(linkedinCount);
-  //   });
-  // }
 
   var Url = 'https://spectral.prototypo.io';
   var UrlEncoded = encodeURIComponent(Url);
@@ -257,11 +228,123 @@ var parametersCopied = false;
 var $interactives = $('.interactive');
 var zone;
 var $zoneElem;
+var choices = {
+  header: {
+    name: 'Thickness',
+    frequency: 'Low',
+  },
+  presentation: {
+    name: 'Thickness',
+    frequency: 'Low',
+  },
+  prototypo: {
+    name: 'Thickness',
+    frequency: 'Low',
+  },
+  contact: {
+    name: 'Thickness',
+    frequency: 'Low',
+  }
+}
+
+var getAssociatedParam = function(name) {
+  switch (name) {
+    case 'Thickness':
+      return 'thickness';
+      break;
+    case 'Width':
+      return 'width';
+      break;
+    case 'X-Height':
+      return 'xHeight';
+      break;
+    default:
+      break;
+  }
+}
+
+var calculateValue = function(param, freqValue) {
+  switch (param) {
+    case 'thickness':
+      return freqValue / 3 + 60 ;
+      break;
+    case 'width':
+      return (freqValue / 80) + 1;
+      break;
+    case 'xHeight':
+      return (freqValue * 1.5) + 400;
+      break;
+    default:
+      break;
+  }
+}
+
+var getRightFreqValue = function(block, low, med, high) {
+  var chosenFreq = choices[block].frequency;
+  switch (chosenFreq) {
+    case 'Low':
+      return low;
+      break;
+    case 'Medium':
+      return med;
+      break;
+    case 'High':
+      return high;
+      break;
+    default:
+      break;
+  }
+}
+
+var updateFonts = function(low, med, high){
+  if (getRightFreqValue('header', low, med, high) !== 0) {
+    Ptypo.changeParam(
+      calculateValue(
+        getAssociatedParam(choices.header.name),
+        getRightFreqValue('header', low, med, high)
+      ),
+      getAssociatedParam(choices.header.name),
+      'antique-header'
+    );
+  }
+  if (getRightFreqValue('presentation', low, med, high) !== 0) {
+    Ptypo.changeParam(
+      calculateValue(
+        getAssociatedParam(choices.presentation.name),
+        getRightFreqValue('presentation', low, med, high)
+      ),
+      getAssociatedParam(choices.presentation.name),
+      'antique-presentation'
+    );
+  }
+  if (getRightFreqValue('prototypo', low, med, high) !== 0) {
+    Ptypo.changeParam(
+      calculateValue(
+        getAssociatedParam(choices.prototypo.name),
+        getRightFreqValue('prototypo', low, med, high)
+      ),
+      getAssociatedParam(choices.prototypo.name),
+      'antique-prototypo'
+    );
+  }
+  if (getRightFreqValue('contact', low, med, high) !== 0) {
+    Ptypo.changeParam(
+      calculateValue(
+        getAssociatedParam(choices.contact.name),
+        getRightFreqValue('contact', low, med, high)
+      ),
+      getAssociatedParam(choices.contact.name),
+      'antique-contact'
+    );
+  }
+};
+
 var onParameterNameModalClick = function(e) {
   console.log(`clicked on name ${$(e.target).data('value')} on ${zone} block`);
   $('#parameter-name li').removeClass('active');
   $(e.target).addClass('active');
   $zoneElem.find('.parameter-name').text($(e.target).data('value'));
+  choices[zone].name = $(e.target).data('value');
 };
 
 var onParameterFrequencyModalClick = function(e) {
@@ -269,6 +352,7 @@ var onParameterFrequencyModalClick = function(e) {
   $('#parameter-frequency li').removeClass('active');
   $(e.target).addClass('active');
   $zoneElem.find('.parameter-frequency').text($(e.target).data('value'));
+  choices[zone].frequency = $(e.target).data('value');
 };
 // Modal function binding
 $('#parameter-name li').on('click', function(e) {onParameterNameModalClick(e)});
@@ -328,6 +412,12 @@ $configModalButton.on('click', function () {
               adjustedLength = Math.floor(frequencyArray[i]) - (Math.floor(frequencyArray[i]) % 5);
               paths[i].setAttribute('d', 'M '+ (i) +',255 l 0,-' + adjustedLength);
           }
+          if (fontsCreated) {
+            var low = Math.floor(frequencyArray[8]) - (Math.floor(frequencyArray[8]) % 5);
+            var med = Math.floor(frequencyArray[40]) - (Math.floor(frequencyArray[40]) % 5);
+            var high = Math.floor(frequencyArray[72]) - (Math.floor(frequencyArray[72]) % 5);
+            updateFonts(low, med, high);
+          }
 
       }
       doDraw();
@@ -350,6 +440,8 @@ $configModalButton.on('click', function () {
 });
 
 /** Font management **/
+
+var fontsCreated = false;
 $(document).ready(function() {
   if (browserName !== 'Trident' || browserName !== 'IE') {
     var fontPromises = [];
@@ -363,14 +455,26 @@ $(document).ready(function() {
       return data.json();
     }).then(function(data) {
       fontPromises.push(new Promise(function(resolve, reject) {
-        // Ptypo.createFont('gnft-thickness', 'antique', data).then(function() {
-        //   Ptypo['gnft-thickness'].subset = 'a';
-        //   resolve(true);
-        // });
-        resolve(true);
+        Ptypo.createFont('antique-header', 'antique', data).then(function() {
+          //Ptypo['gnft-thickness'].subset = 'a';
+          resolve(true);
+        });
+        Ptypo.createFont('antique-presentation', 'antique', data).then(function() {
+          //Ptypo['gnft-thickness'].subset = 'a';
+          resolve(true);
+        });
+        Ptypo.createFont('antique-prototypo', 'antique', data).then(function() {
+          //Ptypo['gnft-thickness'].subset = 'a';
+          resolve(true);
+        });
+        Ptypo.createFont('antique-contact', 'antique', data).then(function() {
+          //Ptypo['gnft-thickness'].subset = 'a';
+          resolve(true);
+        });
       }));
 
       Promise.all(fontPromises).then(function() {
+        fontsCreated = true;
         setTimeout(function () {
           $('#loading').addClass('fade');
             $('body').removeClass('loading');
