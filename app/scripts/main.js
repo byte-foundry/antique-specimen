@@ -60,68 +60,8 @@ if (browserName === 'Trident' || browserName === 'IE') {
   $('#loading .small').html('Unfortunately, we are not supporting your browser at this time. We are aware of the issue and we are working to fix this. Meanwhile, please visit this site using Google Chrome, Opera or Firefox to get the full interactive experience');
 }
 
-/** Sound capture */
-window.onload = function () {
-  var paths = document.getElementsByTagName('path');
-  var visualizer = document.getElementById('visualizer');
-  var mask = visualizer.getElementById('mask');
-  var h = document.getElementById('soundcapturelog');
-  var path;
-  var report = 0;
-
-  var soundAllowed = function (stream) {
-      //Audio stops listening in FF without // window.persistAudioStream = stream;
-      //https://bugzilla.mozilla.org/show_bug.cgi?id=965483
-      //https://support.mozilla.org/en-US/questions/984179
-      window.persistAudioStream = stream;
-      $(h).hide();
-      var audioContent = new AudioContext();
-      var audioStream = audioContent.createMediaStreamSource( stream );
-      var analyser = audioContent.createAnalyser();
-      audioStream.connect(analyser);
-      analyser.fftSize = 1024;
-
-      var frequencyArray = new Uint8Array(analyser.frequencyBinCount);
-      visualizer.setAttribute('viewBox', '0 0 255 255');
-
-      //Through the frequencyArray has a length longer than 255, there seems to be no
-      //significant data after this point. Not worth visualizing.
-      for (var i = 0 ; i < 255; i++) {
-          path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-          path.setAttribute('stroke-dasharray', '4,1');
-          mask.appendChild(path);
-      }
-      var doDraw = function () {
-          requestAnimationFrame(doDraw);
-          analyser.getByteFrequencyData(frequencyArray);
-          var adjustedLength;
-          for (var i = 0 ; i < 255; i++) {
-              adjustedLength = Math.floor(frequencyArray[i]) - (Math.floor(frequencyArray[i]) % 5);
-              paths[i].setAttribute('d', 'M '+ (i) +',255 l 0,-' + adjustedLength);
-          }
-
-      }
-      doDraw();
-  }
-
-  var soundNotAllowed = function (error) {
-      h.innerHTML = "No sound detected. Have you allowed your microphone?";
-      $(visualizer).hide();
-      console.log(error);
-  }
-
-  /*window.navigator = window.navigator || {};
-  /*navigator.getUserMedia =  navigator.getUserMedia       ||
-                            navigator.webkitGetUserMedia ||
-                            navigator.mozGetUserMedia    ||
-                            null;*/
-  navigator.getUserMedia({audio:true}, soundAllowed, soundNotAllowed);
-
-};
-
 /** Modal management **/
 var Modal = (function() {
-
     var trigger = $qsa('.modal__trigger'); // what you click to activate the modal
     var modals = $qsa('.modal'); // the entire modal (takes up entire window)
     var modalsbg = $qsa('.modal__bg'); // the entire modal (takes up entire window)
@@ -146,6 +86,15 @@ var Modal = (function() {
       var len = modalId.length;
       // remove the '#' from the string
       var modalIdTrimmed = modalId.substring(1, len);
+      console.log(`Opened modal: ${modalIdTrimmed}`);
+      if (modalIdTrimmed === 'parameter-frequency' || modalIdTrimmed === 'parameter-name') {
+        zone = $(event.target).closest('.interactive').attr('id');
+        $zoneElem = $(event.target).closest('.interactive');
+        $(`#${modalIdTrimmed} li`).removeClass('active');
+        var currentLabel = $zoneElem.find(`.${modalIdTrimmed}`).text();
+        $(`#${modalIdTrimmed} li[data-value="${currentLabel}"]`).addClass('active');
+        console.log(`Zone to change: ${zone}`);
+      }
       // select the modal we want to activate
       var modal = document.getElementById(modalIdTrimmed);
       // execute function that creates the temporary expanding div
@@ -281,13 +230,16 @@ var Modal = (function() {
 
     var bindActions = function() {
       for (var i = 0; i < len; i++) {
-        trigger[i].addEventListener('click', getId, false);
         closers[i].addEventListener('click', close, false);
         modalsbg[i].addEventListener('click', close, false);
+      }
+      for (var i = 0; i < trigger.length; i++) {
+        trigger[i].addEventListener('click', getId, false);
       }
     };
 
     var init = function() {
+      trigger = $qsa('.modal__trigger'); // what you click to activate the modal
       bindActions();
     };
 
@@ -298,6 +250,104 @@ var Modal = (function() {
   }());
 
   Modal.init();
+
+/** Parameters management */
+var $parameters = $('.parameters')[0];
+var parametersCopied = false;
+var $interactives = $('.interactive');
+var zone;
+var $zoneElem;
+var onParameterNameModalClick = function(e) {
+  console.log(`clicked on name ${$(e.target).data('value')} on ${zone} block`);
+  $('#parameter-name li').removeClass('active');
+  $(e.target).addClass('active');
+  $zoneElem.find('.parameter-name').text($(e.target).data('value'));
+};
+
+var onParameterFrequencyModalClick = function(e) {
+  console.log(`clicked on frequency ${$(e.target).data('value')} on ${zone} block`);
+  $('#parameter-frequency li').removeClass('active');
+  $(e.target).addClass('active');
+  $zoneElem.find('.parameter-frequency').text($(e.target).data('value'));
+};
+// Modal function binding
+$('#parameter-name li').on('click', function(e) {onParameterNameModalClick(e)});
+$('#parameter-frequency li').on('click', function(e) {onParameterFrequencyModalClick(e)});
+
+/** Sound capture */
+var isMicOn = false;
+var $configModalButton = $('#modal-config');
+$configModalButton.on('click', function () {
+  var paths = document.getElementsByTagName('path');
+  var visualizer = document.getElementById('visualizer');
+  var mask = visualizer.getElementById('mask');
+  var h = document.getElementById('soundcapturelog');
+  var path;
+  var report = 0;
+
+  var soundAllowed = function (stream) {
+      console.log('Sound allowed');
+      isMicOn = true;
+
+      if (!parametersCopied) {
+        $interactives.each(function(index, $interactiveDiv) {
+          var clonedParameters = $($parameters).clone(true);
+          $($interactiveDiv).append(clonedParameters);
+        });
+        console.log('Copied parameters controls');
+        parametersCopied = true;
+        Modal.init();
+      }
+
+      //Audio stops listening in FF without // window.persistAudioStream = stream;
+      //https://bugzilla.mozilla.org/show_bug.cgi?id=965483
+      //https://support.mozilla.org/en-US/questions/984179
+      window.persistAudioStream = stream;
+      $(h).hide();
+      var audioContent = new AudioContext();
+      var audioStream = audioContent.createMediaStreamSource( stream );
+      var analyser = audioContent.createAnalyser();
+      audioStream.connect(analyser);
+      analyser.fftSize = 1024;
+
+      var frequencyArray = new Uint8Array(analyser.frequencyBinCount);
+      visualizer.setAttribute('viewBox', '0 0 255 255');
+
+      //Through the frequencyArray has a length longer than 255, there seems to be no
+      //significant data after this point. Not worth visualizing.
+      for (var i = 0 ; i < 255; i++) {
+          path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          path.setAttribute('stroke-dasharray', '4,1');
+          mask.appendChild(path);
+      }
+      var doDraw = function () {
+          requestAnimationFrame(doDraw);
+          analyser.getByteFrequencyData(frequencyArray);
+          var adjustedLength;
+          for (var i = 0 ; i < 255; i++) {
+              adjustedLength = Math.floor(frequencyArray[i]) - (Math.floor(frequencyArray[i]) % 5);
+              paths[i].setAttribute('d', 'M '+ (i) +',255 l 0,-' + adjustedLength);
+          }
+
+      }
+      doDraw();
+      console.log('Started sound visualization');
+  }
+
+  var soundNotAllowed = function (error) {
+      h.innerHTML = "No sound detected. Have you allowed your microphone?";
+      $(visualizer).hide();
+      console.log(error);
+  }
+
+  /*window.navigator = window.navigator || {};
+  /*navigator.getUserMedia =  navigator.getUserMedia       ||
+                            navigator.webkitGetUserMedia ||
+                            navigator.mozGetUserMedia    ||
+                            null;*/
+  navigator.getUserMedia({audio:true}, soundAllowed, soundNotAllowed);
+
+});
 
 /** Font management **/
 $(document).ready(function() {

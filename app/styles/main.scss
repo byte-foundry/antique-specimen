@@ -143,75 +143,120 @@ a {
       .interactive {
         &:hover {
           background-color: mix($white,black, 20%);
-        }
-      }
-      .title {
-        display: inline-block;
-        padding-bottom: .15rem;
-        border-bottom: 3px solid $white;
-        font-size: .75rem;
-      }
-      .headline {
-        margin-top: 1.5rem;
-        margin-bottom: 0;
-      }
-      h1 {
-        font-weight: normal;
-        font-size: 4rem;
-        margin-top: 0;
-        margin-bottom: 1rem;
-        padding-left: 1rem;
-        padding-right: 1rem;
-        .cta {
-          width: 200px;
-          margin-top: -110px;
-          display: inline-block;
-          vertical-align: middle;
-          line-height: 1;
-          color: $green;
-          text-transform: uppercase;
-          font-size: 0.5rem;
-          cursor: pointer;
-          padding: 8px;
-          border-radius: 5px;
-          &:hover {
-            background: mix($white, black , 25%);
+          .parameters {
+            opacity: 1;
           }
         }
+        .content {
+          float: left;
+        }
       }
-      p {
-        padding-left: 1rem;
-        padding-right: 1rem;
-        padding-top: .5rem;
-        padding-bottom: .5rem;
-        margin-top: .5rem;
-        margin-bottom: .5rem;
-        .cta {
-          margin-top: -10px;
+      .content {
+        .title {
           display: inline-block;
-          vertical-align: middle;
-          line-height: 1;
-          color: $red;
-          text-transform: uppercase;
-          font-size: 0.4rem;
-          padding: 0px 4px 4px 4px;
-          border-radius: 5px;
-          &:hover {
-            background: mix($white, black , 25%);
-          }
-          a {
-            border-bottom: none;
+          padding-bottom: .15rem;
+          border-bottom: 3px solid $white;
+          font-size: .75rem;
+        }
+        .headline {
+          margin-top: 1.5rem;
+          margin-bottom: 0;
+        }
+        h1 {
+          font-weight: normal;
+          font-size: 4rem;
+          margin-top: 0;
+          margin-bottom: 1rem;
+          padding-left: 1rem;
+          padding-right: 1rem;
+          .cta {
+            width: 200px;
+            margin-top: -110px;
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 1;
+            color: $green;
+            text-transform: uppercase;
+            font-size: 0.5rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 5px;
             &:hover {
-              color: inherit;
-              opacity: inherit;
+              background: mix($white, black , 25%);
             }
           }
         }
-        a {
-          border-bottom: 1px solid transparentize($white, .8);
+        p {
+          padding-left: 1rem;
+          padding-right: 1rem;
+          padding-top: .5rem;
+          padding-bottom: .5rem;
+          margin-top: 0;
+          margin-bottom: 0;
+          .cta {
+            margin-top: -10px;
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 1;
+            color: $red;
+            text-transform: uppercase;
+            font-size: 0.4rem;
+            padding: 0px 4px 4px 4px;
+            border-radius: 5px;
+            &:hover {
+              background: mix($white, black , 25%);
+            }
+            a {
+              border-bottom: none;
+              &:hover {
+                color: inherit;
+                opacity: inherit;
+              }
+            }
+          }
+          a {
+            border-bottom: 1px solid transparentize($white, .8);
+          }
         }
       }
     }
+  }
+}
+
+
+.parameters {
+  float: right;
+  font-size: 32px;
+  padding: 1rem 2rem;
+  opacity: 0;
+  p {
+    margin-bottom: 5px;
+    margin-top: 8px;
+    padding: 0;
+  }
+  .title {
+    display: inline-block;
+    padding-bottom: .05rem;
+    border-bottom: 2px solid $white;
+    font-size: .95em;
+  }
+  .cta {
+    margin-top: -6px;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+    color: $red;
+    text-transform: uppercase;
+    font-size: 0.75em;
+    padding: 0px 4px 4px 4px;
+    border-radius: 5px;
+    cursor: pointer;
+    &:hover {
+      background: mix($white, black , 25%);
+    }
+  }
+  .parameter-frequency, .parameter-name {
+    color: mix($white,black,75%);
   }
 }
 
