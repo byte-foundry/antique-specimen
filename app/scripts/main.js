@@ -32,6 +32,7 @@ if (browserName === 'Trident' || browserName === 'IE') {
 }
 
 /** Modal management **/
+var openedModal;
 var Modal = (function() {
     var trigger = $qsa('.modal__trigger'); // what you click to activate the modal
     var modals = $qsa('.modal'); // the entire modal (takes up entire window)
@@ -57,6 +58,7 @@ var Modal = (function() {
       var len = modalId.length;
       // remove the '#' from the string
       var modalIdTrimmed = modalId.substring(1, len);
+      openedModal = modalIdTrimmed;
       console.log(`Opened modal: ${modalIdTrimmed}`);
       if (modalIdTrimmed === 'parameter-frequency' || modalIdTrimmed === 'parameter-name') {
         zone = $(event.target).closest('.interactive').attr('id');
@@ -65,6 +67,9 @@ var Modal = (function() {
         var currentLabel = $zoneElem.find(`.${modalIdTrimmed}`).text();
         $(`#${modalIdTrimmed} li[data-value="${currentLabel}"]`).addClass('active');
         console.log(`Zone to change: ${zone}`);
+      }
+      if (openedModal === 'configure') {
+        $('#visualizer').appendTo('#visualizer-container');
       }
       // select the modal we want to activate
       var modal = document.getElementById(modalIdTrimmed);
@@ -186,7 +191,14 @@ var Modal = (function() {
         // when the temporary div is opacity:1 again, we want to remove it from the dom
         div.addEventListener('transitionend', removeDiv, false);
 
+
         isOpen = false;
+        if (openedModal === 'configure') {
+          $('#visualizer').prependTo('#navRight');
+          $('<span class="microphone-control"></span>').prependTo('#navRight');
+          $('.microphone-control').on('click', toggleMicrophone);
+        }
+        openedModal = '';
 
       }
 
@@ -228,6 +240,7 @@ var parametersCopied = false;
 var $interactives = $('.interactive');
 var zone;
 var $zoneElem;
+var soundOn = true;
 var choices = {
   header: {
     name: 'Thickness',
@@ -244,6 +257,17 @@ var choices = {
   contact: {
     name: 'Thickness',
     frequency: 'Low',
+  }
+}
+
+var toggleMicrophone = function() {
+  soundOn = !soundOn;
+  $('.microphone-control').toggleClass('muted');
+  if (!soundOn) {
+    var paths = document.getElementsByTagName('path');
+    for (var i = 0 ; i < 255; i++) {
+      paths[i].setAttribute('d', 'M '+ (i) +',255 l 0,-' + 0);
+    }
   }
 }
 
@@ -266,10 +290,10 @@ var getAssociatedParam = function(name) {
 var calculateValue = function(param, freqValue) {
   switch (param) {
     case 'thickness':
-      return freqValue / 3 + 60 ;
+      return freqValue / 3 + 4 ;
       break;
     case 'width':
-      return (freqValue / 140) + 1;
+      return (freqValue / 220) + 0.5;
       break;
     case 'xHeight':
       return (freqValue * 1.5) + 400;
@@ -339,12 +363,21 @@ var updateFonts = function(low, med, high){
   }
 };
 
+var resetFont = function(fontName) {
+  var params = ['xHeight', 'width', 'thickness'];
+  var defaultValues = [600, 1, 54];
+  for (var j = 0; j < params.length; j++) {
+    Ptypo.changeParam(defaultValues[j], params[j], fontName);
+  }
+};
+
 var onParameterNameModalClick = function(e) {
   console.log(`clicked on name ${$(e.target).data('value')} on ${zone} block`);
   $('#parameter-name li').removeClass('active');
   $(e.target).addClass('active');
   $zoneElem.find('.parameter-name').text($(e.target).data('value'));
   choices[zone].name = $(e.target).data('value');
+  resetFont('antique-'+zone);
 };
 
 var onParameterFrequencyModalClick = function(e) {
@@ -353,6 +386,7 @@ var onParameterFrequencyModalClick = function(e) {
   $(e.target).addClass('active');
   $zoneElem.find('.parameter-frequency').text($(e.target).data('value'));
   choices[zone].frequency = $(e.target).data('value');
+  resetFont('antique-'+zone);
 };
 // Modal function binding
 $('#parameter-name li').on('click', function(e) {onParameterNameModalClick(e)});
@@ -396,9 +430,6 @@ $configModalButton.on('click', function () {
 
       var frequencyArray = new Uint8Array(analyser.frequencyBinCount);
       visualizer.setAttribute('viewBox', '0 0 255 255');
-
-      //Through the frequencyArray has a length longer than 255, there seems to be no
-      //significant data after this point. Not worth visualizing.
       for (var i = 0 ; i < 255; i++) {
           path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
           path.setAttribute('stroke-dasharray', '4,1');
@@ -408,20 +439,42 @@ $configModalButton.on('click', function () {
           requestAnimationFrame(doDraw);
           analyser.getByteFrequencyData(frequencyArray);
           var adjustedLength;
-          for (var i = 0 ; i < 255; i++) {
+          if (soundOn) {
+
+            for (var i = 0 ; i < 255; i++) {
               adjustedLength = Math.floor(frequencyArray[i]) - (Math.floor(frequencyArray[i]) % 5);
               paths[i].setAttribute('d', 'M '+ (i) +',255 l 0,-' + adjustedLength);
-          }
-          if (fontsCreated) {
-            var low = Math.floor(frequencyArray[8]) - (Math.floor(frequencyArray[8]) % 5);
-            var med = Math.floor(frequencyArray[40]) - (Math.floor(frequencyArray[40]) % 5);
-            var high = Math.floor(frequencyArray[72]) - (Math.floor(frequencyArray[72]) % 5);
-            updateFonts(low, med, high);
-          }
+            }
+            if (fontsCreated) {
+              // low
+              var total = 0;
+              for(var i = 1; i < 10; i++) {
+                  total += frequencyArray[i];
+              }
+              var low = total / 9;
+              var adjustedLow = Math.floor(low) - (Math.floor(low) % 5);
+              //medium
+              total = 0;
+              for(var i = 11; i < 21; i++) {
+                  total += frequencyArray[i];
+              }
+              var med = total / 10;
+              var adjustedMed = Math.floor(med) - (Math.floor(med) % 5);
+              // high
+              total = 0;
+              for(var i = 30; i < 40; i++) {
+                  total += frequencyArray[i];
+              }
+              var high = total / 10;
+              var adjustedHigh = Math.floor(high) - (Math.floor(high) % 5);
 
+              updateFonts(adjustedLow, adjustedMed, adjustedHigh);
+            }
+
+          }
       }
       doDraw();
-      console.log('Started sound visualization');
+      console.log('Started sound analysis');
   }
 
   var soundNotAllowed = function (error) {
