@@ -1,7 +1,7 @@
 // bower:scss
 // endbower
-@import "./_variables.scss";
-@import "./_modals.scss";
+@import "./_variables";
+@import "./_modals";
 
 .browserupgrade {
   margin: 0.2em 0;
@@ -376,8 +376,3 @@ footer {
   padding-left: 1rem;
   padding-right: 1rem;
 }
-
-
-
-
-

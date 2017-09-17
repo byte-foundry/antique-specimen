@@ -59,14 +59,14 @@ var Modal = (function() {
       // remove the '#' from the string
       var modalIdTrimmed = modalId.substring(1, len);
       openedModal = modalIdTrimmed;
-      console.log(`Opened modal: ${modalIdTrimmed}`);
+      console.log('Opened modal:'+ modalIdTrimmed);
       if (modalIdTrimmed === 'parameter-frequency' || modalIdTrimmed === 'parameter-name') {
         zone = $(event.target).closest('.interactive').attr('id');
         $zoneElem = $(event.target).closest('.interactive');
-        $(`#${modalIdTrimmed} li`).removeClass('active');
-        var currentLabel = $zoneElem.find(`.${modalIdTrimmed}`).text();
-        $(`#${modalIdTrimmed} li[data-value="${currentLabel}"]`).addClass('active');
-        console.log(`Zone to change: ${zone}`);
+        $('#'+modalIdTrimmed+' li').removeClass('active');
+        var currentLabel = $zoneElem.find('.'+modalIdTrimmed).text();
+        $('#'+modalIdTrimmed+' li[data-value="'+currentLabel+'"]').addClass('active');
+        console.log('Zone to change: ' + zone);
       }
       if (openedModal === 'configure') {
         $('#visualizer').appendTo('#visualizer-container');
@@ -372,7 +372,7 @@ var resetFont = function(fontName) {
 };
 
 var onParameterNameModalClick = function(e) {
-  console.log(`clicked on name ${$(e.target).data('value')} on ${zone} block`);
+  console.log('clicked on name ' + $(e.target).data('value')+ 'on '+zone+ 'block');
   $('#parameter-name li').removeClass('active');
   $(e.target).addClass('active');
   $zoneElem.find('.parameter-name').text($(e.target).data('value'));
@@ -381,7 +381,7 @@ var onParameterNameModalClick = function(e) {
 };
 
 var onParameterFrequencyModalClick = function(e) {
-  console.log(`clicked on frequency ${$(e.target).data('value')} on ${zone} block`);
+  console.log('clicked on frequency ' + $(e.target).data('value')+ 'on '+zone+ 'block');
   $('#parameter-frequency li').removeClass('active');
   $(e.target).addClass('active');
   $zoneElem.find('.parameter-frequency').text($(e.target).data('value'));
@@ -478,7 +478,7 @@ $configModalButton.on('click', function () {
   }
 
   var soundNotAllowed = function (error) {
-      h.innerHTML = "No sound detected. Have you allowed your microphone?";
+      h.innerHTML = 'No sound detected. Have you allowed your microphone?';
       $(visualizer).hide();
       console.log(error);
   }
