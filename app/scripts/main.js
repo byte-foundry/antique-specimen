@@ -508,19 +508,19 @@ $(document).ready(function() {
       return data.json();
     }).then(function(data) {
       fontPromises.push(new Promise(function(resolve, reject) {
-        Ptypo.createFont('antique-header', 'antique', data).then(function() {
+        Ptypo.createFont('antique-header', 'font', data).then(function() {
           //Ptypo['gnft-thickness'].subset = 'a';
           resolve(true);
         });
-        Ptypo.createFont('antique-presentation', 'antique', data).then(function() {
+        Ptypo.createFont('antique-presentation', 'font', data).then(function() {
           //Ptypo['gnft-thickness'].subset = 'a';
           resolve(true);
         });
-        Ptypo.createFont('antique-prototypo', 'antique', data).then(function() {
+        Ptypo.createFont('antique-prototypo', 'font', data).then(function() {
           //Ptypo['gnft-thickness'].subset = 'a';
           resolve(true);
         });
-        Ptypo.createFont('antique-contact', 'antique', data).then(function() {
+        Ptypo.createFont('antique-contact', 'font', data).then(function() {
           //Ptypo['gnft-thickness'].subset = 'a';
           resolve(true);
         });
