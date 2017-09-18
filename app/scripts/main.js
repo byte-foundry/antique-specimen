@@ -70,6 +70,7 @@ var Modal = (function() {
       }
       if (openedModal === 'configure') {
         $('#visualizer').appendTo('#visualizer-container');
+        $('.microphone-control').remove();
       }
       // select the modal we want to activate
       var modal = document.getElementById(modalIdTrimmed);
