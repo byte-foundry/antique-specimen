@@ -501,7 +501,7 @@ $(document).ready(function() {
 
     var myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
-    fetch('/fonts/antique.json', {
+    fetch('/fonts/font.json', {
       headers: myHeaders,
       cache: 'force-cache',
     }).then(function(data) {
