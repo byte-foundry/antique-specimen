@@ -12,6 +12,17 @@ jQuery(document).ready(function($) {
   $('#twitter a').attr('href', 'http://twitter.com/home?status=' + titleTwitter + ' ' + UrlEncoded);
   $('#googleplus a').attr('href', 'https://plus.google.com/share?url=' + UrlEncoded);
   $('#linkedin a').attr('href', 'http://www.linkedin.com/shareArticle?mini=true&url=' + UrlEncoded + '&title=' + titleLinkedin);
+
+  var navbar = $('nav')
+  var resBtn = $('.resbtn');
+  var ulList = $('nav ul');
+   resBtn.on('click', function () {
+       if(ulList.height() == 0) {
+           ulList.animate({height: '5.5em'}, 300);
+       }else {
+           ulList.animate({height: '0em'}, 300);
+       }
+   });
 });
 
 /** Utilities **/
