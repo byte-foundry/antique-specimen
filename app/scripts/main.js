@@ -304,7 +304,7 @@ var calculateValue = function(param, freqValue) {
       return (freqValue * 1.5) + 400;
       break;
     case 'curviness':
-      return (freqValue / 110) - 0.45;
+      return (freqValue / 160);
       break;
     case 'slant':
       return (freqValue / 10) - 3;
