@@ -361,6 +361,7 @@ var updateFonts = function(low, med, high){
       'antique-contact'
     );
   }
+  isRaf = false;
 };
 
 var resetFont = function(fontName) {
@@ -394,6 +395,7 @@ $('#parameter-frequency li').on('click', function(e) {onParameterFrequencyModalC
 
 /** Sound capture */
 var isMicOn = false;
+var isRaf = false;
 var $configModalButton = $('#modal-config');
 $configModalButton.on('click', function () {
   var paths = document.getElementsByTagName('path');
@@ -436,7 +438,10 @@ $configModalButton.on('click', function () {
           mask.appendChild(path);
       }
       var doDraw = function () {
-          requestAnimationFrame(doDraw);
+          if (!isRaf) {
+            requestAnimationFrame(doDraw);
+          }
+          isRaf = true;
           analyser.getByteFrequencyData(frequencyArray);
           var adjustedLength;
           if (soundOn) {
