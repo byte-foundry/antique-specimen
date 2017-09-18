@@ -281,6 +281,10 @@ var getAssociatedParam = function(name) {
       break;
     case 'X-Height':
       return 'xHeight';
+    case 'Curviness':
+      return 'curviness';
+    case 'Slant':
+      return 'slant';
       break;
     default:
       break;
@@ -297,6 +301,12 @@ var calculateValue = function(param, freqValue) {
       break;
     case 'xHeight':
       return (freqValue * 1.5) + 400;
+      break;
+    case 'curviness':
+      return (freqValue / 110) - 0.45;
+      break;
+    case 'slant':
+      return (freqValue / 10) - 3;
       break;
     default:
       break;
@@ -322,6 +332,11 @@ var getRightFreqValue = function(block, low, med, high) {
 
 var updateFonts = function(low, med, high){
   if (getRightFreqValue('header', low, med, high) !== 0) {
+    console.log(choices.header.name);
+    console.log(calculateValue(
+      getAssociatedParam(choices.header.name),
+      getRightFreqValue('contact', low, med, high)
+    ));
     Ptypo.changeParam(
       calculateValue(
         getAssociatedParam(choices.header.name),
@@ -365,8 +380,8 @@ var updateFonts = function(low, med, high){
 };
 
 var resetFont = function(fontName) {
-  var params = ['xHeight', 'width', 'thickness'];
-  var defaultValues = [600, 1, 54];
+  var params = ['xHeight', 'width', 'thickness', 'curviness', 'slant'];
+  var defaultValues = [600, 1, 54, 0.6, 0];
   for (var j = 0; j < params.length; j++) {
     Ptypo.changeParam(defaultValues[j], params[j], fontName);
   }

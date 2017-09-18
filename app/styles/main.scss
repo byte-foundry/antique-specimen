@@ -153,11 +153,18 @@ a {
         &#contact {
           font-family: 'antique-contact','antiquegothic', sans-serif;
         }
+        .parameters {
+          opacity: 1;
+          .cta {
+            opacity: 0;
+          }
+        }
         &:hover {
           background-color: mix($white,black, 20%);
           .parameters {
-            font-family: 'antiquegothic', sans-serif;
-            opacity: 1;
+            .cta {
+              opacity: 1;
+            }
           }
         }
         .content {
@@ -243,6 +250,7 @@ a {
   float: right;
   font-size: 32px;
   padding: 1rem 2rem;
+  font-family: 'antiquegothic', sans-serif;
   opacity: 0;
   p {
     margin-bottom: 5px;
@@ -256,12 +264,12 @@ a {
     font-size: .95em;
   }
   .cta {
-    margin-top: -6px;
     display: inline-block;
     vertical-align: middle;
     line-height: 1;
     color: $red;
     text-transform: uppercase;
+    margin-top: -6px;
     font-size: 0.75em;
     padding: 0px 4px 4px 4px;
     border-radius: 5px;
