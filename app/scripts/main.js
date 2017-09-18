@@ -333,11 +333,6 @@ var getRightFreqValue = function(block, low, med, high) {
 
 var updateFonts = function(low, med, high){
   if (getRightFreqValue('header', low, med, high) !== 0) {
-    console.log(choices.header.name);
-    console.log(calculateValue(
-      getAssociatedParam(choices.header.name),
-      getRightFreqValue('contact', low, med, high)
-    ));
     Ptypo.changeParam(
       calculateValue(
         getAssociatedParam(choices.header.name),
