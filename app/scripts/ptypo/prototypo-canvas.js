@@ -68,17 +68,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	var mouseHandlers	= __webpack_require__(6);
 	var init			= __webpack_require__(7);
 	var loadFont		= __webpack_require__(9);
-	
+
 	var _ = { assign: assign },
 		paper = prototypo.paper;
-	
+
 	// constructor
 	function PrototypoCanvas( opts ) {
 		paper.setup( opts.canvas );
 		paper.settings.hitTolerance = 1;
 		// enable pointerevents on the canvas
 		opts.canvas.setAttribute('touch-action', 'none');
-	
+
 		this.opts = _.assign({
 			fill: true,
 			shoNodes: false,
@@ -86,7 +86,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			jQueryListeners: true,
 			glyphrUrl: 'http://www.glyphrstudio.com/online/'
 		}, opts);
-	
+
 		this.canvas = opts.canvas;
 		this.view = paper.view;
 		this.view.center = [ 0, 0 ];
@@ -95,7 +95,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		this.project.activeLayer.scale( 1, -1 );
 		this._fill = this.opts.fill;
 		this._showNodes = this.opts.showNodes;
-	
+
 		this.onlyWorker = opts.onlyWorker;
 		this.familyName = opts.familyName;
 		this.worker = opts.worker;
@@ -103,9 +103,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		this.fontsMap = {};
 		this.isMousedown = false;
 		this.exportingZip = false;
-	
+
 		// this.grid = new Grid( paper );
-	
+
 		// bind workerHandlers
 		if ( this.worker ) {
 			this.worker.addEventListener('message', function(e) {
@@ -113,49 +113,49 @@ return /******/ (function(modules) { // webpackBootstrap
 				if ( !this.currentJob ) {
 					return;
 				}
-	
+
 				if ( this.currentJob.callback ) {
 					this.currentJob.callback( e.data );
-	
+
 				// default callback for buffers: use it as a font
 				} else if ( e.data instanceof ArrayBuffer ) {
 					try {
 						this.font.addToFonts( e.data, this.familyName );
 						// this.emitEvent( 'worker.' + name );
-	
+
 					} catch ( error ) {
 						this.emitEvent( 'fonterror', [ error ] );
 					}
 				}
-	
+
 				this.currentJob = false;
 				this.dequeue();
-	
+
 			}.bind(this));
 		}
-	
+
 		if ( !opts.onlyWorker ) {
 			// bind mouseHandlers (jQuery is an optional dependency)
 			if ( ( 'jQuery' in window ) && this.opts.jQueryListeners ) {
 				var $ = window.jQuery,
 					type = ( 'PointerEventsPolyfill' in window ) ||
 						( 'PointerEvent' in window ) ? 'pointer' : 'mouse';
-	
+
 				$(opts.canvas).on( 'wheel', this.onWheel.bind(this) );
-	
+
 				$(opts.canvas).on( type + 'move', this.onMove.bind(this) );
-	
+
 				$(opts.canvas).on( type + 'down', this.onDown.bind(this) );
-	
+
 				$(document).on( type + 'up', this.onUp.bind(this) );
 			}
-	
+
 			// setup raf loop
 			var raf = window.requestAnimationFrame ||
 					window.webkitRequestAnimationFrame,
 				updateLoop = function() {
 					raf(updateLoop);
-	
+
 					if (
 						!this.latestRafValues ||
 						!this.currGlyph ||
@@ -163,21 +163,21 @@ return /******/ (function(modules) { // webpackBootstrap
 					) {
 						return;
 					}
-	
+
 					this.font.update( this.latestRafValues, [ this.currGlyph ] );
 					this.view.update();
 					delete this.latestRafValues;
-	
+
 				}.bind(this);
 			updateLoop();
 		}
 	}
-	
+
 	PrototypoCanvas.prototype = Object.create( EventEmitter.prototype );
 	PrototypoCanvas.init = init;
 	PrototypoCanvas.prototype.loadFont = loadFont;
 	_.assign( PrototypoCanvas.prototype, mouseHandlers );
-	
+
 	Object.defineProperties( PrototypoCanvas.prototype, {
 		zoom: {
 			get: function() {
@@ -224,21 +224,21 @@ return /******/ (function(modules) { // webpackBootstrap
 					type: 'subset',
 					data: set
 				});
-	
+
 				this.font.subset = set;
 			}
 		}
 	});
-	
+
 	PrototypoCanvas.prototype.displayGlyph = glyph.displayGlyph;
-	
+
 	PrototypoCanvas.prototype.displayChar = function( code ) {
 		this.latestChar = code;
 		this.displayGlyph( typeof code === 'string' ?
 			this.font.charMap[ code.charCodeAt(0) ] : code
 		);
 	};
-	
+
 	// overwrite the appearance of #selected items in paper.js
 	paper.PaperScope.prototype.Path.prototype._drawSelected = glyph._drawSelected;
 	_.assign( paper.settings, {
@@ -248,7 +248,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		drawCoords: false,
 		handleFont: '12px monospace'
 	});
-	
+
 	// The worker queue is not your ordinary queue: the priority of the job is
 	// defined arbitrarily, and any message previously present
 	// at this position will be overwritten. The priorities associated to the
@@ -260,64 +260,64 @@ return /******/ (function(modules) { // webpackBootstrap
 		'otfFont',
 		'alternate'
 	];
-	
+
 	PrototypoCanvas.prototype.enqueue = function( message ) {
 		this._queue[ PrototypoCanvas.priorities.indexOf( message.type ) ] = message;
 		this.dequeue();
 	};
-	
+
 	PrototypoCanvas.prototype.dequeue = function() {
 		if ( this.currentJob || !this.worker ) {
 			return;
 		}
-	
+
 		// send the highest priority mesage in the queue (0 is lowest)
 		for ( var i = this._queue.length; i--; ) {
 			if ( this._queue[i] ) {
 				this.currentJob = this._queue[i];
-	
+
 				// the callback function shouldn't be sent
 				var cb = this.currentJob.callback;
 				delete this.currentJob.callback;
-	
+
 				this.worker.postMessage( this.currentJob );
-	
+
 				this.currentJob.callback = cb;
 				this._queue[i] = null;
 				break;
 			}
 		}
 	};
-	
+
 	PrototypoCanvas.prototype.emptyQueue = function() {
 		this._queue = [];
 		this.currentJob = false;
 	};
-	
+
 	PrototypoCanvas.prototype.update = function( values ) {
 		// latestValues are used in displayGlyph
 		// latestWorkerValues is used and disposed by th/sue fontBufferHandler
 		// latestRafValues is used and disposed by the raf loop
 		// so we need all three!
 		this.latestValues = this.latestRafValues = values;
-	
+
 		this.enqueue({
 			type: 'update',
 			data: values
 		});
 	};
-	
+
 	PrototypoCanvas.prototype.setAlternateFor = function( unicode, glyphName ) {
 		if ( !glyphName ) {
 			Object.keys(unicode).forEach(function(code) {
-	
+
 				if (parseInt(code) === this.currGlyph.src.unicode) {
 					this.displayChar( this.font.glyphMap[unicode[code]] );
 				}
-	
+
 				this.font.setAlternateFor(code, unicode[code]);
 			}.bind(this));
-	
+
 			this.enqueue({
 				type: 'alternate',
 				data: {
@@ -326,9 +326,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			});
 		} else {
 			this.font.setAlternateFor( unicode, glyphName );
-	
+
 			this.displayChar( this.font.glyphMap[glyphName] );
-	
+
 			this.enqueue({
 				type: 'alternate',
 				data: {
@@ -339,7 +339,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 		this.update( this.latestValues );
 	};
-	
+
 	PrototypoCanvas.prototype.download =
 		function( cb, name, merged, values, username ) {
 			this.generateOtf(function( data ) {
@@ -349,7 +349,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				}
 			}.bind(this), name, merged, values);
 		};
-	
+
 	PrototypoCanvas.prototype.getBlob = function( cb, name, merged, values ) {
 		return new Promise(function( resolve, reject ) {
 			try {
@@ -367,14 +367,14 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 		}.bind(this));
 	};
-	
+
 	PrototypoCanvas.prototype.generateOtf = function(cb, name, merged, values) {
 		if ( !this.worker || ( !this.latestValues && !values ) ) {
 			// the UI should wait for the first update to happen before allowing
 			// the download button to be clicked
 			return false;
 		}
-	
+
 		this.enqueue({
 			type: 'otfFont',
 			data: {
@@ -390,14 +390,14 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 		});
 	};
-	
+
 	PrototypoCanvas.prototype.openInGlyphr = function( cb ) {
 		if ( !this.worker || !this.latestValues ) {
 			// the UI should wait for the first update to happen before allowing
 			// the download button to be clicked
 			return false;
 		}
-	
+
 		this.enqueue({
 			// otf/svg switch
 			type: 'otfFont',
@@ -415,13 +415,13 @@ return /******/ (function(modules) { // webpackBootstrap
 						cb();
 					}
 				};
-	
+
 				window.open( this.opts.glyphrUrl );
 				window.addEventListener('message', handler);
 			}.bind(this)
 		});
 	};
-	
+
 	module.exports = PrototypoCanvas;
 
 
@@ -439,21 +439,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * Code refactored from Mozilla Developer Network:
 	 * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
 	 */
-	
+
 	'use strict';
-	
+
 	function assign(target, firstSource) {
 	  if (target === undefined || target === null) {
 	    throw new TypeError('Cannot convert first argument to object');
 	  }
-	
+
 	  var to = Object(target);
 	  for (var i = 1; i < arguments.length; i++) {
 	    var nextSource = arguments[i];
 	    if (nextSource === undefined || nextSource === null) {
 	      continue;
 	    }
-	
+
 	    var keysArray = Object.keys(Object(nextSource));
 	    for (var nextIndex = 0, len = keysArray.length; nextIndex < len; nextIndex++) {
 	      var nextKey = keysArray[nextIndex];
@@ -465,7 +465,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	  return to;
 	}
-	
+
 	function polyfill() {
 	  if (!Object.assign) {
 	    Object.defineProperty(Object, 'assign', {
@@ -476,7 +476,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 	  }
 	}
-	
+
 	module.exports = {
 	  assign: assign,
 	  polyfill: polyfill
@@ -493,10 +493,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * Oliver Caldwell - http://oli.me.uk/
 	 * @preserve
 	 */
-	
+
 	;(function () {
 	    'use strict';
-	
+
 	    /**
 	     * Class for managing events.
 	     * Can be extended to provide event functionality in other classes.
@@ -504,12 +504,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @class EventEmitter Manages event registering and emitting.
 	     */
 	    function EventEmitter() {}
-	
+
 	    // Shortcuts to improve speed and size
 	    var proto = EventEmitter.prototype;
 	    var exports = this;
 	    var originalGlobalValue = exports.EventEmitter;
-	
+
 	    /**
 	     * Finds the index of the listener for the event in its storage array.
 	     *
@@ -525,10 +525,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	                return i;
 	            }
 	        }
-	
+
 	        return -1;
 	    }
-	
+
 	    /**
 	     * Alias a method while keeping the context correct, to allow for overwriting of target method.
 	     *
@@ -541,7 +541,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this[name].apply(this, arguments);
 	        };
 	    }
-	
+
 	    /**
 	     * Returns the listener array for the specified event.
 	     * Will initialise the event object and listener arrays if required.
@@ -555,7 +555,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var events = this._getEvents();
 	        var response;
 	        var key;
-	
+
 	        // Return a concatenated array of all matching events if
 	        // the selector is a regular expression.
 	        if (evt instanceof RegExp) {
@@ -569,10 +569,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        else {
 	            response = events[evt] || (events[evt] = []);
 	        }
-	
+
 	        return response;
 	    };
-	
+
 	    /**
 	     * Takes a list of listener objects and flattens it into a list of listener functions.
 	     *
@@ -582,14 +582,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    proto.flattenListeners = function flattenListeners(listeners) {
 	        var flatListeners = [];
 	        var i;
-	
+
 	        for (i = 0; i < listeners.length; i += 1) {
 	            flatListeners.push(listeners[i].listener);
 	        }
-	
+
 	        return flatListeners;
 	    };
-	
+
 	    /**
 	     * Fetches the requested listeners via getListeners but will always return the results inside an object. This is mainly for internal use but others may find it useful.
 	     *
@@ -599,15 +599,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    proto.getListenersAsObject = function getListenersAsObject(evt) {
 	        var listeners = this.getListeners(evt);
 	        var response;
-	
+
 	        if (listeners instanceof Array) {
 	            response = {};
 	            response[evt] = listeners;
 	        }
-	
+
 	        return response || listeners;
 	    };
-	
+
 	    /**
 	     * Adds a listener function to the specified event.
 	     * The listener will not be added if it is a duplicate.
@@ -622,7 +622,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var listeners = this.getListenersAsObject(evt);
 	        var listenerIsWrapped = typeof listener === 'object';
 	        var key;
-	
+
 	        for (key in listeners) {
 	            if (listeners.hasOwnProperty(key) && indexOfListener(listeners[key], listener) === -1) {
 	                listeners[key].push(listenerIsWrapped ? listener : {
@@ -631,15 +631,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	                });
 	            }
 	        }
-	
+
 	        return this;
 	    };
-	
+
 	    /**
 	     * Alias of addListener
 	     */
 	    proto.on = alias('addListener');
-	
+
 	    /**
 	     * Semi-alias of addListener. It will add a listener that will be
 	     * automatically removed after its first execution.
@@ -654,12 +654,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	            once: true
 	        });
 	    };
-	
+
 	    /**
 	     * Alias of addOnceListener.
 	     */
 	    proto.once = alias('addOnceListener');
-	
+
 	    /**
 	     * Defines an event name. This is required if you want to use a regex to add a listener to multiple events at once. If you don't do this then how do you expect it to know what event to add to? Should it just add to every possible match for a regex? No. That is scary and bad.
 	     * You need to tell it what event names should be matched by a regex.
@@ -671,7 +671,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.getListeners(evt);
 	        return this;
 	    };
-	
+
 	    /**
 	     * Uses defineEvent to define multiple events.
 	     *
@@ -684,7 +684,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        return this;
 	    };
-	
+
 	    /**
 	     * Removes a listener function from the specified event.
 	     * When passed a regular expression as the event name, it will remove the listener from all events that match it.
@@ -697,25 +697,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var listeners = this.getListenersAsObject(evt);
 	        var index;
 	        var key;
-	
+
 	        for (key in listeners) {
 	            if (listeners.hasOwnProperty(key)) {
 	                index = indexOfListener(listeners[key], listener);
-	
+
 	                if (index !== -1) {
 	                    listeners[key].splice(index, 1);
 	                }
 	            }
 	        }
-	
+
 	        return this;
 	    };
-	
+
 	    /**
 	     * Alias of removeListener
 	     */
 	    proto.off = alias('removeListener');
-	
+
 	    /**
 	     * Adds listeners in bulk using the manipulateListeners method.
 	     * If you pass an object as the second argument you can add to multiple events at once. The object should contain key value pairs of events and listeners or listener arrays. You can also pass it an event name and an array of listeners to be added.
@@ -730,7 +730,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // Pass through to manipulateListeners
 	        return this.manipulateListeners(false, evt, listeners);
 	    };
-	
+
 	    /**
 	     * Removes listeners in bulk using the manipulateListeners method.
 	     * If you pass an object as the second argument you can remove from multiple events at once. The object should contain key value pairs of events and listeners or listener arrays.
@@ -745,7 +745,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // Pass through to manipulateListeners
 	        return this.manipulateListeners(true, evt, listeners);
 	    };
-	
+
 	    /**
 	     * Edits listeners in bulk. The addListeners and removeListeners methods both use this to do their job. You should really use those instead, this is a little lower level.
 	     * The first argument will determine if the listeners are removed (true) or added (false).
@@ -763,7 +763,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var value;
 	        var single = remove ? this.removeListener : this.addListener;
 	        var multiple = remove ? this.removeListeners : this.addListeners;
-	
+
 	        // If evt is an object then pass each of its properties to this method
 	        if (typeof evt === 'object' && !(evt instanceof RegExp)) {
 	            for (i in evt) {
@@ -788,10 +788,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	                single.call(this, evt, listeners[i]);
 	            }
 	        }
-	
+
 	        return this;
 	    };
-	
+
 	    /**
 	     * Removes all listeners from a specified event.
 	     * If you do not specify an event then all listeners will be removed.
@@ -805,7 +805,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var type = typeof evt;
 	        var events = this._getEvents();
 	        var key;
-	
+
 	        // Remove different things depending on the state of evt
 	        if (type === 'string') {
 	            // Remove all listeners for the specified event
@@ -823,17 +823,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	            // Remove all listeners in all events
 	            delete this._events;
 	        }
-	
+
 	        return this;
 	    };
-	
+
 	    /**
 	     * Alias of removeEvent.
 	     *
 	     * Added to mirror the node API.
 	     */
 	    proto.removeAllListeners = alias('removeEvent');
-	
+
 	    /**
 	     * Emits an event of your choice.
 	     * When emitted, every listener attached to that event will be executed.
@@ -853,38 +853,38 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var i;
 	        var key;
 	        var response;
-	
+
 	        for (key in listenersMap) {
 	            if (listenersMap.hasOwnProperty(key)) {
 	                listeners = listenersMap[key].slice(0);
 	                i = listeners.length;
-	
+
 	                while (i--) {
 	                    // If the listener returns true then it shall be removed from the event
 	                    // The function is executed either with a basic call or an apply if there is an args array
 	                    listener = listeners[i];
-	
+
 	                    if (listener.once === true) {
 	                        this.removeListener(evt, listener.listener);
 	                    }
-	
+
 	                    response = listener.listener.apply(this, args || []);
-	
+
 	                    if (response === this._getOnceReturnValue()) {
 	                        this.removeListener(evt, listener.listener);
 	                    }
 	                }
 	            }
 	        }
-	
+
 	        return this;
 	    };
-	
+
 	    /**
 	     * Alias of emitEvent
 	     */
 	    proto.trigger = alias('emitEvent');
-	
+
 	    /**
 	     * Subtly different from emitEvent in that it will pass its arguments on to the listeners, as opposed to taking a single array of arguments to pass on.
 	     * As with emitEvent, you can pass a regex in place of the event name to emit to all events that match it.
@@ -897,7 +897,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var args = Array.prototype.slice.call(arguments, 1);
 	        return this.emitEvent(evt, args);
 	    };
-	
+
 	    /**
 	     * Sets the current value to check against when executing listeners. If a
 	     * listeners return value matches the one set here then it will be removed
@@ -910,7 +910,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this._onceReturnValue = value;
 	        return this;
 	    };
-	
+
 	    /**
 	     * Fetches the current value to check against when executing listeners. If
 	     * the listeners return value matches this one then it should be removed
@@ -927,7 +927,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return true;
 	        }
 	    };
-	
+
 	    /**
 	     * Fetches the events object and creates one if required.
 	     *
@@ -937,7 +937,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    proto._getEvents = function _getEvents() {
 	        return this._events || (this._events = {});
 	    };
-	
+
 	    /**
 	     * Reverts the global {@link EventEmitter} to its previous value and returns a reference to this version.
 	     *
@@ -947,7 +947,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        exports.EventEmitter = originalGlobalValue;
 	        return EventEmitter;
 	    };
-	
+
 	    // Expose the class either via AMD, CommonJS or the global object
 	    if (true) {
 	        !(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
@@ -973,13 +973,13 @@ return /******/ (function(modules) { // webpackBootstrap
 			component.contours.forEach(function(contour) {
 				contour.fullySelected = showNodes && !contour.skeleton;
 			});
-	
+
 			if ( component.components.length ) {
 				displayComponents( component, showNodes );
 			}
 		});
 	}
-	
+
 	function displayGlyph( _glyph ) {
 		var glyph =
 				// no glyph means we're switching fill mode for the current glyph
@@ -987,11 +987,11 @@ return /******/ (function(modules) { // webpackBootstrap
 				// accept glyph name and glyph object
 				typeof _glyph === 'string' ? this.font.glyphMap[_glyph] :
 				_glyph;
-	
+
 		if ( glyph === undefined ) {
 			return;
 		}
-	
+
 		// hide previous glyph
 		if ( this.currGlyph && this.currGlyph !== glyph ) {
 			this.currGlyph.visible = false;
@@ -999,17 +999,17 @@ return /******/ (function(modules) { // webpackBootstrap
 				component.visible = false;
 			}, this);
 		}
-	
+
 		this.currGlyph = glyph;
-	
+
 		// make sure the glyph is up-to-update
 		if ( _glyph && this.latestValues ) {
 			this.currGlyph.update( this.latestValues );
 		}
-	
+
 		// .. and show it
 		this.currGlyph.visible = true;
-	
+
 		if ( this._fill ) {
 			this.currGlyph.fillColor = '#333333';
 			this.currGlyph.strokeWidth = 0;
@@ -1017,19 +1017,19 @@ return /******/ (function(modules) { // webpackBootstrap
 			this.currGlyph.fillColor = null;
 			this.currGlyph.strokeWidth = 1;
 		}
-	
+
 		this.currGlyph.contours.forEach(function(contour) {
 			contour.fullySelected = this._showNodes && !contour.skeleton;
 		}, this);
-	
+
 		if ( this.currGlyph.components.length ) {
 			displayComponents( this.currGlyph, this._showNodes );
 		}
-	
+
 		this.view._project._needsUpdate = true;
 		this.view.update();
 	}
-	
+
 	// Path#_selectedSegmentState is the addition of all segment's states, and is
 	// compared with SelectionState.SEGMENT, the combination of all SelectionStates
 	// to see if all segments are fully selected.
@@ -1041,21 +1041,21 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 		worldCoords = new Float32Array(6),
 		viewCoords = new Float32Array(6);
-	
+
 	function drawHandles(ctx, segments, matrix, settings, zoom) {
 		var size = settings.handleSize,
 			half = size / 2,
 			pX,
 			pY;
-	
+
 		function drawHandle(j) {
 			var hX = Math.round( viewCoords[j] ),
 				hY = Math.round( viewCoords[j + 1] ),
 				text;
-	
+
 			if ( viewCoords[0] !== viewCoords[j] ||
 					viewCoords[1] !== viewCoords[j + 1]) {
-	
+
 				ctx.beginPath();
 				ctx.strokeStyle = settings.handleColor;
 				ctx.fillStyle = settings.handleColor;
@@ -1065,11 +1065,11 @@ return /******/ (function(modules) { // webpackBootstrap
 				ctx.beginPath();
 				ctx.arc(hX, hY, half, 0, Math.PI * 2, true);
 				ctx.fill();
-	
+
 				if ( settings.drawCoords ) {
 					text = Math.round( worldCoords[j] ) + ',' +
 						Math.round( worldCoords[j + 1] );
-	
+
 					// use alpha to reduce the clutter caused by all this text when
 					// zooming out
 					if ( zoom < 1.7 ) {
@@ -1091,7 +1091,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				}
 			}
 		}
-	
+
 		for (var i = 0, l = segments.length; i < l; i++) {
 			var segment = segments[i];
 			segment._transformCoordinates(null, worldCoords, false);
@@ -1109,7 +1109,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			ctx.fillStyle = settings.nodeColor;
 			ctx.fillRect( pX - half, pY - half, size, size );
 			ctx.font = settings.handleFont;
-	
+
 			if ( settings.drawCoords ) {
 				if ( zoom < 1.7 ) {
 					ctx.globalAlpha = 0.4;
@@ -1126,7 +1126,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 		}
 	}
-	
+
 	function _drawSelected( ctx, matrix ) {
 		ctx.beginPath();
 		// Now stroke it and draw its handles:
@@ -1139,7 +1139,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			this._project._view._zoom
 		);
 	}
-	
+
 	module.exports = {
 		displayGlyph: displayGlyph,
 		_drawSelected: _drawSelected
@@ -1151,7 +1151,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var paper = __webpack_require__(2).paper;
-	
+
 	function wheelHandler( event ) {
 		var bcr = this.canvas.getBoundingClientRect(),
 			currPos = new paper.Point(
@@ -1171,48 +1171,48 @@ return /******/ (function(modules) { // webpackBootstrap
 			beta = this.view.zoom / newZoom,
 			difference = viewPos.subtract( this.view.center ),
 			newCenter = viewPos.subtract( difference.multiply(beta) );
-	
+
 		this.zoom = newZoom;
 		this.view.center = newCenter;
-	
+
 		event.preventDefault();
 	}
-	
+
 	function moveHandler(event) {
 		if ( !this.isMousedown ) {
 			return;
 		}
-	
+
 		var currPos = new paper.Point( event.clientX, event.clientY ),
 			delta = currPos.subtract( this.prevPos );
-	
+
 		this.prevPos = currPos;
-	
+
 		this.view.center = this.view.center.subtract(
 				delta.divide( this.view.zoom ) );
 	}
-	
+
 	function downHandler(event) {
 		if (event.button && event.button !== 0) {
 			return;
 		}
-	
+
 		this.isMousedown = true;
 		this.prevPos = new paper.Point( event.clientX, event.clientY );
 	}
-	
+
 	function upHandler() {
 		this.isMousedown = false;
 	}
-	
+
 	function zoomIn() {
 		this.zoom = this.view.zoom * 1 + this.opts.zoomFactor;
 	}
-	
+
 	function zoomOut() {
 		this.zoom = this.view.zoom / 1 + this.opts.zoomFactor;
 	}
-	
+
 	module.exports = {
 		onWheel: wheelHandler,
 		onMove: moveHandler,
@@ -1228,12 +1228,12 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var shell = __webpack_require__(8);
-	
+
 	var URL = typeof window !== 'undefined' && ( window.URL || window.webkitURL );
-	
+
 	module.exports = function init( opts ) {
 		var constructor = this;
-	
+
 		// the worker can be loaded from a file by specifying its url (dev
 		// environment), or by building it as a blob, from a require'd file.
 		if ( !opts.workerUrl ) {
@@ -1249,7 +1249,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				])
 			);
 		}
-	
+
 		// create the worker
 		return new Promise(function( resolve ) {
 			var worker = opts.worker = new Worker( opts.workerUrl ),
@@ -1257,13 +1257,13 @@ return /******/ (function(modules) { // webpackBootstrap
 					worker.removeEventListener('message', handler);
 					resolve();
 				};
-	
+
 			worker.addEventListener('message', handler);
 			worker.postMessage( Array.isArray( opts.workerDeps ) ?
 				opts.workerDeps :
 				[ opts.workerDeps ]
 			);
-	
+
 		}).then(function() {
 			return new constructor( opts );
 		});
@@ -1285,36 +1285,36 @@ return /******/ (function(modules) { // webpackBootstrap
 					if ( !currSubset.length ) {
 						return;
 					}
-	
+
 					font.subset = currSubset.map(function( glyph ) {
 						return font.charMap[ glyph.ot.unicode ];
 					}).filter(Boolean);
-	
+
 					currSubset = font.subset;
 				};
-	
+
 			prototypo.paper.setup({
 				width: 1024,
 				height: 1024
 			});
-	
+
 			// mini router
 			self.onmessage = function(e) {
 				var result;
-	
+
 				if ( e.data.type && e.data.type in handlers ) {
 					result = handlers[ e.data.type ]( e.data.data, e.data.name );
-	
+
 					if ( result === null ) {
 						return;
 					}
-	
+
 					self.postMessage(
 						result,
 						result instanceof ArrayBuffer ? [ result ] : undefined );
 				}
 			};
-	
+
 			handlers.font = function( fontSource, name ) {
 				// TODO: this should be done using a memoizing table of limited size
 				if ( name in fontsMap ) {
@@ -1322,22 +1322,22 @@ return /******/ (function(modules) { // webpackBootstrap
 					translateSubset();
 					return null;
 				}
-	
+
 				var fontObj = JSON.parse( fontSource );
-	
+
 				font = prototypo.parametricFont(fontObj);
 				fontsMap[name] = font;
-	
+
 				translateSubset();
-	
+
 				var solvingOrders = {};
 				Object.keys( font.glyphMap ).forEach(function(key) {
 					solvingOrders[key] = font.glyphMap[key].solvingOrder;
 				});
-	
+
 				return solvingOrders;
 			};
-	
+
 			handlers.update = function( params ) {
 				currValues = params;
 				font.update( currValues );
@@ -1345,29 +1345,29 @@ return /******/ (function(modules) { // webpackBootstrap
 				var result = font.toArrayBuffer();
 				return result;
 			};
-	
+
 			handlers.soloAlternate = function( params ) {
 				font.setAlternateFor( params.unicode, params.glyphName );
-	
+
 				if (!currValues) {
 					return true;
 				}
-	
+
 				font.subset = font.subset.map(function( glyph ) {
 					return String.fromCharCode(glyph.unicode);
 				}).join('');
-	
+
 				var altGlyph = font.glyphMap[params.glyphName];
-	
+
 				altGlyph.update( currValues );
 				altGlyph.updateOTCommands();
-	
+
 				// Recreate the correct font.ot.glyphs.glyphs object, without
 				// touching the ot commands
 				font.updateOT({ set: undefined });
 				return font.toArrayBuffer();
 			};
-	
+
 			handlers.alternate = function( params ) {
 				if ( params.altList ) {
 					Object.keys( params.altList ).forEach(function( unicode ) {
@@ -1380,60 +1380,60 @@ return /******/ (function(modules) { // webpackBootstrap
 					handlers.soloAlternate( params );
 				}
 			};
-	
+
 			handlers.subset = function( set ) {
 				var prevGlyphs = currSubset.map(function( glyph ) {
 					return glyph.name;
 				});
 				font.subset = set;
 				currSubset = font.subset;
-	
+
 				if ( !currValues ) {
 					return true;
 				}
-	
+
 				// search for glyphs *added* to the subset
 				currSubset.filter(function( glyph ) {
 					return prevGlyphs.indexOf( glyph.name ) === -1;
-	
+
 				// update those glyphs
 				}).forEach(function( glyph ) {
 					glyph.update( currValues );
 					glyph.updateOTCommands();
 				});
-	
+
 				// Recreate the correct font.ot.glyphs.glyphs object, without
 				// touching the ot commands
 				font.updateOT({ set: undefined });
 				return font.toArrayBuffer();
 			};
-	
+
 			handlers.otfFont = function(data) {
 				// force-update of the whole font, ignoring the current subset
 				var allChars = font.getGlyphSubset( false );
 				var fontValues = data && data.values || currValues;
 				font.update( fontValues, allChars );
-	
+
 				font.updateOTCommands( allChars, data && data.merged || false );
-	
+
 				var family = font.ot.familyName;
 				var style = font.ot.styleName;
-	
+
 				//TODO: understand why we need to save the familyName and
 				//and set them back into the font.ot for it to be able to
 				//export multiple font
 				font.ot.familyName = data && data.family || 'Prototypo';
 				font.ot.styleName = data && data.style || 'regular';
-	
+
 				var result = font.toArrayBuffer();
-	
+
 				font.ot.familyName = family;
 				font.ot.styleName = style;
-	
+
 				return result;
 			};
 		}
-	
+
 		// This is how bundle dependencies are loaded
 		if ( typeof global === 'undefined' && 'importScripts' in self ) {
 			var handler = function initWorker( e ) {
@@ -1442,18 +1442,18 @@ return /******/ (function(modules) { // webpackBootstrap
 					runWorker();
 					self.postMessage('ready');
 				};
-	
+
 			self.addEventListener('message', handler);
 		}
 	}
-	
+
 	// When the worker is loaded from URL, worker() needs to be called explicitely
 	if ( typeof global === 'undefined' && 'importScripts' in self ) {
 		prepareWorker();
 	} else {
 		module.exports = prepareWorker;
 	}
-	
+
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
@@ -1466,19 +1466,19 @@ return /******/ (function(modules) { // webpackBootstrap
 		if ( !self.currGlyph ) {
 			return;
 		}
-	
+
 		self.displayGlyph(
 			self.font.glyphMap[ self.currGlyph.name ] ||
 			self.font.charMap[ self.currGlyph.ot.unicode ] ||
 			self.font.glyphMap[ '.undef' ]
 		);
 	}
-	
+
 	module.exports = function loadFont( name, fontSource ) {
 		// ignore the job currently running, empty the queue and clear update values
 		this.emptyQueue();
 		this.latestValues = this.latestRafValues = null;
-	
+
 		// TODO: memoizing should have a limited size!
 		if ( name in this.fontsMap ) {
 			this.font = this.fontsMap[name];
@@ -1489,52 +1489,38 @@ return /******/ (function(modules) { // webpackBootstrap
 			});
 			return Promise.resolve( this.font );
 		}
-	
-		return ( fontSource.charAt(0) === '{' ?
-			Promise.resolve( fontSource ) :
-			// fetch the resource from URL
-			fetch( fontSource )
-	
-		).then(function( result ) {
-			return typeof result === 'string' || result.text();
-	
-		}).then(function( result ) {
-			if ( result !== true ) {
-				fontSource = result;
-			}
-	
+
 			return new Promise(function( resolve ) {
-				var fontObj = JSON.parse( fontSource ),
+				var fontObj = fontSource,
 					handler = function( e ) {
 						if ( typeof e.data !== 'object' ) {
 							return;
 						}
 						this.worker.removeEventListener('message', handler);
-						
+
 						// merge solvingOrders with the source
 						Object.keys( e.data ).forEach(function(key) {
 							if ( fontObj.glyphs[key] ) {
 								fontObj.glyphs[key].solvingOrder = e.data[key];
 							}
 						});
-	
+
 						this.font = prototypo.parametricFont( fontObj );
 						this.fontsMap[name] = this.font;
 						translateGlyph( this );
-	
+
 						resolve( this );
 					}.bind(this);
-	
+
 				this.worker.addEventListener('message', handler);
-	
+
 				this.worker.postMessage({
 					type: 'font',
 					name: name,
-					data: fontSource
+					data: JSON.stringify(fontSource)
 				});
-	
+
 			}.bind(this));
-		}.bind(this));
 	};
 
 

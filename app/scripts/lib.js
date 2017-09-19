@@ -3,7 +3,7 @@
 
 	var values = Ptypo.values = {};
 	var init = Ptypo.init = {};
-	var tweens = Ptypo.tweens = {};
+  var tweens = Ptypo.tweens = {};
 	Ptypo.createFont = function( name, font, data) {
 		return window.PrototypoCanvas.init({
 			canvas: document.getElementById('canvas'),
@@ -12,7 +12,7 @@
 			onlyWorker: true,
 			familyName: name,
 		}).then(function( instance ) {
-			return instance.loadFont(font, '/fonts/' + font + '.json');
+			return instance.loadFont(font, data);
 		}).then(function( instance ) {
 			Ptypo[name] = instance;
 			values[name] = {};
@@ -24,7 +24,7 @@
 					values[name][param.name] = param.init;
 				});
 			});
-			Ptypo[name].subset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890,;.?';
+			Ptypo[name].subset = ' ,.0345?ACEFGLPSTWYabcdefghijklmnopqrstuvwxy\'';
 			Ptypo[name].update(values[name]);
 
 		});;
