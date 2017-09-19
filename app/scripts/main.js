@@ -12,8 +12,34 @@ jQuery(document).ready(function($) {
   $('#twitter a').attr('href', 'http://twitter.com/home?status=' + titleTwitter + ' ' + UrlEncoded);
   $('#googleplus a').attr('href', 'https://plus.google.com/share?url=' + UrlEncoded);
   $('#linkedin a').attr('href', 'http://www.linkedin.com/shareArticle?mini=true&url=' + UrlEncoded + '&title=' + titleLinkedin);
-});
 
+  var allowedKeys = {
+    37: 'left',
+    38: 'up',
+    39: 'right',
+    40: 'down',
+    65: 'a',
+    66: 'b'
+  };
+  var konamiCode = ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a'];
+  var konamiCodePosition = 0;
+  document.addEventListener('keydown', function(e) {
+    var key = allowedKeys[e.keyCode];
+    var requiredKey = konamiCode[konamiCodePosition];
+    if (key == requiredKey) {
+      konamiCodePosition++;
+      if (konamiCodePosition == konamiCode.length) {
+        activateCheats();
+        konamiCodePosition = 0;
+      }
+    } else {
+      konamiCodePosition = 0;
+    }
+  }, {passive: true});
+  function activateCheats() {
+    $('body').toggleClass('konami');
+  }
+});
 /** Utilities **/
 function getValue(min, max, percent) {
   return ((percent / 100) * (max - min)) + min;
