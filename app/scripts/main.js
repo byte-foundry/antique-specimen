@@ -13,6 +13,17 @@ jQuery(document).ready(function($) {
   $('#googleplus a').attr('href', 'https://plus.google.com/share?url=' + UrlEncoded);
   $('#linkedin a').attr('href', 'http://www.linkedin.com/shareArticle?mini=true&url=' + UrlEncoded + '&title=' + titleLinkedin);
 
+  var navbar = $('nav')
+  var resBtn = $('.resbtn');
+  var ulList = $('nav ul');
+   resBtn.on('click', function () {
+       if(ulList.height() == 0) {
+           ulList.animate({height: '5.5em'}, 300);
+       }else {
+           ulList.animate({height: '0em'}, 300);
+       }
+   });
+
   var allowedKeys = {
     37: 'left',
     38: 'up',
@@ -368,7 +379,7 @@ var calculateValue = function(param, freqValue) {
       return (freqValue * 1.5) + 400;
       break;
     case 'curviness':
-      return (freqValue / 110) - 0.45;
+      return (freqValue / 160);
       break;
     case 'slant':
       return (freqValue / 10) - 3;
@@ -563,11 +574,11 @@ $configModalButton.on('click', function () {
       console.log(error);
   }
 
-  /*window.navigator = window.navigator || {};
-  /*navigator.getUserMedia =  navigator.getUserMedia       ||
+  window.navigator = window.navigator || {};
+  navigator.getUserMedia =  navigator.getUserMedia       ||
                             navigator.webkitGetUserMedia ||
                             navigator.mozGetUserMedia    ||
-                            null;*/
+                            null;
   navigator.getUserMedia({audio:true}, soundAllowed, soundNotAllowed);
 
 });
