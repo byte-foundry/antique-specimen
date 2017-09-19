@@ -284,7 +284,7 @@ var Modal = (function() {
 
 
         isOpen = false;
-        if (openedModal === 'configure' && soundOn) {
+        if (openedModal === 'configure') {
           $('#visualizer').prependTo('#navRight');
           $('<span class="microphone-control"></span>').prependTo('#navRight');
           $('.microphone-control').on('click', toggleMicrophone);
@@ -388,7 +388,7 @@ var calculateValue = function(param, freqValue) {
       return freqValue / 3 + 4 ;
       break;
     case 'width':
-      return (freqValue / 220) + 0.5;
+      return (freqValue / 230) + 0.45;
       break;
     case 'xHeight':
       return (freqValue * 1.5) + 400;
@@ -584,7 +584,7 @@ $configModalButton.on('click', function () {
               }
             }
 
-          }
+          } else isRaf = false;
       }
       doDraw();
       console.log('Started sound analysis');

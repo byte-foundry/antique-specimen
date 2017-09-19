@@ -24,7 +24,7 @@
 					values[name][param.name] = param.init;
 				});
 			});
-			Ptypo[name].subset = ' ,.0345?ACEFGLPSTWYabcdefghijklmnopqrstuvwxy’';
+			Ptypo[name].subset = ',.0345?ACEFGLPSTWYabcdefghijklmnopqrstuvwxy’';
 			Ptypo[name].update(values[name]);
 
 		});;

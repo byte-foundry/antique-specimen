@@ -233,7 +233,7 @@ a {
           margin-top: 0;
           margin-bottom: 0;
           .cta {
-            margin-top: -10px;
+            margin-top: 2px;
             display: inline-block;
             vertical-align: middle;
             line-height: 1;
@@ -320,6 +320,7 @@ nav {
   width: 100%;
   background-color: white;
   z-index: 10;
+  user-select: none;
   .resbtn {
     display: none;
     width: 40px;
@@ -435,11 +436,30 @@ nav {
 }
 
 @media screen and (max-width: 648px) {
+  body.loading nav {
+    display: none;
+  }
+  #loading {
+    .content {
+      font-size: 1.3rem;
+
+      img {
+        width: 1.5rem;
+        height: auto;
+      }
+      .small {
+        font-size: 0.8em;
+      }
+    }
+  }
   .container-fluid {
     .row {
       .box {
         .parametric{
-          margin-top: 1em;
+          margin-top: .2em;
+          &.first {
+            margin-top: 1em;
+          }
         }
         .interactive {
           &#header {
@@ -467,13 +487,20 @@ nav {
           }
         }
         .content {
+          padding-top: 0;
+          br {
+            display: none;
+          }
           .title {
           }
           .headline {
+            margin-top: 2em;
             margin-bottom: -1rem;
           }
           h1 {
             margin-bottom: -1rem;
+            padding-left: .5rem;
+            padding-right: .5rem;
             .cta {
               font-size: 28px;
               margin-top: -50px;
@@ -484,6 +511,9 @@ nav {
             }
           }
           p {
+            padding-top: 0;
+            padding-left: .5rem;
+            padding-right: .5rem;
             .cta {
               font-size: 18px;
               margin-top: inherit;
