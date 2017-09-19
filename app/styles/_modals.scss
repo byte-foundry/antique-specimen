@@ -1,9 +1,9 @@
 $modal-z: 1000;
 $modal-bg: $white;
-$modal-width: 350px;
+$modal-width: 450px;
 $modal-delay: 0s;
 
-$space: 20px;
+$space: 50px;
 
 $t: .5s;
 
@@ -38,9 +38,10 @@ $t: .5s;
   font-size: 30px;
 
   .title {
-    text-decoration: underline;
+    border-bottom: 2px solid $black;
+    display: inline-block;
     margin-top: 0;
-    font-size: .75em;
+    font-size: 1.1em;
   }
 
 	&--active {
@@ -121,9 +122,9 @@ $t: .5s;
   .cta {
     color: $red;
     cursor: pointer;
-    font-size: .7em;
+    font-size: 1em;
     &:hover {
-      color: mix(black, $red, 20%);
+      color: mix(black, $red, 10%);
     }
   }
 

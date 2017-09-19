@@ -39,6 +39,44 @@ jQuery(document).ready(function($) {
   function activateCheats() {
     $('body').toggleClass('konami');
   }
+
+  // Select all links with hashes
+$('a[href*="#"]')
+  // Remove links that don't actually link to anything
+  .not('[href="#"]')
+  .not('[href="#0"]')
+  .click(function(event) {
+    // On-page links
+    if (
+      location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '')
+      &&
+      location.hostname == this.hostname
+    ) {
+      // Figure out element to scroll to
+      var target = $(this.hash);
+      target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+      // Does a scroll target exist?
+      if (target.length) {
+        // Only prevent default if animation is actually gonna happen
+        event.preventDefault();
+        $('html, body').animate({
+          scrollTop: target.offset().top - 50
+        }, 1000, function() {
+          // Callback after animation
+          // Must change focus!
+          var $target = $(target);
+          $target.focus();
+          if ($target.is(":focus")) { // Checking if the target was focused
+            return false;
+          } else {
+            $target.attr('tabindex','-1'); // Adding tabindex for elements not focusable
+            $target.focus(); // Set focus again
+          };
+        });
+      }
+    }
+  });
+
 });
 /** Utilities **/
 function getValue(min, max, percent) {
@@ -469,11 +507,11 @@ $configModalButton.on('click', function () {
 
       var frequencyArray = new Uint8Array(analyser.frequencyBinCount);
       visualizer.setAttribute('viewBox', '0 0 255 255');
-      for (var i = 0 ; i < 255; i++) {
-          path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-          path.setAttribute('stroke-dasharray', '4,1');
-          mask.appendChild(path);
-      }
+      // for (var i = 0 ; i < 255; i++) {
+      //     path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      //     path.setAttribute('stroke-dasharray', '4,1');
+      //     mask.appendChild(path);
+      // }
       var doDraw = function () {
           if (!isRaf) {
             requestAnimationFrame(doDraw);
@@ -485,7 +523,7 @@ $configModalButton.on('click', function () {
 
             for (var i = 0 ; i < 255; i++) {
               adjustedLength = Math.floor(frequencyArray[i]) - (Math.floor(frequencyArray[i]) % 5);
-              paths[i].setAttribute('d', 'M '+ (i) +',255 l 0,-' + adjustedLength);
+              // paths[i].setAttribute('d', 'M '+ (i) +',255 l 0,-' + adjustedLength);
             }
             if (fontsCreated) {
               // low

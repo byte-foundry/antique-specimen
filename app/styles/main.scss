@@ -170,7 +170,7 @@ a {
           font-family: 'antique-contact','antiquegothic', sans-serif;
         }
         .parameters {
-          opacity: 1;
+          opacity: 0.4;
           .cta {
             opacity: 0;
           }
@@ -178,6 +178,7 @@ a {
         &:hover {
           background-color: mix($white,black, 20%);
           .parameters {
+             opacity: 1;
             .cta {
               opacity: 1;
             }
@@ -215,7 +216,7 @@ a {
             text-transform: uppercase;
             font-size: 0.5rem;
             cursor: pointer;
-            padding: 8px;
+            padding: 3px 0px 10px 8px;
             border-radius: 5px;
             font-family: 'antiquegothic', sans-serif;
             &:hover {
@@ -341,7 +342,7 @@ nav {
   li {
     text-transform: uppercase;
     display: inline-block;
-    padding: 20px 40px;
+    padding: 20px;
     &:hover {
       color: $red;
       cursor: pointer;
@@ -381,6 +382,12 @@ nav {
       font-size: 22px;
       height: 40px;
       display: inline-block;
+      position: relative;
+      sup {
+        position: absolute;
+        left: -15px;
+        top: 5px;
+      }
       a {
         height: 40px;
       }
@@ -401,6 +408,8 @@ footer {
   margin-bottom: 1rem;
   padding-left: 1rem;
   padding-right: 1rem;
+  margin-top: 1rem;
+  font-size: .6rem;
 }
 
 
