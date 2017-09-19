@@ -94,6 +94,21 @@ function getValue(min, max, percent) {
   return ((percent / 100) * (max - min)) + min;
 }
 
+function debounce(func, wait, immediate) {
+	var timeout;
+	return function() {
+		var context = this, args = arguments;
+		var later = function() {
+			timeout = null;
+			if (!immediate) func.apply(context, args);
+		};
+		var callNow = immediate && !timeout;
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+		if (callNow) func.apply(context, args);
+	};
+};
+
 /** Browser checking **/
 var parser = new UAParser();
 // by default it takes ua string from current browser's window.navigator.userAgent
@@ -269,7 +284,7 @@ var Modal = (function() {
 
 
         isOpen = false;
-        if (openedModal === 'configure') {
+        if (openedModal === 'configure' && soundOn) {
           $('#visualizer').prependTo('#navRight');
           $('<span class="microphone-control"></span>').prependTo('#navRight');
           $('.microphone-control').on('click', toggleMicrophone);
@@ -406,7 +421,7 @@ var getRightFreqValue = function(block, low, med, high) {
   }
 }
 
-var updateFonts = function(low, med, high){
+var updateFonts = debounce(function(low, med, high){
   if (getRightFreqValue('header', low, med, high) !== 0) {
     Ptypo.changeParam(
       calculateValue(
@@ -447,8 +462,7 @@ var updateFonts = function(low, med, high){
       'antique-contact'
     );
   }
-  isRaf = false;
-};
+}, 10);
 
 var resetFont = function(fontName) {
   var params = ['xHeight', 'width', 'thickness', 'curviness', 'slant'];
@@ -518,11 +532,14 @@ $configModalButton.on('click', function () {
 
       var frequencyArray = new Uint8Array(analyser.frequencyBinCount);
       visualizer.setAttribute('viewBox', '0 0 255 255');
-      // for (var i = 0 ; i < 255; i++) {
-      //     path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      //     path.setAttribute('stroke-dasharray', '4,1');
-      //     mask.appendChild(path);
-      // }
+      for (var i = 0 ; i < 255; i++) {
+          path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          path.setAttribute('stroke-dasharray', '4,1');
+          mask.appendChild(path);
+      }
+      var lastMedValue = 0;
+      var lastLowValue = 0;
+      var lastHighValue = 0;
       var doDraw = function () {
           if (!isRaf) {
             requestAnimationFrame(doDraw);
@@ -530,11 +547,11 @@ $configModalButton.on('click', function () {
           isRaf = true;
           analyser.getByteFrequencyData(frequencyArray);
           var adjustedLength;
+          var updateTrigger = 10;
           if (soundOn) {
-
             for (var i = 0 ; i < 255; i++) {
               adjustedLength = Math.floor(frequencyArray[i]) - (Math.floor(frequencyArray[i]) % 5);
-              // paths[i].setAttribute('d', 'M '+ (i) +',255 l 0,-' + adjustedLength);
+              paths[i].setAttribute('d', 'M '+ (i) +',255 l 0,-' + adjustedLength);
             }
             if (fontsCreated) {
               // low
@@ -559,7 +576,12 @@ $configModalButton.on('click', function () {
               var high = total / 10;
               var adjustedHigh = Math.floor(high) - (Math.floor(high) % 5);
 
-              updateFonts(adjustedLow, adjustedMed, adjustedHigh);
+              if (Math.abs(lastLowValue - low) > updateTrigger || Math.abs(lastMedValue - med) > updateTrigger || Math.abs(lastHighValue - high) > updateTrigger) {
+                updateFonts(adjustedLow, adjustedMed, adjustedHigh);
+                isRaf = false;
+              } else {
+                isRaf = false;
+              }
             }
 
           }
