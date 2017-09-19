@@ -547,7 +547,7 @@ $configModalButton.on('click', function () {
           isRaf = true;
           analyser.getByteFrequencyData(frequencyArray);
           var adjustedLength;
-          var updateTrigger = 10;
+          var updateTrigger = 20;
           if (soundOn) {
             for (var i = 0 ; i < 255; i++) {
               adjustedLength = Math.floor(frequencyArray[i]) - (Math.floor(frequencyArray[i]) % 5);
