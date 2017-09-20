@@ -127,6 +127,10 @@ $('a[href*="#"]')
       lastScrollTop = st;
   }
 
+  $('#toast .cta').on('click', function() {
+    $('#modal-config').click();
+  })
+
 });
 /** Utilities **/
 function getValue(min, max, percent) {
@@ -537,6 +541,8 @@ var isMicOn = false;
 var isRaf = false;
 var $configModalButton = $('#modal-config');
 var listening = false;
+
+
 $configModalButton.on('click', function () {
   var paths = document.getElementsByTagName('path');
   var visualizer = document.getElementById('visualizer');
@@ -704,6 +710,13 @@ $(document).ready(function() {
             $('body').removeClass('loading');
           setTimeout(function () {
             $('#loading').hide();
+            setTimeout(function () {
+              if (!listening) {
+                var x = document.getElementById('toast')
+                x.className = 'show';
+                setTimeout(function(){ x.className = x.className.replace('show', ''); }, 5000);
+              }
+            }, 10000);
           }, 800);
         }, 100);
       });
