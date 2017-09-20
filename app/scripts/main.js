@@ -536,6 +536,7 @@ $('#parameter-frequency li').on('click', function(e) {onParameterFrequencyModalC
 var isMicOn = false;
 var isRaf = false;
 var $configModalButton = $('#modal-config');
+var listening = false;
 $configModalButton.on('click', function () {
   var paths = document.getElementsByTagName('path');
   var visualizer = document.getElementById('visualizer');
@@ -579,11 +580,13 @@ $configModalButton.on('click', function () {
       var lastMedValue = 0;
       var lastLowValue = 0;
       var lastHighValue = 0;
+      var noSoundCount = 0;
       var doDraw = function () {
           if (!isRaf) {
             requestAnimationFrame(doDraw);
           }
           isRaf = true;
+          listening = true;
           analyser.getByteFrequencyData(frequencyArray);
           var adjustedLength;
           var updateTrigger = 20;
@@ -621,6 +624,21 @@ $configModalButton.on('click', function () {
               } else {
                 isRaf = false;
               }
+
+              if (low === 0 && med === 0 && high === 0) {
+                noSoundCount ++;
+              } else {
+                if (noSoundCount >= 190) {
+                  $(h).hide();
+                  $(visualizer).show();
+                }
+                noSoundCount = 0;
+              }
+              if (noSoundCount === 200) {
+                $(h).show();
+                h.innerHTML = 'No sound detected. Please check your microphone';
+                $(visualizer).hide();
+              }
             }
 
           } else isRaf = false;
@@ -630,6 +648,7 @@ $configModalButton.on('click', function () {
   }
 
   var soundNotAllowed = function (error) {
+      $(h).show();
       h.innerHTML = 'No sound detected. Have you allowed your microphone?';
       $(visualizer).hide();
       console.log(error);
@@ -640,7 +659,7 @@ $configModalButton.on('click', function () {
                             navigator.webkitGetUserMedia ||
                             navigator.mozGetUserMedia    ||
                             null;
-  navigator.getUserMedia({audio:true}, soundAllowed, soundNotAllowed);
+  navigator.getUserMedia({audio:true}, !listening ? soundAllowed : function(){}, soundNotAllowed);
 
 });
 

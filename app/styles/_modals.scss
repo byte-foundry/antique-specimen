@@ -44,6 +44,31 @@ $t: .5s;
     font-size: 1.1em;
   }
 
+  #soundcapturelog {
+    display: none;
+    font-size: .7em;
+    color: mix(white, $black, 60%);
+    text-align: center;
+    margin: 0;
+    &:before, &:after {
+      content:'';
+      display:inline-block;
+      height:1px;
+      background: mix(white, $black, 60%);
+      width:10%;
+      position:relative;
+      vertical-align:middle;
+    }
+    &:before {
+      left:-0.5em;
+      margin-left:-50%;
+    }
+    &:after {
+      right:-0.5em;
+      margin-right:-50%;
+    }
+  }
+
 	&--active {
 		// reveal modal
 		visibility: visible;

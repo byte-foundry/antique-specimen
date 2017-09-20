@@ -25,6 +25,12 @@ body {
     background-size: 1800% 200%;
     animation: rainbow 18s ease infinite;
 
+    h1 {
+      .cta:hover {
+        background-color: transparentize(mix($white,black, 20%), 0.8)!important;
+      }
+    }
+
     .interactive {
       &:hover {
         background-color: transparentize(mix($white,black, 20%), 0.8)!important;
@@ -483,9 +489,16 @@ footer {
           }
           .parameters {
             float: inherit;
-            padding-left: 1rem;
+            padding-left: .5rem;
             padding-top: 0;
+            padding-bottom: .5em;
+            font-size: .7rem;
+            p {
+              display: inline-block;
+              margin-right: .5em;
+            }
             .cta {
+              margin-right: 1em;
             }
           }
           &:hover {
@@ -498,7 +511,8 @@ footer {
           }
         }
         .content {
-          padding-top: 0;
+          padding-top: .5em;
+          padding-bottom: 0;
           br {
             display: none;
           }
