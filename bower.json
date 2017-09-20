@@ -6,7 +6,8 @@
     "modernizr": "~2.8.1",
     "hammerjs": "hammer.js#^2.0.8",
     "ua-parser-js": "^0.7.12",
-    "flexboxgrid": "^6.3.2"
+    "flexboxgrid": "^6.3.2",
+    "jquery.isinview": "^1.0.6"
   },
   "devDependencies": {
     "chai": "^4.0.0",

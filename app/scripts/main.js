@@ -465,46 +465,21 @@ var getRightFreqValue = function(block, low, med, high) {
 }
 
 var updateFonts = debounce(function(low, med, high){
-  if (getRightFreqValue('header', low, med, high) !== 0) {
-    Ptypo.changeParam(
-      calculateValue(
-        getAssociatedParam(choices.header.name),
-        getRightFreqValue('header', low, med, high)
-      ),
-      getAssociatedParam(choices.header.name),
-      'antique-header'
-    );
-  }
-  if (getRightFreqValue('presentation', low, med, high) !== 0) {
-    Ptypo.changeParam(
-      calculateValue(
-        getAssociatedParam(choices.presentation.name),
-        getRightFreqValue('presentation', low, med, high)
-      ),
-      getAssociatedParam(choices.presentation.name),
-      'antique-presentation'
-    );
-  }
-  if (getRightFreqValue('prototypo', low, med, high) !== 0) {
-    Ptypo.changeParam(
-      calculateValue(
-        getAssociatedParam(choices.prototypo.name),
-        getRightFreqValue('prototypo', low, med, high)
-      ),
-      getAssociatedParam(choices.prototypo.name),
-      'antique-prototypo'
-    );
-  }
-  if (getRightFreqValue('contact', low, med, high) !== 0) {
-    Ptypo.changeParam(
-      calculateValue(
-        getAssociatedParam(choices.contact.name),
-        getRightFreqValue('contact', low, med, high)
-      ),
-      getAssociatedParam(choices.contact.name),
-      'antique-contact'
-    );
-  }
+
+  $('.interactive')
+  .inViewport({ partially: true, tolerance: 0 })                       // jQuery.isInView filter
+  .each( function () {
+      if (getRightFreqValue('header', low, med, high) !== 0) {
+        Ptypo.changeParam(
+          calculateValue(
+            getAssociatedParam(choices.header.name),
+            getRightFreqValue('header', low, med, high)
+          ),
+          getAssociatedParam(choices.header.name),
+          'antique-'+$(this).attr('id')
+        );
+      }
+  } );
 }, 10);
 
 var resetFont = function(fontName) {
