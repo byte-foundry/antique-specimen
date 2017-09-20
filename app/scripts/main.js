@@ -166,6 +166,7 @@ if (browserName === 'Trident' || browserName === 'IE') {
 
 /** Modal management **/
 var openedModal;
+var isFullScreen = false;
 var Modal = (function() {
     var trigger = $qsa('.modal__trigger'); // what you click to activate the modal
     var modals = $qsa('.modal'); // the entire modal (takes up entire window)
@@ -192,18 +193,21 @@ var Modal = (function() {
       // remove the '#' from the string
       var modalIdTrimmed = modalId.substring(1, len);
       openedModal = modalIdTrimmed;
-      console.log('Opened modal:'+ modalIdTrimmed);
       if (modalIdTrimmed === 'parameter-frequency' || modalIdTrimmed === 'parameter-name') {
         zone = $(event.target).closest('.interactive').attr('id');
         $zoneElem = $(event.target).closest('.interactive');
         $('#'+modalIdTrimmed+' li').removeClass('active');
         var currentLabel = $zoneElem.find('.'+modalIdTrimmed).text();
         $('#'+modalIdTrimmed+' li[data-value="'+currentLabel+'"]').addClass('active');
-        console.log('Zone to change: ' + zone);
       }
       if (openedModal === 'configure') {
         $('#visualizer').appendTo('#visualizer-container');
         $('.microphone-control').remove();
+      }
+      if (openedModal === 'fullscreen-title') {
+        $('#visualizer').appendTo('#fullscreen-title .modal__content');
+        $('.microphone-control').remove();
+        isFullScreen = true;
       }
       // select the modal we want to activate
       var modal = document.getElementById(modalIdTrimmed);
@@ -332,6 +336,12 @@ var Modal = (function() {
           $('<span class="microphone-control"></span>').prependTo('#navRight');
           $('.microphone-control').on('click', toggleMicrophone);
         }
+        if (openedModal === 'fullscreen-title') {
+          $('#visualizer').prependTo('#navRight');
+          $('<span class="microphone-control"></span>').prependTo('#navRight');
+          $('.microphone-control').on('click', toggleMicrophone);
+          isFullScreen = false;
+        }
         openedModal = '';
 
       }
@@ -381,15 +391,15 @@ var choices = {
     frequency: 'Low',
   },
   presentation: {
-    name: 'Thickness',
+    name: 'Width',
     frequency: 'Low',
   },
   prototypo: {
-    name: 'Thickness',
+    name: 'Slant',
     frequency: 'Low',
   },
   contact: {
-    name: 'Thickness',
+    name: 'X-Height',
     frequency: 'Low',
   }
 }
@@ -465,22 +475,49 @@ var getRightFreqValue = function(block, low, med, high) {
 }
 
 var updateFonts = debounce(function(low, med, high){
-
   $('.interactive')
   .inViewport({ partially: true, tolerance: 0 })                       // jQuery.isInView filter
   .each( function () {
-      if (getRightFreqValue('header', low, med, high) !== 0) {
+      if (getRightFreqValue([$(this).attr('id')], low, med, high) !== 0) {
         Ptypo.changeParam(
           calculateValue(
-            getAssociatedParam(choices.header.name),
-            getRightFreqValue('header', low, med, high)
+            getAssociatedParam(choices[$(this).attr('id')].name),
+            getRightFreqValue([$(this).attr('id')], low, med, high)
           ),
-          getAssociatedParam(choices.header.name),
+          getAssociatedParam(choices[$(this).attr('id')].name),
           'antique-'+$(this).attr('id')
         );
       }
   } );
 }, 10);
+
+
+var updateFullScreenFont = debounce(function(low, med, high){
+  Ptypo.changeParam(
+    calculateValue(
+      'thickness',
+      low
+    ),
+    'thickness',
+    'antique-fullscreen'
+  );
+  Ptypo.changeParam(
+    calculateValue(
+      'width',
+      med
+    ),
+    'width',
+    'antique-fullscreen'
+  );
+  Ptypo.changeParam(
+    calculateValue(
+      'slant',
+      high
+    ),
+    'slant',
+    'antique-fullscreen'
+  );
+  }, 10);
 
 var resetFont = function(fontName) {
   var params = ['xHeight', 'width', 'thickness', 'curviness', 'slant'];
@@ -491,7 +528,6 @@ var resetFont = function(fontName) {
 };
 
 var onParameterNameModalClick = function(e) {
-  console.log('clicked on name ' + $(e.target).data('value')+ 'on '+zone+ 'block');
   $('#parameter-name li').removeClass('active');
   $(e.target).addClass('active');
   $zoneElem.find('.parameter-name').text($(e.target).data('value'));
@@ -500,7 +536,6 @@ var onParameterNameModalClick = function(e) {
 };
 
 var onParameterFrequencyModalClick = function(e) {
-  console.log('clicked on frequency ' + $(e.target).data('value')+ 'on '+zone+ 'block');
   $('#parameter-frequency li').removeClass('active');
   $(e.target).addClass('active');
   $zoneElem.find('.parameter-frequency').text($(e.target).data('value'));
@@ -527,15 +562,15 @@ $configModalButton.on('click', function () {
   var report = 0;
 
   var soundAllowed = function (stream) {
-      console.log('Sound allowed');
       isMicOn = true;
+      $('#fullscreen-trigger').show();
 
       if (!parametersCopied) {
         $interactives.each(function(index, $interactiveDiv) {
           var clonedParameters = $($parameters).clone(true);
           $($interactiveDiv).append(clonedParameters);
+          $($interactiveDiv).find('.parameter-name').text(choices[$($interactiveDiv).attr('id')].name);
         });
-        console.log('Copied parameters controls');
         parametersCopied = true;
         Modal.init();
       }
@@ -552,10 +587,10 @@ $configModalButton.on('click', function () {
       analyser.fftSize = 1024;
 
       var frequencyArray = new Uint8Array(analyser.frequencyBinCount);
-      visualizer.setAttribute('viewBox', '0 0 255 255');
+      visualizer.setAttribute('viewBox', '0 0 255 512');
       for (var i = 0 ; i < 255; i++) {
           path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-          path.setAttribute('stroke-dasharray', '4,1');
+          path.setAttribute('stroke-dasharray', '4,0');
           mask.appendChild(path);
       }
       var lastMedValue = 0;
@@ -574,7 +609,7 @@ $configModalButton.on('click', function () {
           if (soundOn) {
             for (var i = 0 ; i < 255; i++) {
               adjustedLength = Math.floor(frequencyArray[i]) - (Math.floor(frequencyArray[i]) % 5);
-              paths[i].setAttribute('d', 'M '+ (i) +',255 l 0,-' + adjustedLength);
+              paths[i].setAttribute('d', 'M '+ (i) +',512 l 0,-' + adjustedLength * 2);
             }
             if (fontsCreated) {
               // low
@@ -600,7 +635,10 @@ $configModalButton.on('click', function () {
               var adjustedHigh = Math.floor(high) - (Math.floor(high) % 5);
 
               if (Math.abs(lastLowValue - low) > updateTrigger || Math.abs(lastMedValue - med) > updateTrigger || Math.abs(lastHighValue - high) > updateTrigger) {
-                updateFonts(adjustedLow, adjustedMed, adjustedHigh);
+                if (isFullScreen) {
+                  updateFullScreenFont(adjustedLow, adjustedMed, adjustedHigh);
+                }
+                else updateFonts(adjustedLow, adjustedMed, adjustedHigh);
                 isRaf = false;
               } else {
                 isRaf = false;
@@ -612,6 +650,7 @@ $configModalButton.on('click', function () {
                 if (noSoundCount >= 190) {
                   $(h).hide();
                   $(visualizer).show();
+                  $('#fullscreen-trigger').show();
                 }
                 noSoundCount = 0;
               }
@@ -619,16 +658,17 @@ $configModalButton.on('click', function () {
                 $(h).show();
                 h.innerHTML = 'No sound detected. Please check your microphone';
                 $(visualizer).hide();
+                $('#fullscreen-trigger').hide();
               }
             }
 
           } else isRaf = false;
       }
       doDraw();
-      console.log('Started sound analysis');
   }
 
   var soundNotAllowed = function (error) {
+      $('#fullscreen-trigger').hide();
       $(h).show();
       h.innerHTML = 'No sound detected. Have you allowed your microphone?';
       $(visualizer).hide();
@@ -674,6 +714,10 @@ $(document).ready(function() {
         });
         Ptypo.createFont('antique-contact', 'font', data).then(function() {
           //Ptypo['gnft-thickness'].subset = 'a';
+          resolve(true);
+        });
+        Ptypo.createFont('antique-fullscreen', 'font', data).then(function() {
+          Ptypo['antique-fullscreen'].subset = 'Antique Gothic';
           resolve(true);
         });
       }));

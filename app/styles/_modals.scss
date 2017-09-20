@@ -87,6 +87,58 @@ $t: .5s;
 		// controls the width and padding of modal
 		max-width: $modal-width;
     padding: ($space / 2);
+
+  }
+
+  &__fullscreen {
+    .modal__dialog {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      max-width: 100%;
+      .modal__content {
+        height: 100%;
+        position: relative;
+        padding: 0;
+        .fs-title {
+          margin: 0;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          font-size: 5rem;
+          font-family: 'antique-fullscreen', 'antiquegothic', sans-serif;
+          text-align: center;
+          width: 90%;
+        }
+        #visualizer {
+          position: absolute;
+          top: 5em;
+          left: 50%;
+          transform: translateX(-50%);
+          height: 20%;
+          width: 30%;
+        }
+        .legend {
+          position: absolute;
+          bottom: 1em;
+          left: 50%;
+          transform: translateX(-50%);
+          .frequency {
+            color: $red;
+          }
+          .divider {
+            padding-right: 1rem;
+          }
+        }
+      }
+      .modal__close {
+        position: absolute;
+        right: 1em;
+        bottom: 1em;
+        z-index: 100000;
+      }
+    }
   }
 
 
@@ -171,4 +223,7 @@ $t: .5s;
 	opacity: 1;
   transition: opacity 0.1s ease-out, transform $t cubic-bezier(0.23, 1, 0.32, 1);
 }
+
+
+
 

@@ -111,7 +111,7 @@
           <div class="box">
             <div class="content">
               <p class="headline">There is a new parametric font in town.</p>
-              <h1>Antique Gothic <span class="cta modal__trigger" data-modal="#configure" id="modal-config">Click here to animate the font and experience the type specimen</span></h1>
+              <h1>Antique Gothic <span class="cta modal__trigger" data-modal="#configure" id="modal-config">Click here to animate the font and experience the type specimen</span><br><span id="fullscreen-trigger" class="cta cta-red modal__trigger" data-modal="#fullscreen-title">Go to full screen</span></h1>
             </div>
             <div class="parametric first">
               <div class="interactive clearfix" id="header">
@@ -274,11 +274,11 @@
             <li data-value="X-Height">
               X-Height
             </li>
+            <li data-value="Slant">
+                Slant
+              </li>
             <li data-value="Curviness">
               Curviness
-            </li>
-            <li data-value="Slant">
-              Slant
             </li>
           </ul>
 
@@ -310,6 +310,24 @@
           <!-- modal close button -->
           <div class="modal__close demo-close cta">
             Ok, Go ahead.
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div id="fullscreen-title" class="modal modal__bg modal__fullscreen" role="dialog" aria-hidden="true">
+      <div class="modal__dialog">
+        <div class="modal__content clearfix">
+          <p class="fs-title">Antique Gothic</p>
+          <p class="legend">
+            <span class="frequency">Low:</span> Thickness <span class="divider"></span>
+            <span class="frequency">Medium:</span> Width  <span class="divider"></span>
+            <span class="frequency">High:</span> Slant
+          </p>
+          <!-- modal close button -->
+          <div class="modal__close demo-close cta">
+            Return to the specimen
           </div>
 
         </div>

@@ -212,6 +212,7 @@ a {
         }
         h1 {
           font-weight: normal;
+          position: relative;
           font-size: 4rem;
           margin-top: 0;
           margin-bottom: 1rem;
@@ -233,6 +234,18 @@ a {
             &:hover {
               background: mix($white, black, 25%);
             }
+          }
+          #fullscreen-trigger {
+            display: none;
+            position: absolute;
+            bottom: -0.5rem;
+            left: 1rem;
+            font-size: 30px;
+            color: $red;
+            width: inherit;
+            padding-right: 6px;
+            cursor: pointer;
+            user-select: none;
           }
         }
         p {
@@ -317,11 +330,10 @@ a {
   height: 100px;
   padding: 0;
   margin: 0;
-
   path {
     stroke-linecap: square;
     stroke: white;
-    stroke-width: 0.5px;
+    stroke-width: 1px;
   }
 }
 
