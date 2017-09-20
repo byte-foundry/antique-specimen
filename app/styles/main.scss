@@ -31,16 +31,16 @@ body {
 
     h1 {
       .cta:hover {
-        background-color: transparentize(mix($white,black, 20%), 0.8)!important;
+        background-color: transparentize(mix($white,black, 15%), 0.8)!important;
       }
     }
 
     .interactive {
       &:hover {
-        background-color: transparentize(mix($white,black, 20%), 0.8)!important;
+        background-color: transparentize(mix($white,black, 15%), 0.8)!important;
       }
       .cta:hover {
-        background-color: transparentize(mix($white,black, 20%), 0.8)!important;
+        background-color: transparentize(mix($white,black, 15%), 0.8)!important;
       }
     }
   }
@@ -187,7 +187,7 @@ a {
           }
         }
         &:hover {
-          background-color: mix($white, black, 20%);
+          background-color: mix(white, $black, 3%);
           .parameters {
              opacity: 1;
             .cta {
