@@ -160,6 +160,7 @@ if (parser.getDevice().type) {
 }
 
 var browserName = parser.getBrowser().name;
+var browserOs = parser.getOS().name;
 if (browserName === 'Trident' || browserName === 'IE') {
   $('#loading .small').html('Unfortunately, we are not supporting your browser at this time. We are aware of the issue and we are working to fix this. Meanwhile, please visit this site using Google Chrome, Opera or Firefox to get the full interactive experience');
 }
@@ -670,17 +671,23 @@ $configModalButton.on('click', function () {
   var soundNotAllowed = function (error) {
       $('#fullscreen-trigger').hide();
       $(h).show();
-      h.innerHTML = 'No sound detected. Have you allowed your microphone?';
+      if(error === 'nocompat') {
+        h.innerHTML = 'We\'re sorry, our browser does not support microphone capture.';
+      } else h.innerHTML = 'No sound detected. Have you allowed your microphone?';
       $(visualizer).hide();
       console.log(error);
   }
 
-  window.navigator = window.navigator || {};
-  navigator.getUserMedia =  navigator.getUserMedia       ||
-                            navigator.webkitGetUserMedia ||
-                            navigator.mozGetUserMedia    ||
-                            null;
-  navigator.getUserMedia({audio:true}, !listening ? soundAllowed : function(){}, soundNotAllowed);
+
+  if(navigator.getUserMedia) {
+    window.navigator = window.navigator || {};
+    navigator.getUserMedia =  navigator.getUserMedia       ||
+                              navigator.webkitGetUserMedia ||
+                              navigator.mozGetUserMedia    ||
+                              null;
+    navigator.getUserMedia({audio:true}, !listening ? soundAllowed : function(){}, soundNotAllowed);
+  } else soundNotAllowed('nocompat');
+
 
 });
 
