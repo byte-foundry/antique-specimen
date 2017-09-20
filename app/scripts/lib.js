@@ -26,8 +26,7 @@
 			});
 			Ptypo[name].subset = ',.0345?ACEFGLPSTWYabcdefghijklmnopqrstuvwxy’';
 			Ptypo[name].update(values[name]);
-
-		});;
+		});
 	}
 
   Ptypo.changeParam = function(value, name, font, isTween = false) {

@@ -318,6 +318,7 @@ a {
 nav {
   position: fixed;
   width: 100%;
+  top: 0;
   background-color: white;
   z-index: 10;
   user-select: none;
@@ -354,6 +355,7 @@ nav {
     line-height: 38px;
     font-size: 38px;
     list-style-type: none;
+    z-index: 11;
 
     margin: 0;
     width: 100%;
@@ -362,9 +364,11 @@ nav {
     ul {
       background: mix(black, $white, 5%);
       position: absolute;
-      display: none;
-      bottom: -78px;
+      display: block;
+      transition: all .3s ease;
+      bottom: 0;
       left: 0;
+      z-index: -1;
     }
   }
   li {
@@ -375,7 +379,7 @@ nav {
       color: $red;
       cursor: pointer;
       & > ul {
-        display: block;
+        bottom: -78px;
         width: 100vw;
       }
     }
@@ -433,6 +437,13 @@ nav {
       }
     }
   }
+}
+footer {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-top: 1rem;
+  font-size: .6rem;
 }
 
 @media screen and (max-width: 648px) {
@@ -535,6 +546,10 @@ nav {
   nav {
     background: $white;
     height: 60px;
+    transition: top 0.2s ease-in-out;
+    &.nav-up {
+      top: -60px;
+    }
     .resbtn {
       display: block;
     }
@@ -549,8 +564,13 @@ nav {
       width: 100%;
       border-top: 1px solid #ccc;
       border-bottom: 1px solid #ccc;
+      bottom: -78px;
+      z-index: inherit;
       ul {
         bottom: -360px;
+        display: none;
+        transition: none;
+        z-index: 12;
       }
       li {
         display: block;
@@ -562,18 +582,23 @@ nav {
         a {
           text-align: left;
         }
+        &:hover {
+          & > ul {
+            display: block;
+            bottom: -360px;
+          }
+        }
       }
     }
   }
+  footer {
+    padding-left: .5rem;
+    padding-right: .5rem;
+    font-size: .8rem;
+  }
 }
 
-footer {
-  margin-bottom: 1rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  margin-top: 1rem;
-  font-size: .6rem;
-}
+
 
 
 @keyframes rainbow {
