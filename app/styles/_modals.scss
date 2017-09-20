@@ -100,24 +100,25 @@ $t: .5s;
         height: 100%;
         position: relative;
         padding: 0;
+        .centered {
+          position: absolute;
+          top: 30%;
+          left: 50%;
+          transform: translate(-50%, -30%);
+          width: 90%;
+        }
         .fs-title {
           margin: 0;
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
+          margin-top: -1rem;
           font-size: 5rem;
           font-family: 'antique-fullscreen', 'antiquegothic', sans-serif;
           text-align: center;
-          width: 90%;
         }
         #visualizer {
-          position: absolute;
-          top: 5em;
-          left: 50%;
-          transform: translateX(-50%);
+          display: inline-block;
           height: 190px;
           width: 30%;
+          margin-left: 35%;
         }
         .legend {
           position: absolute;

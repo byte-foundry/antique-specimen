@@ -205,7 +205,7 @@ var Modal = (function() {
         $('.microphone-control').remove();
       }
       if (openedModal === 'fullscreen-title') {
-        $('#visualizer').appendTo('#fullscreen-title .modal__content');
+        $('#visualizer').prependTo('#fullscreen-title .centered');
         $('.microphone-control').remove();
         isFullScreen = true;
       }
