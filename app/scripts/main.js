@@ -1,10 +1,10 @@
 /** Social Sharing **/
 jQuery(document).ready(function($) {
 
-  var Url = 'https://spectral.prototypo.io';
+  var Url = 'https://antique-gothic.prototypo.io';
   var UrlEncoded = encodeURIComponent(Url);
-  var titleTwitter = encodeURIComponent('Discover Spectral, the first parametric Google font by @prototypoApp!');
-  var titleLinkedin = encodeURIComponent('Discover Spectral, the first parametric Google font by @Prototypo!');
+  var titleTwitter = encodeURIComponent('Discover Antique Gothic, @prototypoApp latest parametric font!');
+  var titleLinkedin = encodeURIComponent('Discover Antique Gothic, @Prototypo latest parametric font!');
   //getFBShares(Url);
   //getTweets(Url);
   //getLinkedIn(Url);
