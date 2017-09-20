@@ -553,6 +553,9 @@ footer {
             margin-bottom: -1rem;
             padding-left: .5rem;
             padding-right: .5rem;
+            #fullscreen-trigger {
+              left: .5rem;
+            }
             .cta {
               font-size: 28px;
               margin-top: -50px;
@@ -583,6 +586,7 @@ footer {
         }
       }
     }
+
   }
   nav {
     background: $white;
@@ -636,6 +640,10 @@ footer {
     padding-left: .5rem;
     padding-right: .5rem;
     font-size: .8rem;
+  }
+  .modal__fullscreen .modal__dialog .modal__content .legend .divider {
+    padding-right: 0;
+    display: block;
   }
 }
 
