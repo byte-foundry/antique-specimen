@@ -345,7 +345,6 @@ nav {
   z-index: 10;
   user-select: none;
   #fullscreen-trigger {
-    display: none;
     cursor: pointer;
   }
   .resbtn {
@@ -621,12 +620,6 @@ footer {
           text-align: left;
         }
         &:hover {
-          & > ul {
-            display: block;
-            bottom: -360px;
-          }
-        }
-        &.listening:hover {
           & > ul {
             display: block;
             bottom: -500px;

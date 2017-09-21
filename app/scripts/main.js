@@ -568,7 +568,6 @@ $configModalButton.on('click', function () {
 
   var soundAllowed = function (stream) {
       isMicOn = true;
-      $('#fullscreen-trigger').css('display', 'inline-block').addClass('listening');
 
       if (!parametersCopied) {
         $interactives.each(function(index, $interactiveDiv) {
@@ -585,6 +584,9 @@ $configModalButton.on('click', function () {
       //https://support.mozilla.org/en-US/questions/984179
       window.persistAudioStream = stream;
       $(h).hide();
+      var AudioContext = window.AudioContext // Default
+      || window.webkitAudioContext // Safari and old versions of Chrome
+      || false;
       var audioContent = new AudioContext();
       var audioStream = audioContent.createMediaStreamSource( stream );
       var analyser = audioContent.createAnalyser();
@@ -655,7 +657,6 @@ $configModalButton.on('click', function () {
                 if (noSoundCount >= 190) {
                   $(h).hide();
                   $(visualizer).show();
-                  $('#fullscreen-trigger').css('display', 'inline-block').addClass('listening');
                 }
                 noSoundCount = 0;
               }
@@ -663,7 +664,6 @@ $configModalButton.on('click', function () {
                 $(h).show();
                 h.innerHTML = 'No sound detected. Please check your microphone';
                 $(visualizer).hide();
-                $('#fullscreen-trigger').css('display', 'none').removeClass('listening');
               }
             }
 
@@ -673,7 +673,6 @@ $configModalButton.on('click', function () {
   }
 
   var soundNotAllowed = function (error) {
-      $('#fullscreen-trigger').hide();
       $(h).show();
       if(error === 'nocompat') {
         h.innerHTML = 'We\'re sorry, your browser does not support microphone capture.';
