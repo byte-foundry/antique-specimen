@@ -625,6 +625,12 @@ footer {
             bottom: -360px;
           }
         }
+        &.listening:hover {
+          & > ul {
+            display: block;
+            bottom: -500px;
+          }
+        }
       }
     }
   }
@@ -632,6 +638,12 @@ footer {
     padding-left: .5rem;
     padding-right: .5rem;
     font-size: .8rem;
+  }
+  .modal__fullscreen .modal__dialog .modal__content .centered {
+    top: 20%;
+  }
+  .modal__fullscreen .modal__dialog .modal__content #visualizer {
+    height: 80px;
   }
   .modal__fullscreen .modal__dialog .modal__content .legend .divider {
     padding-right: 0;

@@ -18,7 +18,9 @@ jQuery(document).ready(function($) {
   var ulList = $('nav ul');
    resBtn.on('click', function () {
        if(ulList.height() == 0) {
-           ulList.animate({height: '5.5em'}, 300);
+           if (listening) {
+            ulList.animate({height: '7.5em'}, 300);
+           } else ulList.animate({height: '5.5em'}, 300);
        }else {
            ulList.animate({height: '0em'}, 300);
        }
@@ -566,7 +568,7 @@ $configModalButton.on('click', function () {
 
   var soundAllowed = function (stream) {
       isMicOn = true;
-      $('#fullscreen-trigger').css('display', 'inline-block');
+      $('#fullscreen-trigger').css('display', 'inline-block').addClass('listening');
 
       if (!parametersCopied) {
         $interactives.each(function(index, $interactiveDiv) {
@@ -653,7 +655,7 @@ $configModalButton.on('click', function () {
                 if (noSoundCount >= 190) {
                   $(h).hide();
                   $(visualizer).show();
-                  $('#fullscreen-trigger').css('display', 'inline-block');
+                  $('#fullscreen-trigger').css('display', 'inline-block').addClass('listening');
                 }
                 noSoundCount = 0;
               }
@@ -661,7 +663,7 @@ $configModalButton.on('click', function () {
                 $(h).show();
                 h.innerHTML = 'No sound detected. Please check your microphone';
                 $(visualizer).hide();
-                $('#fullscreen-trigger').css('display', 'none');
+                $('#fullscreen-trigger').css('display', 'none').removeClass('listening');
               }
             }
 
