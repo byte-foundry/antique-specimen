@@ -18,9 +18,7 @@ jQuery(document).ready(function($) {
   var ulList = $('nav ul');
    resBtn.on('click', function () {
        if(ulList.height() == 0) {
-           if (listening) {
-            ulList.animate({height: '7.5em'}, 300);
-           } else ulList.animate({height: '5.5em'}, 300);
+          ulList.animate({height: '7.5em'}, 300);
        }else {
            ulList.animate({height: '0em'}, 300);
        }
