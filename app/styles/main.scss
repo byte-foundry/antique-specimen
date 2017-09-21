@@ -532,8 +532,11 @@ footer {
         .content {
           padding-top: .5em;
           padding-bottom: 0;
-          br {
-            display: none;
+          br  {
+            content: ' '
+          }
+          br:after {
+              content: ' '
           }
           .title {
           }
