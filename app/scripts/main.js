@@ -713,7 +713,7 @@ $configModalButton.on('click', function () {
       console.log(error);
   }
 
-  if (browserName === 'Safari' || browserOs === 'iOs') {
+  if (browserName === 'Safari' || browserOs === 'iOS') {
     soundNotAllowed('safari');
   }
   else if(navigator.getUserMedia) {
