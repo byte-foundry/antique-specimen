@@ -164,6 +164,11 @@ if (parser.getDevice().type) {
 var browserName = parser.getBrowser().name;
 var browserVersion = parser.getBrowser().version;
 var browserOs = parser.getOS().name;
+console.log('====================================');
+console.log(browserName);
+console.log(browserVersion);
+console.log(browserOs);
+console.log('====================================');
 if (browserName === 'Trident' || browserName === 'IE') {
   $('#loading .small').html('Unfortunately, we are not supporting your browser at this time. We are aware of the issue and we are working to fix this. Meanwhile, please visit this site using an up to date version of Google Chrome, Opera or Firefox to get the full interactive experience');
 }
@@ -711,7 +716,13 @@ $configModalButton.on('click', function () {
                               navigator.mozGetUserMedia    ||
                               null
     navigator.getUserMedia({audio:true}, !listening ? soundAllowed : function(){console.log('Not listening')}, soundNotAllowed);
+    console.log('====================================');
+    console.log(navigator.getUserMedia);
+    console.log('====================================');
   } else if (navigator.mediaDevices.getUserMedia) {
+    console.log('====================================');
+    console.log(navigator.mediaDevices.getUserMedia);
+    console.log('====================================');
     navigator.mediaDevices.getUserMedia({audio:true})
       .then(function(stream) {
         if(!listening){
