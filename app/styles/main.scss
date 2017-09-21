@@ -218,6 +218,7 @@ a {
           border-bottom: 3px solid $white;
           font-size: 0.75rem;
         }
+
         .headline {
           margin-top: 1.5rem;
           margin-bottom: 0;
@@ -279,6 +280,41 @@ a {
           }
           a {
             border-bottom: 1px solid transparentize($white, 0.8);
+          }
+        }
+
+        &.commercial {
+          img {
+            display: block;
+            max-width: 800px;
+            height: auto;
+            margin-left: 1rem;
+            margin-top: 1rem;
+            box-shadow: 15px 15px 30px 10px rgba(0, 0, 0, 0.15);
+            transition: all .2s ease;
+            @media screen and (max-width: 850px) {
+              width: 90%;
+            }
+            &:hover {
+              box-shadow: 15px 15px 30px 10px rgba(0, 0, 0, 0.15);
+              transform: perspective(1px) scale(1.005);
+              cursor: pointer;
+            }
+
+          }
+          p {
+            font-size: .6rem;
+            margin-bottom: 0.1rem;
+
+          }
+
+          .cta {
+            margin-top: 0rem;
+            font-size: .6rem;
+            color: $red;
+            text-align: center;
+            border-bottom: none;
+            display: inline;
           }
         }
       }
@@ -539,6 +575,19 @@ footer {
               content: ' '
           }
           .title {
+          }
+          &.commercial {
+            img {
+              margin-left: .5rem;
+              width: 90%;
+            }
+            p {
+              font-size: .8rem;
+              br {
+                content: inherit;
+                display: block;
+              }
+            }
           }
           .headline {
             margin-top: 2em;
