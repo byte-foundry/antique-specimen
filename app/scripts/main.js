@@ -594,10 +594,7 @@ $configModalButton.on('click', function () {
       //https://support.mozilla.org/en-US/questions/984179
       window.persistAudioStream = stream;
       $(h).hide();
-      var AudioContext = window.AudioContext // Default
-      || window.webkitAudioContext // Safari and old versions of Chrome
-      || false;
-      var audioContent = new AudioContext();
+      var audioContent = new (window.AudioContext || window.webkitAudioContext)();
       var audioStream = audioContent.createMediaStreamSource( stream );
       var analyser = audioContent.createAnalyser();
       audioStream.connect(analyser);
