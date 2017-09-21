@@ -162,11 +162,14 @@ if (parser.getDevice().type) {
 }
 
 var browserName = parser.getBrowser().name;
+var browserVersion = parser.getBrowser().version;
 var browserOs = parser.getOS().name;
 if (browserName === 'Trident' || browserName === 'IE') {
-  $('#loading .small').html('Unfortunately, we are not supporting your browser at this time. We are aware of the issue and we are working to fix this. Meanwhile, please visit this site using Google Chrome, Opera or Firefox to get the full interactive experience');
+  $('#loading .small').html('Unfortunately, we are not supporting your browser at this time. We are aware of the issue and we are working to fix this. Meanwhile, please visit this site using an up to date version of Google Chrome, Opera or Firefox to get the full interactive experience');
 }
-
+if (browserName === 'Safari' && parseFloat(browserVersion) < 10) {
+  $('#loading .small').html('Unfortunately, we are not supporting your browser at this time. We are aware of the issue and we are working to fix this. Meanwhile, please visit this site using an up to date version of Google Chrome, Opera or Firefox to get the full interactive experience');
+}
 /** Modal management **/
 var openedModal;
 var clickedFullScreenButNoSound = false;
@@ -595,8 +598,17 @@ $configModalButton.on('click', function () {
       window.persistAudioStream = stream;
       $(h).hide();
       var audioContent = new (window.AudioContext || window.webkitAudioContext)();
+      console.log('====================================');
+      console.log(audioContent);
+      console.log('====================================');
       var audioStream = audioContent.createMediaStreamSource( stream );
+      console.log('====================================');
+      console.log(audioStream);
+      console.log('====================================');
       var analyser = audioContent.createAnalyser();
+      console.log('====================================');
+      console.log(analyser);
+      console.log('====================================');
       audioStream.connect(analyser);
       analyser.fftSize = 1024;
 
@@ -618,6 +630,9 @@ $configModalButton.on('click', function () {
           isRaf = true;
           listening = true;
           analyser.getByteFrequencyData(frequencyArray);
+          console.log('====================================');
+          console.log(frequencyArray);
+          console.log('====================================');
           var adjustedLength;
           var updateTrigger = 20;
           if (soundOn) {
@@ -715,7 +730,7 @@ $configModalButton.on('click', function () {
 
 var fontsCreated = false;
 $(document).ready(function() {
-  if (browserName !== 'Trident' || browserName !== 'IE') {
+  if (browserName !== 'Trident' || browserName !== 'IE' || (browserName === 'Safari' && parseFloat(browserVersion) < 10)) {
     var fontPromises = [];
 
     var myHeaders = new Headers();
@@ -768,7 +783,7 @@ $(document).ready(function() {
       });
     });
   } else {
-    $('#loading .small').html('Unfortunately, we are not supporting your browser at this time. We are aware of the issue and we are working to fix this. Meanwhile, please visit this site using Google Chrome, Opera or Firefox to get the full interactive experience');
+    $('#loading .small').html('Unfortunately, we are not supporting your browser at this time. We are aware of the issue and we are working to fix this. Meanwhile, please visit this site an up to date version of Google Chrome, Opera or Firefox to get the full interactive experience');
   }
 
 });
