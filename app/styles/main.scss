@@ -645,6 +645,9 @@ footer {
   .modal__fullscreen .modal__dialog .modal__content #visualizer {
     height: 80px;
   }
+  .modal__fullscreen .modal__dialog .modal__content .legend {
+    bottom: 0;
+  }
   .modal__fullscreen .modal__dialog .modal__content .legend .divider {
     padding-right: 0;
     display: block;
