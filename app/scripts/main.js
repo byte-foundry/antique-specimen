@@ -703,7 +703,7 @@ $configModalButton.on('click', function () {
         $('#soundcapturelog').hide();
         $('#configure .title').hide();
         if (!$('#configure .modal__content img').length) {
-          $('#configure .modal__content').prepend('<img src="https://i.giphy.com/media/3o7aD1wjvLmuQJEEZa/giphy.webp" />')
+          $('#configure .modal__content').prepend('<img src="https://i.imgur.com/6Me4xS7.gif" />')
         }
         $('#config-soundcapturelog').text('We\'re sorry, your browser does not support microphone capture. Please visit this website with an up to date version of Google Chrome, Opera or Firefox to get the full interactive experience')
       }else if(error === 'nocompat') {
@@ -713,7 +713,7 @@ $configModalButton.on('click', function () {
       console.log(error);
   }
 
-  if (browserName === 'Safari') {
+  if (browserName === 'Safari' || browserOs === 'iOs') {
     soundNotAllowed('safari');
   }
   else if(navigator.getUserMedia) {
