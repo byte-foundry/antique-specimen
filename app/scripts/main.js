@@ -672,7 +672,7 @@ $configModalButton.on('click', function () {
       $('#fullscreen-trigger').hide();
       $(h).show();
       if(error === 'nocompat') {
-        h.innerHTML = 'We\'re sorry, our browser does not support microphone capture.';
+        h.innerHTML = 'We\'re sorry, your browser does not support microphone capture.';
       } else h.innerHTML = 'No sound detected. Have you allowed your microphone?';
       $(visualizer).hide();
       console.log(error);
