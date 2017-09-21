@@ -246,18 +246,6 @@ a {
               background: mix($white, black, 25%);
             }
           }
-          #fullscreen-trigger {
-            display: none;
-            position: absolute;
-            bottom: -0.5rem;
-            left: 1rem;
-            font-size: 30px;
-            color: $red;
-            width: inherit;
-            padding-right: 6px;
-            cursor: pointer;
-            user-select: none;
-          }
         }
         p {
           padding-left: 1rem;
@@ -355,6 +343,10 @@ nav {
   background-color: white;
   z-index: 10;
   user-select: none;
+  #fullscreen-trigger {
+    display: none;
+    cursor: pointer;
+  }
   .resbtn {
     display: none;
     width: 40px;
@@ -553,9 +545,6 @@ footer {
             margin-bottom: -1rem;
             padding-left: .5rem;
             padding-right: .5rem;
-            #fullscreen-trigger {
-              left: .5rem;
-            }
             .cta {
               font-size: 28px;
               margin-top: -50px;

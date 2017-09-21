@@ -566,7 +566,7 @@ $configModalButton.on('click', function () {
 
   var soundAllowed = function (stream) {
       isMicOn = true;
-      $('#fullscreen-trigger').show();
+      $('#fullscreen-trigger').css('display', 'inline-block');
 
       if (!parametersCopied) {
         $interactives.each(function(index, $interactiveDiv) {
@@ -653,7 +653,7 @@ $configModalButton.on('click', function () {
                 if (noSoundCount >= 190) {
                   $(h).hide();
                   $(visualizer).show();
-                  $('#fullscreen-trigger').show();
+                  $('#fullscreen-trigger').css('display', 'inline-block');
                 }
                 noSoundCount = 0;
               }
@@ -661,7 +661,7 @@ $configModalButton.on('click', function () {
                 $(h).show();
                 h.innerHTML = 'No sound detected. Please check your microphone';
                 $(visualizer).hide();
-                $('#fullscreen-trigger').hide();
+                $('#fullscreen-trigger').css('display', 'none');
               }
             }
 
