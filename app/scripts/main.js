@@ -635,9 +635,6 @@ $configModalButton.on('click', function () {
           isRaf = true;
           listening = true;
           analyser.getByteFrequencyData(frequencyArray);
-          console.log('====================================');
-          console.log(frequencyArray);
-          console.log('====================================');
           var adjustedLength;
           var updateTrigger = 20;
           if (soundOn) {
@@ -701,28 +698,32 @@ $configModalButton.on('click', function () {
 
   var soundNotAllowed = function (error) {
       $(h).show();
-      if(error === 'nocompat') {
+      if (error === 'safari') {
+        $(visualizer).hide();
+        $('#soundcapturelog').hide();
+        $('#configure .title').hide();
+        if (!$('#configure .modal__content img').length) {
+          $('#configure .modal__content').prepend('<img src="https://i.giphy.com/media/3o7aD1wjvLmuQJEEZa/giphy.webp" />')
+        }
+        $('#config-soundcapturelog').text('We\'re sorry, your browser does not support microphone capture. Please visit this website with an up to date version of Google Chrome, Opera or Firefox to get the full interactive experience')
+      }else if(error === 'nocompat') {
         h.innerHTML = 'We\'re sorry, your browser does not support microphone capture.';
       } else h.innerHTML = 'No sound detected. Have you allowed your microphone?';
       $(visualizer).hide();
       console.log(error);
   }
 
-
-  if(navigator.getUserMedia) {
+  if (browserName === 'Safari') {
+    soundNotAllowed('safari');
+  }
+  else if(navigator.getUserMedia) {
     window.navigator = window.navigator || {};
     navigator.getUserMedia =  navigator.getUserMedia       ||
                               navigator.webkitGetUserMedia ||
                               navigator.mozGetUserMedia    ||
                               null
     navigator.getUserMedia({audio:true}, !listening ? soundAllowed : function(){console.log('Not listening')}, soundNotAllowed);
-    console.log('====================================');
-    console.log(navigator.getUserMedia);
-    console.log('====================================');
   } else if (navigator.mediaDevices.getUserMedia) {
-    console.log('====================================');
-    console.log(navigator.mediaDevices.getUserMedia);
-    console.log('====================================');
     navigator.mediaDevices.getUserMedia({audio:true})
       .then(function(stream) {
         if(!listening){
@@ -794,7 +795,7 @@ $(document).ready(function() {
       });
     });
   } else {
-    $('#loading .small').html('Unfortunately, we are not supporting your browser at this time. We are aware of the issue and we are working to fix this. Meanwhile, please visit this site an up to date version of Google Chrome, Opera or Firefox to get the full interactive experience');
+    $('#loading .small').html('Unfortunately, we are not supporting your browser at this time. We are aware of the issue and we are working to fix this. Meanwhile, please visit this web site with an up to date version of Google Chrome, Opera or Firefox to get the full interactive experience');
   }
 
 });
