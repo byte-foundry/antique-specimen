@@ -290,13 +290,11 @@ a {
             height: auto;
             margin-left: 1rem;
             margin-top: 1rem;
-            box-shadow: 15px 15px 30px 10px rgba(0, 0, 0, 0.15);
             transition: all .2s ease;
             @media screen and (max-width: 850px) {
               width: 90%;
             }
             &:hover {
-              box-shadow: 15px 15px 30px 10px rgba(0, 0, 0, 0.15);
               transform: perspective(1px) scale(1.005);
               cursor: pointer;
             }
@@ -315,6 +313,7 @@ a {
             text-align: center;
             border-bottom: none;
             display: inline;
+            padding: 0px 8px 8px 8px;
           }
         }
       }
