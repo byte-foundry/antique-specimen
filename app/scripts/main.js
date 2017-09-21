@@ -171,6 +171,7 @@ if (browserName === 'Trident' || browserName === 'IE') {
 
 /** Modal management **/
 var openedModal;
+var clickedFullScreenButNoSound = false;
 var isFullScreen = false;
 var Modal = (function() {
     var trigger = $qsa('.modal__trigger'); // what you click to activate the modal
@@ -210,9 +211,14 @@ var Modal = (function() {
         $('.microphone-control').remove();
       }
       if (openedModal === 'fullscreen-title') {
-        $('#visualizer').prependTo('#fullscreen-title .centered');
-        $('.microphone-control').remove();
-        isFullScreen = true;
+        if (listening) {
+          $('#visualizer').prependTo('#fullscreen-title .centered');
+          $('.microphone-control').remove();
+          isFullScreen = true;
+        } else {
+          $('#modal-config').click();
+          clickedFullScreenButNoSound = true;
+        }
       }
       // select the modal we want to activate
       var modal = document.getElementById(modalIdTrimmed);
@@ -340,6 +346,12 @@ var Modal = (function() {
           $('#visualizer').prependTo('#navRight');
           $('<span class="microphone-control"></span>').prependTo('#navRight');
           $('.microphone-control').on('click', toggleMicrophone);
+          if (clickedFullScreenButNoSound) {
+            setTimeout(function () {
+              $('#fullscreen-trigger').click();
+              clickedFullScreenButNoSound = false;
+            }, 300);
+          }
         }
         if (openedModal === 'fullscreen-title') {
           $('#visualizer').prependTo('#navRight');
