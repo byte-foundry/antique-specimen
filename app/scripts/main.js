@@ -563,7 +563,6 @@ $configModalButton.on('click', function () {
   var report = 0;
 
   var soundAllowed = function (stream) {
-      console.log('sound allowed');
       isMicOn = true;
       $('#fullscreen-trigger').show();
 
@@ -686,11 +685,17 @@ $configModalButton.on('click', function () {
                               navigator.webkitGetUserMedia ||
                               navigator.mozGetUserMedia    ||
                               null
-    console.log('navigator.getUserMedia');
     navigator.getUserMedia({audio:true}, !listening ? soundAllowed : function(){console.log('Not listening')}, soundNotAllowed);
   } else if (navigator.mediaDevices.getUserMedia) {
-    console.log('navigator.mediaDevices.getUserMedia');
-    navigator.mediaDevices.getUserMedia({audio:true}, !listening ? soundAllowed : function(){console.log('Not listening')}, soundNotAllowed);
+    navigator.mediaDevices.getUserMedia({audio:true})
+      .then(function(stream) {
+        if(!listening){
+          soundAllowed(stream);
+        }
+      })
+      .catch(function(err) {
+        soundNotAllowed(err);
+      });
   } else soundNotAllowed('nocompat');
 
 
