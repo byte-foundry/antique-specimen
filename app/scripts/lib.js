@@ -29,16 +29,11 @@
 		});
 	}
 
-  Ptypo.changeParam = function(value, name, font, isTween = false) {
+  Ptypo.changeParam = function(value, name, font) {
     if (values[font]) {
       values[font][name] = value;
   		Ptypo[font].update(values[font]);
     }
-		if (!isTween) {
-			if (tweens[font] && tweens[font][name]) {
-				clearInterval(tweens[font][name].intervalId);
-			}
-		}
 	}
 
 	Ptypo.getParam = function(name, font) {
