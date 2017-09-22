@@ -8,11 +8,14 @@ $font-path: "../../fonts";
 
 
 @font-face {
-  font-family: antiquegothic;
-  src: url('#{$font-path}/antiquegothic.otf');
-  src: url('#{$font-path}/antiquegothic.eot');
-  src: url('#{$font-path}/antiquegothic.eot?#iefix') format('embedded-opentype'),
-       url('#{$font-path}/antiquegothic.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
+  font-family: 'Antique Gothic';
+  src: url('#{$font-path}/antiquegothic.eot'); /* IE9 Compat Modes */
+  src: url('#{$font-path}/antiquegothic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('#{$font-path}/antiquegothic.woff') format('woff'), /* Modern Browsers */
+       url('#{$font-path}/antiquegothic.ttf')  format('truetype'), /* Safari, Android, iOS */
+       url('#{$font-path}/antiquegothic.svg#76c37db6fa7aa1995c93ff2fe0916354') format('svg'); /* Legacy iOS */
+
+  font-style:   normal;
+  font-weight:  400;
 }
+
