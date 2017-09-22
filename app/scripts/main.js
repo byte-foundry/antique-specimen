@@ -164,17 +164,6 @@ if (parser.getDevice().type) {
 var browserName = parser.getBrowser().name;
 var browserVersion = parser.getBrowser().version;
 var browserOs = parser.getOS().name;
-console.log('====================================');
-console.log(browserName);
-console.log(browserVersion);
-console.log(browserOs);
-console.log('====================================');
-if (browserName === 'Trident' || browserName === 'IE') {
-  $('#loading .small').html('Unfortunately, we are not supporting your browser at this time. We are aware of the issue and we are working to fix this. Meanwhile, please visit this site using an up to date version of Google Chrome, Opera or Firefox to get the full interactive experience');
-}
-if (browserName === 'Safari' && parseFloat(browserVersion) < 10) {
-  $('#loading .small').html('Unfortunately, we are not supporting your browser at this time. We are aware of the issue and we are working to fix this. Meanwhile, please visit this site using an up to date version of Google Chrome, Opera or Firefox to get the full interactive experience');
-}
 /** Modal management **/
 var openedModal;
 var clickedFullScreenButNoSound = false;
@@ -603,17 +592,8 @@ $configModalButton.on('click', function () {
       window.persistAudioStream = stream;
       $(h).hide();
       var audioContent = new (window.AudioContext || window.webkitAudioContext)();
-      console.log('====================================');
-      console.log(audioContent);
-      console.log('====================================');
       var audioStream = audioContent.createMediaStreamSource( stream );
-      console.log('====================================');
-      console.log(audioStream);
-      console.log('====================================');
       var analyser = audioContent.createAnalyser();
-      console.log('====================================');
-      console.log(analyser);
-      console.log('====================================');
       audioStream.connect(analyser);
       analyser.fftSize = 1024;
 
@@ -698,7 +678,7 @@ $configModalButton.on('click', function () {
 
   var soundNotAllowed = function (error) {
       $(h).show();
-      if (error === 'safari') {
+      if (error === 'nocompat') {
         $(visualizer).hide();
         $('#soundcapturelog').hide();
         $('#configure .title').hide();
@@ -713,8 +693,8 @@ $configModalButton.on('click', function () {
       console.log(error);
   }
 
-  if (browserName === 'Safari' || browserOs === 'iOS') {
-    soundNotAllowed('safari');
+  if (browserName === 'Trident' || browserName === 'Edge' || browserName === 'IE' || browserName === 'Safari' || browserOs === 'iOS') {
+    soundNotAllowed('nocompat');
   }
   else if(navigator.getUserMedia) {
     window.navigator = window.navigator || {};
@@ -742,60 +722,67 @@ $configModalButton.on('click', function () {
 
 var fontsCreated = false;
 $(document).ready(function() {
-  if (browserName !== 'Trident' || browserName !== 'IE' || (browserName === 'Safari' && parseFloat(browserVersion) < 10)) {
+  if (browserName === 'Trident' || browserName === 'Edge' || browserName === 'IE' || browserName === 'Safari' || browserOs === 'iOS') {
+    setTimeout(function () {
+      $('#loading').addClass('fade');
+        $('body').removeClass('loading');
+      setTimeout(function () {
+        $('#loading').hide();
+      }, 800);
+    }, 100);
+  } else {
+
     var fontPromises = [];
 
-    var myHeaders = new Headers();
-    myHeaders.append('Content-Type', 'application/json');
-    fetch('/fonts/font.json', {
-      headers: myHeaders,
-      cache: 'force-cache',
-    }).then(function(data) {
-      return data.json();
-    }).then(function(data) {
-      fontPromises.push(new Promise(function(resolve, reject) {
-        Ptypo.createFont('antique-header', 'font', data).then(function() {
-          //Ptypo['gnft-thickness'].subset = 'a';
-          resolve(true);
-        });
-        Ptypo.createFont('antique-presentation', 'font', data).then(function() {
-          //Ptypo['gnft-thickness'].subset = 'a';
-          resolve(true);
-        });
-        Ptypo.createFont('antique-prototypo', 'font', data).then(function() {
-          //Ptypo['gnft-thickness'].subset = 'a';
-          resolve(true);
-        });
-        Ptypo.createFont('antique-contact', 'font', data).then(function() {
-          //Ptypo['gnft-thickness'].subset = 'a';
-          resolve(true);
-        });
-        Ptypo.createFont('antique-fullscreen', 'font', data).then(function() {
-          Ptypo['antique-fullscreen'].subset = 'Antique Gothic';
-          resolve(true);
-        });
-      }));
+        var myHeaders = new Headers();
+        myHeaders.append('Content-Type', 'application/json');
+        fetch('/fonts/font.json', {
+          headers: myHeaders,
+          cache: 'force-cache',
+        }).then(function(data) {
+          return data.json();
+        }).then(function(data) {
+          fontPromises.push(new Promise(function(resolve, reject) {
+            Ptypo.createFont('antique-header', 'font', data).then(function() {
+              //Ptypo['gnft-thickness'].subset = 'a';
+              resolve(true);
+            });
+            Ptypo.createFont('antique-presentation', 'font', data).then(function() {
+              //Ptypo['gnft-thickness'].subset = 'a';
+              resolve(true);
+            });
+            Ptypo.createFont('antique-prototypo', 'font', data).then(function() {
+              //Ptypo['gnft-thickness'].subset = 'a';
+              resolve(true);
+            });
+            Ptypo.createFont('antique-contact', 'font', data).then(function() {
+              //Ptypo['gnft-thickness'].subset = 'a';
+              resolve(true);
+            });
+            Ptypo.createFont('antique-fullscreen', 'font', data).then(function() {
+              Ptypo['antique-fullscreen'].subset = 'Antique Gothic';
+              resolve(true);
+            });
+          }));
 
-      Promise.all(fontPromises).then(function() {
-        fontsCreated = true;
-        setTimeout(function () {
-          $('#loading').addClass('fade');
-            $('body').removeClass('loading');
-          setTimeout(function () {
-            $('#loading').hide();
+          Promise.all(fontPromises).then(function() {
+            fontsCreated = true;
             setTimeout(function () {
-              if (!listening) {
-                var x = document.getElementById('toast')
-                x.className = 'show';
-                setTimeout(function(){ x.className = x.className.replace('show', ''); }, 8000);
-              }
-            }, 10000);
-          }, 800);
-        }, 100);
-      });
-    });
-  } else {
-    $('#loading .small').html('Unfortunately, we are not supporting your browser at this time. We are aware of the issue and we are working to fix this. Meanwhile, please visit this web site with an up to date version of Google Chrome, Opera or Firefox to get the full interactive experience');
+              $('#loading').addClass('fade');
+                $('body').removeClass('loading');
+              setTimeout(function () {
+                $('#loading').hide();
+                setTimeout(function () {
+                  if (!listening) {
+                    var x = document.getElementById('toast')
+                    x.className = 'show';
+                    setTimeout(function(){ x.className = x.className.replace('show', ''); }, 8000);
+                  }
+                }, 10000);
+              }, 800);
+            }, 100);
+          });
+        });
   }
 
 });
