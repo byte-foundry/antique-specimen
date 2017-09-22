@@ -10,6 +10,9 @@ $font-path: "../../fonts";
 @font-face {
   font-family: antiquegothic;
   src: url('#{$font-path}/antiquegothic.otf');
+  src: url('#{$font-path}/antiquegothic.eot');
+  src: url('#{$font-path}/antiquegothic.eot?#iefix') format('embedded-opentype'),
+       url('#{$font-path}/antiquegothic.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
